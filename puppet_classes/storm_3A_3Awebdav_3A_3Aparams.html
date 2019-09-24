@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+  Puppet Class: storm::webdav::params
+  
+    &mdash; Documentation by YARD 0.9.20
+  
+</title>
+
+  <link rel="stylesheet" href="../css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  pathId = "puppet_classes::storm::webdav::params";
+  relpath = '../';
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div class="nav_wrap">
+      <iframe id="nav" src="../puppet_class_list.html?1"></iframe>
+      <div id="resizer"></div>
+    </div>
+
+    <div id="main" tabindex="-1">
+      <div id="header">
+        <div id="menu">
+  
+    <a href="../_index.html">Index (s)</a> &raquo;
+    <span class='title'><span class='object_link'>Puppet Classes</span></span>
+     &raquo; 
+    <span class="title">storm::webdav::params</span>
+  
+</div>
+
+        <div id="search">
+  
+    <a class="full_list_link" id="puppet_class_list_link"
+        href="../puppet_class_list.html">
+
+        <svg width="24" height="24">
+          <rect x="0" y="4" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="12" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="20" width="24" height="4" rx="1" ry="1"></rect>
+        </svg>
+    </a>
+  
+</div>
+        <div class="clear"></div>
+      </div>
+
+      <div id="content"><h1>Puppet Class: storm::webdav::params</h1>
+<div class="box_info">
+  
+  <dl>
+    <dt>Inherits:</dt>
+    <dd><span class='object_link'><a href="storm_3A_3Aparams.html" title="puppet_classes::storm::params (puppet_class)">storm::params</a></span></dd>
+  </dl>
+  
+  
+  <dl>
+    <dt>Inherited by:</dt>
+    <dd>
+      
+      <span class='object_link'><a href="storm_3A_3Awebdav.html" title="puppet_classes::storm::webdav (puppet_class)">storm::webdav</a></span><br/>
+      
+    </dd>
+  </dl>
+  
+  <dl>
+    <dt>Defined in:</dt>
+    <dd>
+      manifests/webdav/params.pp
+    </dd>
+  </dl>
+</div>
+
+  <h2>Summary</h2>
+  StoRM WebDAV params class
+
+<h2>Overview</h2>
+<div class="docstring">
+  <div class="discussion">
+    
+  </div>
+</div>
+
+
+<div class="tags">
+  
+
+</div><div class="method_details_list">
+  <table class="source_code">
+    <tr>
+      <td>
+        <pre class="lines">
+
+
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52</pre>
+      </td>
+      <td>
+        <pre class="code"><span class="info file"># File 'manifests/webdav/params.pp', line 3</span>
+
+class storm::webdav::params (
+) inherits storm::params {
+
+  $user_name = $storm::params::user_name
+  $user_uid = $storm::params::user_uid
+  $user_gid = $storm::params::user_gid
+
+  $storage_root_dir = $storm::params::storage_root_dir
+  $log_dir = $storm::params::log_dir
+
+  $storage_areas = lookup(&#39;storm::webdav::params::storage_areas&#39;, Array[Storm::Webdav::StorageArea], undef, [])
+
+  $config_dir = lookup(&#39;storm::webdav::params::config_dir&#39;, String, undef, &#39;/etc/storm/webdav&#39;)
+  $hostcert_dir = lookup(&#39;storm::webdav::params::hostcert_dir&#39;, String, undef, &#39;/etc/grid-security/storm-webdav&#39;)
+  $oauth_issuers = lookup(&#39;storm::webdav::params::oauth_issuers&#39;, Array[Storm::Webdav::OAuthIssuer], undef, [])
+  $hostnames = lookup(&#39;storm::webdav::params::hostnames&#39;, Array[String], undef, [])
+
+  $http_port = lookup(&#39;storm::webdav::params::http_port&#39;, Integer, undef, 8085)
+  $https_port = lookup(&#39;storm::webdav::params::https_port&#39;, Integer, undef, 8443)
+
+  $trust_anchors_dir = lookup(&#39;storm::webdav::params::trust_anchors_dir&#39;, String, undef, &#39;/etc/grid-security/certificates&#39;)
+  $trust_anchors_refresh_interval = lookup(&#39;storm::webdav::params::trust_anchors_refresh_interval&#39;, Integer, undef, 86400)
+
+  $max_concurrent_connections = lookup(&#39;storm::webdav::params::max_concurrent_connections&#39;, Integer, undef, 300)
+  $max_queue_size = lookup(&#39;storm::webdav::params::max_queue_size&#39;, Integer, undef, 900)
+  $connector_max_idle_time = lookup(&#39;storm::webdav::params::connector_max_idle_time&#39;, Integer, undef, 30000)
+
+  $vo_map_files_enable = lookup(&#39;storm::webdav::params::vo_map_files_enable&#39;, Boolean, undef, false)
+  $vo_map_files_config_dir = lookup(&#39;storm::webdav::params::vo_map_files_config_dir&#39;, String, undef, &#39;/etc/storm/webdav/vo-mapfiles.d&#39;)
+  $vo_map_files_refresh_interval = lookup(&#39;storm::webdav::params::vo_map_files_refresh_interval&#39;, Integer, undef, 21600)
+
+  $tpc_max_connections = lookup(&#39;storm::webdav::params::tpc_max_connections&#39;, Integer, undef, 50)
+  $tpc_verify_checksum = lookup(&#39;storm::webdav::params::tpc_verify_checksum&#39;, Boolean, undef, false)
+
+  $jvm_opts = lookup(&#39;storm::webdav::params::jvm_opts&#39;, String, undef, &#39;-Xms256m -Xmx512m -Djava.io.tmpdir=/var/lib/storm-webdav/work&#39;)
+
+  $authz_server_enable = lookup(&#39;storm::webdav::params::authz_server_enable&#39;, Boolean, undef, false)
+  $authz_server_issuer = lookup(&#39;storm::webdav::params::authz_server_issuer&#39;, String, undef, &#39;https://storm.example:8443&#39;)
+  $authz_server_max_token_lifetime_sec = lookup(&#39;storm::webdav::params::authz_server_max_token_lifetime_sec&#39;, Integer, undef, 43200)
+  $authz_server_secret = lookup(&#39;storm::webdav::params::authz_server_secret&#39;, String, undef, &#39;areasonablesecretlongerthan256bits&#39;)
+  $require_client_cert = lookup(&#39;storm::webdav::params::require_client_cert&#39;, Boolean, undef, false)
+
+  $use_conscrypt = lookup(&#39;storm::webdav::params::use_conscrypt&#39;, Boolean, undef, true)
+  $tpc_use_conscrypt = lookup(&#39;storm::webdav::params::tpc_use_conscrypt&#39;, Boolean, undef, true)
+  $enable_http2 = lookup(&#39;storm::webdav::params::enable_http2&#39;, Boolean, undef, true)
+
+  $debug = lookup(&#39;storm::webdav::params::debug&#39;, Boolean, undef, false)
+  $debug_port = lookup(&#39;storm::webdav::params::debug_port&#39;, Integer, undef, 1044)
+  $debug_suspend = lookup(&#39;storm::webdav::params::debug_suspend&#39;, Boolean, undef, false)
+}</pre>
+      </td>
+    </tr>
+  </table>
+</div>
+</div>
+
+      <div id="footer">
+     Generated by <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>.
+</div>
+
+    </div>
+  </body>
+</html>

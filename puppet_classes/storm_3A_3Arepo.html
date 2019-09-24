@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+  Puppet Class: storm::repo
+  
+    &mdash; Documentation by YARD 0.9.20
+  
+</title>
+
+  <link rel="stylesheet" href="../css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  pathId = "puppet_classes::storm::repo";
+  relpath = '../';
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div class="nav_wrap">
+      <iframe id="nav" src="../puppet_class_list.html?1"></iframe>
+      <div id="resizer"></div>
+    </div>
+
+    <div id="main" tabindex="-1">
+      <div id="header">
+        <div id="menu">
+  
+    <a href="../_index.html">Index (s)</a> &raquo;
+    <span class='title'><span class='object_link'>Puppet Classes</span></span>
+     &raquo; 
+    <span class="title">storm::repo</span>
+  
+</div>
+
+        <div id="search">
+  
+    <a class="full_list_link" id="puppet_class_list_link"
+        href="../puppet_class_list.html">
+
+        <svg width="24" height="24">
+          <rect x="0" y="4" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="12" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="20" width="24" height="4" rx="1" ry="1"></rect>
+        </svg>
+    </a>
+  
+</div>
+        <div class="clear"></div>
+      </div>
+
+      <div id="content"><h1>Puppet Class: storm::repo</h1>
+<div class="box_info">
+  
+  
+  <dl>
+    <dt>Defined in:</dt>
+    <dd>
+      manifests/repo.pp
+    </dd>
+  </dl>
+</div>
+
+  <h2>Summary</h2>
+  Choose which StoRM repository you want to intall and enable. Also a custom list of repository URL can be specified.
+
+<h2>Overview</h2>
+<div class="docstring">
+  <div class="discussion">
+    
+  </div>
+</div>
+
+
+<div class="tags">
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+        <p class="example_title"><div class='inline'>
+<p>Install all the repositories and enable only nightly repo as follow:</p>
+</div></p>
+      
+      <pre class="example code"><code>class { &#39;storm::repo&#39;:
+  enabled =&gt; [&#39;nightly&#39;],
+}</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>installed</span>
+      
+      
+        <span class='type'>(<tt>Array[Enum['stable', 'beta', 'nightly']]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>[&#39;stable&#39;, &#39;beta&#39;, &#39;nightly&#39;]</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The list of repositories that have to be installed. Allowed values are <code>stable</code>, <code>beta</code> and <code>nightly</code>. Optional.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>enabled</span>
+      
+      
+        <span class='type'>(<tt>Array[Enum['stable', 'beta', 'nightly']]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>[&#39;stable&#39;]</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The list of repositories that have to be enabled. Allowed values are <code>stable</code>, <code>beta</code> and <code>nightly</code>. Optional.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>customs</span>
+      
+      
+        <span class='type'>(<tt>Array[Struct[{ name =&gt; String, url =&gt; String }]]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>[]</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>A list of repository URLs that have to be installed and enabled. Optional.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+
+</div><div class="method_details_list">
+  <table class="source_code">
+    <tr>
+      <td>
+        <pre class="lines">
+
+
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57</pre>
+      </td>
+      <td>
+        <pre class="code"><span class="info file"># File 'manifests/repo.pp', line 16</span>
+
+class storm::repo (
+  Array[Enum[&#39;stable&#39;, &#39;beta&#39;, &#39;nightly&#39;]] $installed = [&#39;stable&#39;, &#39;beta&#39;, &#39;nightly&#39;],
+  Array[Enum[&#39;stable&#39;, &#39;beta&#39;, &#39;nightly&#39;]] $enabled = [&#39;stable&#39;],
+  Array[Struct[{ name =&gt; String, url =&gt; String }]] $customs = [],
+) {
+
+  $yum_config_manager = &#39;/bin/yum-config-manager&#39;
+
+  if ($installed.length &gt; 0) {
+
+    $el = $::operatingsystemmajrelease
+    $repo_dir = &#39;/etc/yum.repos.d&#39;
+
+    $installed.each | $name | {
+
+      $repo_url = &quot;https://repo.cloud.cnaf.infn.it/repository/storm/${name}/storm-${name}-centos${el}.repo&quot;
+      $repo_name = &quot;storm-${name}-centos${el}&quot;
+
+      exec {&quot;download-${name}-repo-el${el}&quot;:
+        command =&gt; &quot;${yum_config_manager} --add-repo=${repo_url}&quot;,
+        creates =&gt; &quot;${repo_dir}/${repo_name}.repo&quot;,
+      }
+      if $name in $enabled {
+        exec {&quot;enable-${name}-repo-el${el}&quot;:
+          command =&gt; &quot;${yum_config_manager} --enable ${repo_name}&quot;,
+        }
+      } else {
+        exec {&quot;disable-${name}-repo-el${el}&quot;:
+          command =&gt; &quot;${yum_config_manager} --disable ${repo_name}&quot;,
+        }
+      }
+    }
+  }
+
+  $customs.each | $repo | {
+    $name = $repo[name]
+    $url = $repo[url]
+    exec {&quot;download-custom-${name}-repo&quot;:
+      command =&gt; &quot;${yum_config_manager} --add-repo=${url}&quot;,
+    }
+  }
+}</pre>
+      </td>
+    </tr>
+  </table>
+</div>
+</div>
+
+      <div id="footer">
+     Generated by <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>.
+</div>
+
+    </div>
+  </body>
+</html>

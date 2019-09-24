@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+  Puppet Class: storm::webdav
+  
+    &mdash; Documentation by YARD 0.9.20
+  
+</title>
+
+  <link rel="stylesheet" href="../css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  pathId = "puppet_classes::storm::webdav";
+  relpath = '../';
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div class="nav_wrap">
+      <iframe id="nav" src="../puppet_class_list.html?1"></iframe>
+      <div id="resizer"></div>
+    </div>
+
+    <div id="main" tabindex="-1">
+      <div id="header">
+        <div id="menu">
+  
+    <a href="../_index.html">Index (s)</a> &raquo;
+    <span class='title'><span class='object_link'>Puppet Classes</span></span>
+     &raquo; 
+    <span class="title">storm::webdav</span>
+  
+</div>
+
+        <div id="search">
+  
+    <a class="full_list_link" id="puppet_class_list_link"
+        href="../puppet_class_list.html">
+
+        <svg width="24" height="24">
+          <rect x="0" y="4" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="12" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="20" width="24" height="4" rx="1" ry="1"></rect>
+        </svg>
+    </a>
+  
+</div>
+        <div class="clear"></div>
+      </div>
+
+      <div id="content"><h1>Puppet Class: storm::webdav</h1>
+<div class="box_info">
+  
+  <dl>
+    <dt>Inherits:</dt>
+    <dd><span class='object_link'><a href="storm_3A_3Awebdav_3A_3Aparams.html" title="puppet_classes::storm::webdav::params (puppet_class)">storm::webdav::params</a></span></dd>
+  </dl>
+  
+  
+  <dl>
+    <dt>Defined in:</dt>
+    <dd>
+      manifests/webdav.pp
+    </dd>
+  </dl>
+</div>
+
+  <h2>Summary</h2>
+  StoRM WebDAV puppet module
+
+<h2>Overview</h2>
+<div class="docstring">
+  <div class="discussion">
+    
+<h2 id="label-Parameters">Parameters</h2>
+
+<p>The main StoRM WebDAV configuration parameters are:</p>
+<ul><li>
+<p><code>user_name</code>: the Unix user that runs storm-webdav service;</p>
+</li><li>
+<p><code>storage_areas</code>: the list of Storm::Webdav::StorageArea elements (more info below);</p>
+</li><li>
+<p><code>oauth_issuers</code>: the list of Storm::Webdav::OAuthIssuer elements that means the supported OAuth providers;</p>
+</li><li>
+<p><code>hostnames</code>: the list of hostname and aliases supported for Third-Party-Copy;</p>
+</li><li>
+<p><code>http_port</code> and <code>https_port</code>: the service ports;</p>
+</li></ul>
+
+<h2 id="label-The+Storm-3A-3AWebdav-3A-3AStorageArea+type">The Storm::Webdav::StorageArea type</h2>
+<ul><li>
+<p><code>name</code>: The name of the storage area. Required.</p>
+</li><li>
+<p><code>root_path</code>: The path of the storage area root directory. Required.</p>
+</li><li>
+<p><code>access_points</code>: A list of logic path used to access storage area&#39;s root. Required.</p>
+</li><li>
+<p><code>vos</code>: A list of one or more Virtual Organization names of the users allowed to read/write into the storage area. Required.</p>
+</li><li>
+<p><code>orgs</code>: A list of one or more Organizations. Optional.</p>
+</li><li>
+<p><code>authenticated_read_enabled</code>: A boolean value used to enable the read of the storage area content to authenticated users. Required.</p>
+</li><li>
+<p><code>anonymous_read_enabled</code>: A boolean value used to enable anonymous read access to storage area content. Required.</p>
+</li><li>
+<p><code>vo_map_enabled</code>: A boolean value used to enable the use of the VO gridmap files. Required.</p>
+</li><li>
+<p><code>vo_map_grants_write_access</code>: A boolean value used to grant write access to the VO users read from grifmap file. Optional,</p>
+</li></ul>
+
+<h2 id="label-The+Storm-3A-3AWebdav-3A-3AOAuthIssuer+type">The Storm::Webdav::OAuthIssuer type</h2>
+<ul><li>
+<p><code>name</code>: the organization name. Rerquired.</p>
+</li><li>
+<p><code>issuer</code>: the issuer URL. Required.</p>
+</li></ul>
+
+  </div>
+</div>
+
+
+<div class="tags">
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+        <p class="example_title"><div class='inline'>
+<p>Example of usage</p>
+</div></p>
+      
+      <pre class="example code"><code>class { &#39;storm::webdav&#39;:
+  storage_root_dir =&gt; &#39;/storage&#39;,
+  storage_areas =&gt; [
+    {
+      name                       =&gt; &#39;test.vo&#39;,
+      root_path                  =&gt; &#39;/storage/test.vo&#39;,
+      access_points              =&gt; [&#39;/test.vo&#39;],
+      vos                        =&gt; [&#39;test.vo&#39;, &#39;test.vo.2&#39;],
+      authenticated_read_enabled =&gt; false,
+      anonymous_read_enabled     =&gt; false,
+      vo_map_enabled             =&gt; false,
+    },
+    {
+      name                       =&gt; &#39;test.vo.2&#39;,
+      root_path                  =&gt; &#39;/storage/test.vo.2&#39;,
+      access_points              =&gt; [&#39;/test.vo.2&#39;],
+      vos                        =&gt; [&#39;test.vo.2&#39;],
+      authenticated_read_enabled =&gt; false,
+      anonymous_read_enabled     =&gt; false,
+      vo_map_enabled             =&gt; false,
+    },
+  ],
+  oauth_issuers =&gt; [
+    {
+      name   =&gt; &#39;indigo-dc&#39;,
+      issuer =&gt; &#39;https://iam-test.indigo-datacloud.eu/&#39;,
+    },
+  ],
+  hostnames =&gt; [&#39;localhost&#39;, &#39;alias.for.localhost&#39;],
+}</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>user_name</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::webdav::params::user_name</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Unix user and group name used to run StoRM services.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>user_uid</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::webdav::params::user_uid</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>A custom user id for <code>user_name</code></p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>user_gid</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::webdav::params::user_gid</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>A custom group id for <code>user_name</code></p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>storage_root_dir</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::webdav::params::storage_root_dir</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Storage areas root directory path.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>log_dir</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::webdav::params::log_dir</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>storage_areas</span>
+      
+      
+        <span class='type'>(<tt>Array[Storm::Webdav::StorageArea]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::webdav::params::storage_areas</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>List of storage area&#39;s configuration.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>config_dir</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::webdav::params::config_dir</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>StoRM WebDAV service configuration directory</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>hostcert_dir</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::webdav::params::hostcert_dir</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>oauth_issuers</span>
+      
+      
+        <span class='type'>(<tt>Array[Storm::Webdav::OAuthIssuer]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::webdav::params::oauth_issuers</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>hostnames</span>
+      
+      
+        <span class='type'>(<tt>Array[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::webdav::params::hostnames</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>http_port</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::webdav::params::http_port</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>https_port</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::webdav::params::https_port</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>trust_anchors_dir</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::webdav::params::trust_anchors_dir</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>trust_anchors_refresh_interval</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::webdav::params::trust_anchors_refresh_interval</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>max_concurrent_connections</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::webdav::params::max_concurrent_connections</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>max_queue_size</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::webdav::params::max_queue_size</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>connector_max_idle_time</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::webdav::params::connector_max_idle_time</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>vo_map_files_enable</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::webdav::params::vo_map_files_enable</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>vo_map_files_config_dir</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::webdav::params::vo_map_files_config_dir</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>vo_map_files_refresh_interval</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::webdav::params::vo_map_files_refresh_interval</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>tpc_max_connections</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::webdav::params::tpc_max_connections</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>tpc_verify_checksum</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::webdav::params::tpc_verify_checksum</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>jvm_opts</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::webdav::params::jvm_opts</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>authz_server_enable</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::webdav::params::authz_server_enable</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>authz_server_issuer</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::webdav::params::authz_server_issuer</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>authz_server_max_token_lifetime_sec</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::webdav::params::authz_server_max_token_lifetime_sec</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>authz_server_secret</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::webdav::params::authz_server_secret</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>require_client_cert</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::webdav::params::require_client_cert</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>use_conscrypt</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::webdav::params::use_conscrypt</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>tpc_use_conscrypt</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::webdav::params::tpc_use_conscrypt</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>enable_http2</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::webdav::params::enable_http2</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>debug</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::webdav::params::debug</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>debug_port</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::webdav::params::debug_port</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>debug_suspend</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::webdav::params::debug_suspend</tt>)</em>
+      
+      
+    </li>
+  
+</ul>
+
+
+</div><div class="method_details_list">
+  <table class="source_code">
+    <tr>
+      <td>
+        <pre class="lines">
+
+
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198</pre>
+      </td>
+      <td>
+        <pre class="code"><span class="info file"># File 'manifests/webdav.pp', line 140</span>
+
+class storm::webdav (
+
+  String $user_name = $storm::webdav::params::user_name,
+  Integer $user_uid = $storm::webdav::params::user_uid,
+  Integer $user_gid = $storm::webdav::params::user_gid,
+
+  String $storage_root_dir = $storm::webdav::params::storage_root_dir,
+  String $log_dir = $storm::webdav::params::log_dir,
+
+  Array[Storm::Webdav::StorageArea] $storage_areas = $storm::webdav::params::storage_areas,
+
+  String $config_dir = $storm::webdav::params::config_dir,
+  String $hostcert_dir = $storm::webdav::params::hostcert_dir,
+  Array[Storm::Webdav::OAuthIssuer] $oauth_issuers = $storm::webdav::params::oauth_issuers,
+  Array[String] $hostnames = $storm::webdav::params::hostnames,
+
+  Integer $http_port = $storm::webdav::params::http_port,
+  Integer $https_port = $storm::webdav::params::https_port,
+
+  String $trust_anchors_dir = $storm::webdav::params::trust_anchors_dir,
+  Integer $trust_anchors_refresh_interval = $storm::webdav::params::trust_anchors_refresh_interval,
+
+  Integer $max_concurrent_connections = $storm::webdav::params::max_concurrent_connections,
+  Integer $max_queue_size = $storm::webdav::params::max_queue_size,
+  Integer $connector_max_idle_time = $storm::webdav::params::connector_max_idle_time,
+
+  Boolean $vo_map_files_enable = $storm::webdav::params::vo_map_files_enable,
+  String $vo_map_files_config_dir = $storm::webdav::params::vo_map_files_config_dir,
+  Integer $vo_map_files_refresh_interval = $storm::webdav::params::vo_map_files_refresh_interval,
+
+  Integer $tpc_max_connections = $storm::webdav::params::tpc_max_connections,
+  Boolean $tpc_verify_checksum = $storm::webdav::params::tpc_verify_checksum,
+
+  String $jvm_opts = $storm::webdav::params::jvm_opts,
+
+  Boolean $authz_server_enable = $storm::webdav::params::authz_server_enable,
+  String $authz_server_issuer = $storm::webdav::params::authz_server_issuer,
+  Integer $authz_server_max_token_lifetime_sec = $storm::webdav::params::authz_server_max_token_lifetime_sec,
+  String $authz_server_secret = $storm::webdav::params::authz_server_secret,
+  Boolean $require_client_cert = $storm::webdav::params::require_client_cert,
+
+  Boolean $use_conscrypt = $storm::webdav::params::use_conscrypt,
+  Boolean $tpc_use_conscrypt = $storm::webdav::params::tpc_use_conscrypt,
+  Boolean $enable_http2 = $storm::webdav::params::enable_http2,
+
+  Boolean $debug = $storm::webdav::params::debug,
+  Integer $debug_port = $storm::webdav::params::debug_port,
+  Boolean $debug_suspend = $storm::webdav::params::debug_suspend,
+
+) inherits storm::webdav::params {
+
+  contain storm::webdav::install
+  contain storm::webdav::config
+  contain storm::webdav::service
+
+  Class[&#39;storm::webdav::install&#39;]
+  -&gt; Class[&#39;storm::webdav::config&#39;]
+  -&gt; Class[&#39;storm::webdav::service&#39;]
+}</pre>
+      </td>
+    </tr>
+  </table>
+</div>
+</div>
+
+      <div id="footer">
+     Generated by <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>.
+</div>
+
+    </div>
+  </body>
+</html>
