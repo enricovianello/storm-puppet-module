@@ -83,12 +83,39 @@
 <div class="docstring">
   <div class="discussion">
     
+<h2 id="label-Parameters">Parameters</h2>
+
+<p>The StoRM GridFTP configuration parameters are:</p>
+<ul><li>
+<p><code>port</code>: the port used by GridFTP server service;</p>
+</li><li>
+<p><code>port_range</code>: the range of ports used by transfer sockets; format is &#39;MIN,MAX&#39;;</p>
+</li><li>
+<p><code>connections_max</code>: the number of max allowed connections to server;</p>
+</li></ul>
+
   </div>
 </div>
 
 
 <div class="tags">
-  <p class="tag_title">Parameters:</p>
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+        <p class="example_title"><div class='inline'>
+<p>Example of usage</p>
+</div></p>
+      
+      <pre class="example code"><code>class { &#39;storm::gridftp&#39;:
+  port            =&gt; 2811,
+  port_range      =&gt; &#39;20000,25000&#39;,
+  connections_max =&gt; 2000,
+}</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
 <ul class="param">
   
     <li>
@@ -101,6 +128,11 @@
       
         <em class="default">(defaults to: <tt>$storm::gridftp::params::port</tt>)</em>
       
+      
+        &mdash;
+        <div class='inline'>
+<p>The port used by GridFTP server service.</p>
+</div>
       
     </li>
   
@@ -115,6 +147,11 @@
         <em class="default">(defaults to: <tt>$storm::gridftp::params::port_range</tt>)</em>
       
       
+        &mdash;
+        <div class='inline'>
+<p>The range of ports used by transfer sockets; format is &#39;MIN,MAX&#39;.</p>
+</div>
+      
     </li>
   
     <li>
@@ -128,6 +165,11 @@
         <em class="default">(defaults to: <tt>$storm::gridftp::params::connections_max</tt>)</em>
       
       
+        &mdash;
+        <div class='inline'>
+<p>The number of max allowed connections to server.</p>
+</div>
+      
     </li>
   
 </ul>
@@ -140,25 +182,25 @@
         <pre class="lines">
 
 
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17</pre>
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/gridftp.pp', line 2</span>
+        <pre class="code"><span class="info file"># File 'manifests/gridftp.pp', line 28</span>
 
 class storm::gridftp (
 

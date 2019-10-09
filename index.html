@@ -73,7 +73,7 @@
 
 <h2 id="label-Description">Description</h2>
 
-<p>StoRM Puppet module can be used to configure StoRM services. At the moment, the supported services are:</p>
+<p>StoRM Puppet module allows administrators to easily configure StoRM services. Currently, the supported services are:</p>
 <ul><li>
 <p>StoRM WebDAV</p>
 </li><li>
@@ -82,20 +82,36 @@
 
 <h2 id="label-Setup">Setup</h2>
 
-<p>Build module as follow:</p>
+<p>Build and install module as follow:</p>
 
-<pre class="code ruby"><code class="ruby">cd storm
-puppet module build
-</code></pre>
-
-<p>Then, install:</p>
-
-<pre class="code ruby"><code class="ruby">puppet module install ./pkg/mwdevel-storm-0.1.0.tar.gz
+<pre class="code ruby"><code class="ruby">puppet module build
+puppet module install ./pkg/mwdevel-storm-0.1.0.tar.gz
 </code></pre>
 
 <h2 id="label-Usage">Usage</h2>
 
-<p>Check <a href="examples/init.pp">this</a> example and refer to <a href="REFERENCE.md">REFERENCE</a> or <a href="http://enricovianello.github.io/storm-puppet-module">documentation</a> folder to get all the class parameters.</p>
+<p>Check <a href="https://github.com/enricovianello/storm-puppet-module/blob/master/examples/init.pp">this</a> example of {manifest{manifest.pp} or Documentation section.</p>
+
+<h2 id="label-Documentation">Documentation</h2>
+
+<p>You can find all the info about module classes and parameters at:</p>
+<ul><li>
+<p><a href="https://github.com/enricovianello/storm-puppet-module/blob/master/REFERENCE.md">REFERENCE.md</a></p>
+</li><li>
+<p><a href="https://enricovianello.github.io/storm-puppet-module">StoRM Puppet module gh-pages site doc</a></p>
+</li></ul>
+
+<h3 id="label-How+to+update+doc">How to update doc</h3>
+
+<p>Update {REFERENCE{REFERENCE.md} file as follow:</p>
+
+<pre class="code ruby"><code class="ruby">puppet strings generate --format markdown
+</code></pre>
+
+<p>Update {gh-pages} branch as follow:</p>
+
+<pre class="code ruby"><code class="ruby">bundle exec rake strings:gh_pages:update
+</code></pre>
 
 <h2 id="label-Limitations">Limitations</h2>
 
