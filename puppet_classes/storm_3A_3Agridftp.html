@@ -93,39 +93,26 @@
   
     <li>
       
-        <span class='name'>gridftp_with_dsi</span>
+        <span class='name'>port</span>
       
       
-        <span class='type'>(<tt>Enum['yes', 'no']</tt>)</span>
+        <span class='type'>(<tt>Integer</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$storm::gridftp::params::gridftp_with_dsi</tt>)</em>
+        <em class="default">(defaults to: <tt>$storm::gridftp::params::port</tt>)</em>
       
       
     </li>
   
     <li>
       
-        <span class='name'>tcp_port_range_min</span>
+        <span class='name'>port_range</span>
       
       
-        <span class='type'>(<tt>Integer</tt>)</span>
+        <span class='type'>(<tt>String</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$storm::gridftp::params::tcp_port_range_min</tt>)</em>
-      
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>tcp_port_range_max</span>
-      
-      
-        <span class='type'>(<tt>Integer</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>$storm::gridftp::params::tcp_port_range_max</tt>)</em>
+        <em class="default">(defaults to: <tt>$storm::gridftp::params::port_range</tt>)</em>
       
       
     </li>
@@ -168,19 +155,15 @@
 14
 15
 16
-17
-18
-19</pre>
+17</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/gridftp.pp', line 2</span>
 
 class storm::gridftp (
 
-  Enum[&#39;yes&#39;, &#39;no&#39;] $gridftp_with_dsi = $storm::gridftp::params::gridftp_with_dsi,
-  Integer $tcp_port_range_min = $storm::gridftp::params::tcp_port_range_min,
-  Integer $tcp_port_range_max = $storm::gridftp::params::tcp_port_range_max,
-
+  Integer $port = $storm::gridftp::params::port,
+  String $port_range = $storm::gridftp::params::port_range,
   Integer $connections_max = $storm::gridftp::params::connections_max,
 
 ) inherits storm::gridftp::params {

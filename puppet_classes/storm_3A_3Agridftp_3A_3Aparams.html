@@ -112,10 +112,7 @@
 6
 7
 8
-9
-10
-11
-12</pre>
+9</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/gridftp/params.pp', line 3</span>
@@ -123,11 +120,8 @@
 class storm::gridftp::params (
 ) inherits storm::params {
 
-  $gridftp_with_dsi = lookup(&#39;storm::grdiftp::params::gridftp_with_dsi&#39;, Enum[&#39;yes&#39;, &#39;no&#39;], undef, &#39;yes&#39;)
-
-  $tcp_port_range_min = lookup(&#39;storm::gridftp::params::tcp_port_range_min&#39;, Integer, undef, 20000)
-  $tcp_port_range_max = lookup(&#39;storm::gridftp::params::tcp_port_range_max&#39;, Integer, undef, 25000)
-
+  $port = lookup(&#39;storm::gridftp::params::port&#39;, Integer, undef, 2811)
+  $port_range = lookup(&#39;storm::gridftp::params::port_range&#39;, String, undef, &#39;20000,25000&#39;)
   $connections_max = lookup(&#39;storm::gridftp::params::connections_max&#39;, Integer, undef, 2000)
 }</pre>
       </td>
