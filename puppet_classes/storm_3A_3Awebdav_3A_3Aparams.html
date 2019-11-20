@@ -170,45 +170,45 @@ class storm::webdav::params (
   $storage_root_dir = $storm::params::storage_root_dir
   $log_dir = $storm::params::log_dir
 
-  $storage_areas = lookup(&#39;storm::webdav::params::storage_areas&#39;, Array[Storm::Webdav::StorageArea], undef, [])
+  $storage_areas = lookup(&#39;storm::webdav::storage_areas&#39;, Array[Storm::Webdav::StorageArea], undef, [])
 
-  $config_dir = lookup(&#39;storm::webdav::params::config_dir&#39;, String, undef, &#39;/etc/storm/webdav&#39;)
-  $hostcert_dir = lookup(&#39;storm::webdav::params::hostcert_dir&#39;, String, undef, &#39;/etc/grid-security/storm-webdav&#39;)
-  $oauth_issuers = lookup(&#39;storm::webdav::params::oauth_issuers&#39;, Array[Storm::Webdav::OAuthIssuer], undef, [])
-  $hostnames = lookup(&#39;storm::webdav::params::hostnames&#39;, Array[String], undef, [])
+  $config_dir = lookup(&#39;storm::webdav::config_dir&#39;, String, undef, &#39;/etc/storm/webdav&#39;)
+  $hostcert_dir = lookup(&#39;storm::webdav::hostcert_dir&#39;, String, undef, &#39;/etc/grid-security/storm-webdav&#39;)
+  $oauth_issuers = lookup(&#39;storm::webdav::oauth_issuers&#39;, Array[Storm::Webdav::OAuthIssuer], undef, [])
+  $hostnames = lookup(&#39;storm::webdav::hostnames&#39;, Array[String], undef, [])
 
-  $http_port = lookup(&#39;storm::webdav::params::http_port&#39;, Integer, undef, 8085)
-  $https_port = lookup(&#39;storm::webdav::params::https_port&#39;, Integer, undef, 8443)
+  $http_port = lookup(&#39;storm::webdav::http_port&#39;, Integer, undef, 8085)
+  $https_port = lookup(&#39;storm::webdav::https_port&#39;, Integer, undef, 8443)
 
-  $trust_anchors_dir = lookup(&#39;storm::webdav::params::trust_anchors_dir&#39;, String, undef, &#39;/etc/grid-security/certificates&#39;)
-  $trust_anchors_refresh_interval = lookup(&#39;storm::webdav::params::trust_anchors_refresh_interval&#39;, Integer, undef, 86400)
+  $trust_anchors_dir = lookup(&#39;storm::webdav::trust_anchors_dir&#39;, String, undef, &#39;/etc/grid-security/certificates&#39;)
+  $trust_anchors_refresh_interval = lookup(&#39;storm::webdav::trust_anchors_refresh_interval&#39;, Integer, undef, 86400)
 
-  $max_concurrent_connections = lookup(&#39;storm::webdav::params::max_concurrent_connections&#39;, Integer, undef, 300)
-  $max_queue_size = lookup(&#39;storm::webdav::params::max_queue_size&#39;, Integer, undef, 900)
-  $connector_max_idle_time = lookup(&#39;storm::webdav::params::connector_max_idle_time&#39;, Integer, undef, 30000)
+  $max_concurrent_connections = lookup(&#39;storm::webdav::max_concurrent_connections&#39;, Integer, undef, 300)
+  $max_queue_size = lookup(&#39;storm::webdav::max_queue_size&#39;, Integer, undef, 900)
+  $connector_max_idle_time = lookup(&#39;storm::webdav::connector_max_idle_time&#39;, Integer, undef, 30000)
 
-  $vo_map_files_enable = lookup(&#39;storm::webdav::params::vo_map_files_enable&#39;, Boolean, undef, false)
-  $vo_map_files_config_dir = lookup(&#39;storm::webdav::params::vo_map_files_config_dir&#39;, String, undef, &#39;/etc/storm/webdav/vo-mapfiles.d&#39;)
-  $vo_map_files_refresh_interval = lookup(&#39;storm::webdav::params::vo_map_files_refresh_interval&#39;, Integer, undef, 21600)
+  $vo_map_files_enable = lookup(&#39;storm::webdav::vo_map_files_enable&#39;, Boolean, undef, false)
+  $vo_map_files_config_dir = lookup(&#39;storm::webdav::vo_map_files_config_dir&#39;, String, undef, &#39;/etc/storm/webdav/vo-mapfiles.d&#39;)
+  $vo_map_files_refresh_interval = lookup(&#39;storm::webdav::vo_map_files_refresh_interval&#39;, Integer, undef, 21600)
 
-  $tpc_max_connections = lookup(&#39;storm::webdav::params::tpc_max_connections&#39;, Integer, undef, 50)
-  $tpc_verify_checksum = lookup(&#39;storm::webdav::params::tpc_verify_checksum&#39;, Boolean, undef, false)
+  $tpc_max_connections = lookup(&#39;storm::webdav::tpc_max_connections&#39;, Integer, undef, 50)
+  $tpc_verify_checksum = lookup(&#39;storm::webdav::tpc_verify_checksum&#39;, Boolean, undef, false)
 
-  $jvm_opts = lookup(&#39;storm::webdav::params::jvm_opts&#39;, String, undef, &#39;-Xms256m -Xmx512m -Djava.io.tmpdir=/var/lib/storm-webdav/work&#39;)
+  $jvm_opts = lookup(&#39;storm::webdav::jvm_opts&#39;, String, undef, &#39;-Xms256m -Xmx512m -Djava.io.tmpdir=/var/lib/storm-webdav/work&#39;)
 
-  $authz_server_enable = lookup(&#39;storm::webdav::params::authz_server_enable&#39;, Boolean, undef, false)
-  $authz_server_issuer = lookup(&#39;storm::webdav::params::authz_server_issuer&#39;, String, undef, &#39;https://storm.example:8443&#39;)
-  $authz_server_max_token_lifetime_sec = lookup(&#39;storm::webdav::params::authz_server_max_token_lifetime_sec&#39;, Integer, undef, 43200)
-  $authz_server_secret = lookup(&#39;storm::webdav::params::authz_server_secret&#39;, String, undef, &#39;areasonablesecretlongerthan256bits&#39;)
-  $require_client_cert = lookup(&#39;storm::webdav::params::require_client_cert&#39;, Boolean, undef, false)
+  $authz_server_enable = lookup(&#39;storm::webdav::authz_server_enable&#39;, Boolean, undef, false)
+  $authz_server_issuer = lookup(&#39;storm::webdav::authz_server_issuer&#39;, String, undef, &#39;https://storm.example:8443&#39;)
+  $authz_server_max_token_lifetime_sec = lookup(&#39;storm::webdav::authz_server_max_token_lifetime_sec&#39;, Integer, undef, 43200)
+  $authz_server_secret = lookup(&#39;storm::webdav::authz_server_secret&#39;, String, undef, &#39;areasonablesecretlongerthan256bits&#39;)
+  $require_client_cert = lookup(&#39;storm::webdav::require_client_cert&#39;, Boolean, undef, false)
 
-  $use_conscrypt = lookup(&#39;storm::webdav::params::use_conscrypt&#39;, Boolean, undef, true)
-  $tpc_use_conscrypt = lookup(&#39;storm::webdav::params::tpc_use_conscrypt&#39;, Boolean, undef, true)
-  $enable_http2 = lookup(&#39;storm::webdav::params::enable_http2&#39;, Boolean, undef, true)
+  $use_conscrypt = lookup(&#39;storm::webdav::use_conscrypt&#39;, Boolean, undef, true)
+  $tpc_use_conscrypt = lookup(&#39;storm::webdav::tpc_use_conscrypt&#39;, Boolean, undef, true)
+  $enable_http2 = lookup(&#39;storm::webdav::enable_http2&#39;, Boolean, undef, true)
 
-  $debug = lookup(&#39;storm::webdav::params::debug&#39;, Boolean, undef, false)
-  $debug_port = lookup(&#39;storm::webdav::params::debug_port&#39;, Integer, undef, 1044)
-  $debug_suspend = lookup(&#39;storm::webdav::params::debug_suspend&#39;, Boolean, undef, false)
+  $debug = lookup(&#39;storm::webdav::debug&#39;, Boolean, undef, false)
+  $debug_port = lookup(&#39;storm::webdav::debug_port&#39;, Integer, undef, 1044)
+  $debug_suspend = lookup(&#39;storm::webdav::debug_suspend&#39;, Boolean, undef, false)
 }</pre>
       </td>
     </tr>

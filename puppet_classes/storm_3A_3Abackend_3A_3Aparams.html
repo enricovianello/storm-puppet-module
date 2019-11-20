@@ -4,7 +4,7 @@
     <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>
-  Puppet Class: storm::gridftp::params
+  Puppet Class: storm::backend::params
   
     &mdash; Documentation by YARD 0.9.20
   
@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
 
 <script type="text/javascript" charset="utf-8">
-  pathId = "puppet_classes::storm::gridftp::params";
+  pathId = "puppet_classes::storm::backend::params";
   relpath = '../';
 </script>
 
@@ -39,7 +39,7 @@
     <a href="../_index.html">Index (s)</a> &raquo;
     <span class='title'><span class='object_link'>Puppet Classes</span></span>
      &raquo; 
-    <span class="title">storm::gridftp::params</span>
+    <span class="title">storm::backend::params</span>
   
 </div>
 
@@ -59,7 +59,7 @@
         <div class="clear"></div>
       </div>
 
-      <div id="content"><h1>Puppet Class: storm::gridftp::params</h1>
+      <div id="content"><h1>Puppet Class: storm::backend::params</h1>
 <div class="box_info">
   
   <dl>
@@ -72,7 +72,7 @@
     <dt>Inherited by:</dt>
     <dd>
       
-      <span class='object_link'><a href="storm_3A_3Agridftp.html" title="puppet_classes::storm::gridftp (puppet_class)">storm::gridftp</a></span><br/>
+      <span class='object_link'><a href="storm_3A_3Abackend.html" title="puppet_classes::storm::backend (puppet_class)">storm::backend</a></span><br/>
       
     </dd>
   </dl>
@@ -80,13 +80,13 @@
   <dl>
     <dt>Defined in:</dt>
     <dd>
-      manifests/gridftp/params.pp
+      manifests/backend/params.pp
     </dd>
   </dl>
 </div>
 
   <h2>Summary</h2>
-  StoRM GridFTP params class
+  StoRM Frontend params class
 
 <h2>Overview</h2>
 <div class="docstring">
@@ -112,17 +112,39 @@
 6
 7
 8
-9</pre>
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/gridftp/params.pp', line 3</span>
+        <pre class="code"><span class="info file"># File 'manifests/backend/params.pp', line 3</span>
 
-class storm::gridftp::params (
+class storm::backend::params (
 ) inherits storm::params {
 
-  $port = lookup(&#39;storm::gridftp::port&#39;, Integer, undef, 2811)
-  $port_range = lookup(&#39;storm::gridftp::port_range&#39;, String, undef, &#39;20000,25000&#39;)
-  $connections_max = lookup(&#39;storm::gridftp::connections_max&#39;, Integer, undef, 2000)
+  $user_name = $storm::params::user_name
+
+  $db_host = $storm::params::db_host
+  $db_user = $storm::params::db_user
+  $db_passwd = $storm::params::db_passwd
+
+  $config_dir = lookup(&#39;storm::backend::config_dir&#39;, String, undef, &#39;/etc/storm/backend-server&#39;)
+
+  $rfio = lookup(&#39;storm::backend::rfio&#39;, Storm::Backend::Rfio, undef, {})
+  $xroot = lookup(&#39;storm::backend::xroot&#39;, Storm::Backend::Xroot, undef, {})
+  $gsiftp = lookup(&#39;storm::backend::gsiftp&#39;, Storm::Backend::Gsiftp, undef, {})
+  $webdav = lookup(&#39;storm::backend::webdav&#39;, Storm::Backend::Webdav, undef, {})
+
+  $storage_areas = lookup(&#39;storm::backend::storage_areas&#39;, Array[Storm::Backend::StorageArea], undef, [])
 }</pre>
       </td>
     </tr>

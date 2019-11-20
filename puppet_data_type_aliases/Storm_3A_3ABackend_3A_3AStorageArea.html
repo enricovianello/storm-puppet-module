@@ -4,7 +4,7 @@
     <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>
-  Data Type: Storm::Webdav::StorageArea
+  Data Type: Storm::Backend::StorageArea
   
     &mdash; Documentation by YARD 0.9.20
   
@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
 
 <script type="text/javascript" charset="utf-8">
-  pathId = "puppet_data_type_aliases::Storm::Webdav::StorageArea";
+  pathId = "puppet_data_type_aliases::Storm::Backend::StorageArea";
   relpath = '../';
 </script>
 
@@ -39,7 +39,7 @@
     <a href="../_index.html">Index (S)</a> &raquo;
     <span class='title'><span class='object_link'>Puppet Data Type Aliases</span></span>
      &raquo; 
-    <span class="title">Storm::Webdav::StorageArea</span>
+    <span class="title">Storm::Backend::StorageArea</span>
   
 </div>
 
@@ -59,18 +59,18 @@
         <div class="clear"></div>
       </div>
 
-      <div id="content"><h1>Puppet Data Type Alias: Storm::Webdav::StorageArea</h1>
+      <div id="content"><h1>Puppet Data Type Alias: Storm::Backend::StorageArea</h1>
 <div class="box_info">
   <dl>
     <dt>Defined in:</dt>
     <dd>
-      types/webdav/storagearea.pp
+      types/backend/storagearea.pp
     </dd>
   </dl>
 </div>
 
   <h2>Summary</h2>
-  The storage area type for storm-webdav
+  The storage area type for storm-backend-server
 
 <h2>Overview</h2>
 <div class="docstring">
@@ -84,15 +84,26 @@
   <div class="docstring">
     <div class="discussion">
       <pre class="code"><span class="info">Struct[{
-  name                       => String,
-  root_path                  => String,
-  access_points              => Array[String],
-  vos                        => Array[String],
-  orgs                       => Optional[Array[String]],
-  authenticated_read_enabled => Optional[Boolean],
-  anonymous_read_enabled     => Optional[Boolean],
-  vo_map_enabled             => Optional[Boolean],
-  vo_map_grants_write_access => Optional[Boolean],
+  name                => String,
+  root_path           => String,
+  access_points       => Array[String],
+  vos                 => Array[String],
+  fs                  => Storm::Backend::FileSystem,
+  space_token         => Optional[String],
+  authz               => Optional[String],
+  storage_class       => Optional[Enum['T0D1', 'T1D0', 'T1D1']],
+  online_size         => Integer,
+  nearline_size       => Optional[Integer],
+  acl_mode            => Optional[Enum['AoT', 'JiT']],
+  default_acl_list    => Optional[Array[Storm::Backend::Acl]],
+  quota               => Optional[Storm::Backend::Quota],
+  dn_regex            => Optional[String],
+  anonymous_http_read => Optional[Boolean],
+  transfer_protocols  => Array[Enum['file','gsiftp','rfio','root','http','https']],
+  rfio                => Optional[Storm::Backend::Rfio],
+  xroot               => Optional[Storm::Backend::Xroot],
+  gsiftp              => Optional[Storm::Backend::GsiFtp],
+  webdav              => Optional[Storm::Backend::Webdav],
 }]</span></pre>
     </div>
   </div>
@@ -113,7 +124,7 @@
 </pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'types/webdav/storagearea.pp', line 2</span>
+        <pre class="code"><span class="info file"># File 'types/backend/storagearea.pp', line 2</span>
 
 </pre>
       </td>

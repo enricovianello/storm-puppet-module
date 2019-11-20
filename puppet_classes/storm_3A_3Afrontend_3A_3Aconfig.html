@@ -4,7 +4,7 @@
     <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>
-  Puppet Class: storm::gridftp::config
+  Puppet Class: storm::frontend::config
   
     &mdash; Documentation by YARD 0.9.20
   
@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
 
 <script type="text/javascript" charset="utf-8">
-  pathId = "puppet_classes::storm::gridftp::config";
+  pathId = "puppet_classes::storm::frontend::config";
   relpath = '../';
 </script>
 
@@ -39,7 +39,7 @@
     <a href="../_index.html">Index (s)</a> &raquo;
     <span class='title'><span class='object_link'>Puppet Classes</span></span>
      &raquo; 
-    <span class="title">storm::gridftp::config</span>
+    <span class="title">storm::frontend::config</span>
   
 </div>
 
@@ -59,20 +59,20 @@
         <div class="clear"></div>
       </div>
 
-      <div id="content"><h1>Puppet Class: storm::gridftp::config</h1>
+      <div id="content"><h1>Puppet Class: storm::frontend::config</h1>
 <div class="box_info">
   
   
   <dl>
     <dt>Defined in:</dt>
     <dd>
-      manifests/gridftp/config.pp
+      manifests/frontend/config.pp
     </dd>
   </dl>
 </div>
 
   <h2>Summary</h2>
-  StoRM GridFTP config class
+  StoRM Frontend config class
 
 <h2>Overview</h2>
 <div class="docstring">
@@ -88,39 +88,26 @@
   
     <li>
       
-        <span class='name'>port</span>
+        <span class='name'>user_name</span>
       
       
         <span class='type'>(<tt>Any</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$storm::gridftp::port</tt>)</em>
+        <em class="default">(defaults to: <tt>$storm::frontend::user_name</tt>)</em>
       
       
     </li>
   
     <li>
       
-        <span class='name'>port_range</span>
+        <span class='name'>config_dir</span>
       
       
         <span class='type'>(<tt>Any</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$storm::gridftp::port_range</tt>)</em>
-      
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>connections_max</span>
-      
-      
-        <span class='type'>(<tt>Any</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>$storm::gridftp::connections_max</tt>)</em>
+        <em class="default">(defaults to: <tt>$storm::frontend::config_dir</tt>)</em>
       
       
     </li>
@@ -153,28 +140,66 @@
 18
 19
 20
-21</pre>
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/gridftp/config.pp', line 3</span>
+        <pre class="code"><span class="info file"># File 'manifests/frontend/config.pp', line 3</span>
 
-class storm::gridftp::config (
+class storm::frontend::config (
 
-  $port = $storm::gridftp::port,
-  $port_range = $storm::gridftp::port_range,
-  $connections_max = $storm::gridftp::connections_max,
+  $user_name = $storm::frontend::user_name,
+  $config_dir = $storm::frontend::config_dir,
 
 ) {
 
-  $conf_file=&#39;/etc/gridftp.conf&#39;
-  $conf_template_file=&#39;storm/etc/gridftp.conf.erb&#39;
+  # set ownership and permissions on storm fe config dir
+  file { &#39;fe::storm-fe-config-dir&#39;:
+    ensure  =&gt; directory,
+    path    =&gt; $config_dir,
+    owner   =&gt; $user_name,
+    group   =&gt; $user_name,
+    mode    =&gt; &#39;0750&#39;,
+    recurse =&gt; true,
+  }
 
-  file { &#39;gftp::configure-gridftp-conf-file&#39;:
+  $conf_file=&quot;${config_dir}/storm-frontend-server.conf&quot;
+  $conf_template_file=&#39;storm/etc/storm/frontend-server/storm-frontend-server.conf.erb&#39;
+
+  file { &#39;fe::configure-fe-conf-file&#39;:
     ensure  =&gt; present,
     path    =&gt; $conf_file,
     content =&gt; template($conf_template_file),
-    notify  =&gt; Service[&#39;storm-globus-gridftp&#39;],
-    require =&gt; Package[&#39;storm-globus-gridftp-mp&#39;],
+    notify  =&gt; Service[&#39;storm-frontend-server&#39;],
+    require =&gt; Package[&#39;storm-frontend-server-mp&#39;],
+  }
+
+  $sysconfig_file=&#39;/etc/sysconfig/storm-frontend-server&#39;
+  $sysconfig_template_file=&#39;storm/etc/sysconfig/storm-frontend-server.erb&#39;
+  file { &#39;fe::configure-sysconfig-file&#39;:
+    ensure  =&gt; present,
+    path    =&gt; $sysconfig_file,
+    content =&gt; template($sysconfig_template_file),
+    notify  =&gt; Service[&#39;storm-frontend-server&#39;],
+    require =&gt; Package[&#39;storm-frontend-server-mp&#39;],
   }
 }</pre>
       </td>

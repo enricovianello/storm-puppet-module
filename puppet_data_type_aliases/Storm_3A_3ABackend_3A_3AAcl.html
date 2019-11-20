@@ -4,7 +4,7 @@
     <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>
-  Puppet Class: storm::gridftp::params
+  Data Type: Storm::Backend::Acl
   
     &mdash; Documentation by YARD 0.9.20
   
@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
 
 <script type="text/javascript" charset="utf-8">
-  pathId = "puppet_classes::storm::gridftp::params";
+  pathId = "puppet_data_type_aliases::Storm::Backend::Acl";
   relpath = '../';
 </script>
 
@@ -28,7 +28,7 @@
   </head>
   <body>
     <div class="nav_wrap">
-      <iframe id="nav" src="../puppet_class_list.html?1"></iframe>
+      <iframe id="nav" src="../puppet_data_type_list.html?1"></iframe>
       <div id="resizer"></div>
     </div>
 
@@ -36,10 +36,10 @@
       <div id="header">
         <div id="menu">
   
-    <a href="../_index.html">Index (s)</a> &raquo;
-    <span class='title'><span class='object_link'>Puppet Classes</span></span>
+    <a href="../_index.html">Index (S)</a> &raquo;
+    <span class='title'><span class='object_link'>Puppet Data Type Aliases</span></span>
      &raquo; 
-    <span class="title">storm::gridftp::params</span>
+    <span class="title">Storm::Backend::Acl</span>
   
 </div>
 
@@ -59,34 +59,18 @@
         <div class="clear"></div>
       </div>
 
-      <div id="content"><h1>Puppet Class: storm::gridftp::params</h1>
+      <div id="content"><h1>Puppet Data Type Alias: Storm::Backend::Acl</h1>
 <div class="box_info">
-  
-  <dl>
-    <dt>Inherits:</dt>
-    <dd><span class='object_link'><a href="storm_3A_3Aparams.html" title="puppet_classes::storm::params (puppet_class)">storm::params</a></span></dd>
-  </dl>
-  
-  
-  <dl>
-    <dt>Inherited by:</dt>
-    <dd>
-      
-      <span class='object_link'><a href="storm_3A_3Agridftp.html" title="puppet_classes::storm::gridftp (puppet_class)">storm::gridftp</a></span><br/>
-      
-    </dd>
-  </dl>
-  
   <dl>
     <dt>Defined in:</dt>
     <dd>
-      manifests/gridftp/params.pp
+      types/backend/acl.pp
     </dd>
   </dl>
 </div>
 
   <h2>Summary</h2>
-  StoRM GridFTP params class
+  The ACL type for storm-backend-server
 
 <h2>Overview</h2>
 <div class="docstring">
@@ -94,6 +78,19 @@
     
   </div>
 </div>
+
+<div class="tags">
+  <p class="tag_title">Alias of</p>
+  <div class="docstring">
+    <div class="discussion">
+      <pre class="code"><span class="info">Struct[{
+  group => String,
+  permission => String,
+}]</span></pre>
+    </div>
+  </div>
+</div>
+
 
 
 <div class="tags">
@@ -106,24 +103,12 @@
         <pre class="lines">
 
 
-3
-4
-5
-6
-7
-8
-9</pre>
+</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/gridftp/params.pp', line 3</span>
+        <pre class="code"><span class="info file"># File 'types/backend/acl.pp', line 2</span>
 
-class storm::gridftp::params (
-) inherits storm::params {
-
-  $port = lookup(&#39;storm::gridftp::port&#39;, Integer, undef, 2811)
-  $port_range = lookup(&#39;storm::gridftp::port_range&#39;, String, undef, &#39;20000,25000&#39;)
-  $connections_max = lookup(&#39;storm::gridftp::connections_max&#39;, Integer, undef, 2000)
-}</pre>
+</pre>
       </td>
     </tr>
   </table>

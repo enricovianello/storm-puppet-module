@@ -98,7 +98,8 @@
 6
 7
 8
-9</pre>
+9
+10</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/webdav/service.pp', line 3</span>
@@ -106,8 +107,9 @@
 class storm::webdav::service {
 
   service { &#39;storm-webdav&#39;:
-    ensure =&gt; running,
-    enable =&gt; true,
+    ensure  =&gt; running,
+    enable  =&gt; true,
+    require =&gt; Package[storm-webdav],
   }
 }</pre>
       </td>
