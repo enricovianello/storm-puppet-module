@@ -112,6 +112,19 @@
       
     </li>
   
+    <li>
+      
+        <span class='name'>storage_areas</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::storage_areas</tt>)</em>
+      
+      
+    </li>
+  
 </ul>
 
 
@@ -149,7 +162,9 @@
 27
 28
 29
-30</pre>
+30
+31
+32</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/backend/config.pp', line 3</span>
@@ -158,6 +173,8 @@ class storm::backend::config (
 
   $user_name = $storm::backend::user_name,
   $config_dir = $storm::backend::config_dir,
+
+  $storage_areas = $storm::backend::storage_areas,
 
 ) {
 

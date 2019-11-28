@@ -123,7 +123,11 @@
 17
 18
 19
-20</pre>
+20
+21
+22
+23
+24</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/backend/params.pp', line 3</span>
@@ -139,10 +143,14 @@ class storm::backend::params (
 
   $config_dir = lookup(&#39;storm::backend::config_dir&#39;, String, undef, &#39;/etc/storm/backend-server&#39;)
 
-  $rfio = lookup(&#39;storm::backend::rfio&#39;, Storm::Backend::Rfio, undef, {})
-  $xroot = lookup(&#39;storm::backend::xroot&#39;, Storm::Backend::Xroot, undef, {})
-  $gsiftp = lookup(&#39;storm::backend::gsiftp&#39;, Storm::Backend::Gsiftp, undef, {})
-  $webdav = lookup(&#39;storm::backend::webdav&#39;, Storm::Backend::Webdav, undef, {})
+  $rfio_port = lookup(&#39;storm::backend::rfio_port&#39;, Integer, undef, 5001)
+  $xroot_port = lookup(&#39;storm::backend::xroot_port&#39;, Integer, undef, 1094)
+  $gsiftp_pool_balance_strategy = lookup(&#39;storm::backend::gsiftp_pool_balance_strategy&#39;,
+    Storm::Backend::BalanceStrategy, undef, &#39;round-robin&#39;)
+  $gsiftp_pool_members = lookup(&#39;storm::backend::gsiftp_pool_members&#39;,
+    Array[Storm::Backend::GsiftpPoolMember], undef, [])
+  $webdav_pool_members = lookup(&#39;storm::backend::webdav_pool_members&#39;,
+    Array[Storm::Backend::WebdavPoolMember], undef, [])
 
   $storage_areas = lookup(&#39;storm::backend::storage_areas&#39;, Array[Storm::Backend::StorageArea], undef, [])
 }</pre>

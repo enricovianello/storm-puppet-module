@@ -129,6 +129,17 @@
   
     <li>
       
+        <span class='name'>hostname</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>user_name</span>
       
       
@@ -194,13 +205,91 @@
   
     <li>
       
-        <span class='name'>gsiftp</span>
+        <span class='name'>rfio_hostname</span>
       
       
-        <span class='type'>(<tt>Storm::Backend::Gsiftp</tt>)</span>
+        <span class='type'>(<tt>String</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$storm::backend::params::gsiftp</tt>)</em>
+        <em class="default">(defaults to: <tt>lookup(&#39;storm::backend::rfio_hostname&#39;, String, undef, $hostname)</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>rfio_port</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::rfio_port</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>xroot_hostname</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>lookup(&#39;storm::backend::xroot_hostname&#39;, String, undef, $hostname)</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>xroot_port</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::xroot_port</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>gsiftp_pool_balance_strategy</span>
+      
+      
+        <span class='type'>(<tt>Storm::Backend::BalanceStrategy</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::gsiftp_pool_balance_strategy</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>gsiftp_pool_members</span>
+      
+      
+        <span class='type'>(<tt>Array[Storm::Backend::GsiftpPoolMember]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::gsiftp_pool_members</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>webdav_pool_members</span>
+      
+      
+        <span class='type'>(<tt>Array[Storm::Backend::WebdavPoolMember]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::webdav_pool_members</tt>)</em>
       
       
     </li>
@@ -250,12 +339,25 @@
 37
 38
 39
-40</pre>
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/backend.pp', line 18</span>
 
 class storm::backend (
+
+  String $hostname,
 
   String $user_name = $storm::backend::params::user_name,
 
@@ -265,7 +367,16 @@ class storm::backend (
 
   String $config_dir = $storm::backend::params::config_dir,
 
-  Storm::Backend::Gsiftp $gsiftp = $storm::backend::params::gsiftp,
+  String $rfio_hostname = lookup(&#39;storm::backend::rfio_hostname&#39;, String, undef, $hostname),
+  Integer $rfio_port = $storm::backend::params::rfio_port,
+
+  String $xroot_hostname = lookup(&#39;storm::backend::xroot_hostname&#39;, String, undef, $hostname),
+  Integer $xroot_port = $storm::backend::params::xroot_port,
+
+  Storm::Backend::BalanceStrategy $gsiftp_pool_balance_strategy = $storm::backend::params::gsiftp_pool_balance_strategy,
+  Array[Storm::Backend::GsiftpPoolMember] $gsiftp_pool_members = $storm::backend::params::gsiftp_pool_members,
+  Array[Storm::Backend::WebdavPoolMember] $webdav_pool_members = $storm::backend::params::webdav_pool_members,
+
   Array[Storm::Backend::StorageArea] $storage_areas = $storm::backend::params::storage_areas,
 
 ) inherits storm::backend::params {
