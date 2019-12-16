@@ -125,6 +125,97 @@
       
     </li>
   
+    <li>
+      
+        <span class='name'>gsiftp_pool_members</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::gsiftp_pool_members</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>gsiftp_pool_balance_strategy</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::gsiftp_pool_balance_strategy</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>webdav_pool_members</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::webdav_pool_members</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>rfio_hostname</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::rfio_hostname</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>rfio_port</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::rfio_port</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>xroot_hostname</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::xroot_hostname</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>xroot_port</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::xroot_port</tt>)</em>
+      
+      
+    </li>
+  
 </ul>
 
 
@@ -164,7 +255,14 @@
 29
 30
 31
-32</pre>
+32
+33
+34
+35
+36
+37
+38
+39</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/backend/config.pp', line 3</span>
@@ -175,6 +273,13 @@ class storm::backend::config (
   $config_dir = $storm::backend::config_dir,
 
   $storage_areas = $storm::backend::storage_areas,
+  $gsiftp_pool_members = $storm::backend::gsiftp_pool_members,
+  $gsiftp_pool_balance_strategy = $storm::backend::gsiftp_pool_balance_strategy,
+  $webdav_pool_members = $storm::backend::webdav_pool_members,
+  $rfio_hostname = $storm::backend::rfio_hostname,
+  $rfio_port = $storm::backend::rfio_port,
+  $xroot_hostname = $storm::backend::xroot_hostname,
+  $xroot_port = $storm::backend::xroot_port,
 
 ) {
 
