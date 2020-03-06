@@ -174,7 +174,7 @@ class storm::gridftp::config (
     path    =&gt; $conf_file,
     content =&gt; template($conf_template_file),
     notify  =&gt; Service[&#39;storm-globus-gridftp&#39;],
-    require =&gt; Package[&#39;storm-globus-gridftp-mp&#39;],
+    require =&gt; Package[&#39;storm-globus-gridftp-server&#39;],
   }
 }</pre>
       </td>

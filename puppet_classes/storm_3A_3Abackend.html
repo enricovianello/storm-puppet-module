@@ -307,6 +307,19 @@
       
     </li>
   
+    <li>
+      
+        <span class='name'>frontend_public_host</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>lookup(&#39;storm::backend::srm_hostname&#39;, String, undef, $hostname)</tt>)</em>
+      
+      
+    </li>
+  
 </ul>
 
 
@@ -350,7 +363,9 @@
 48
 49
 50
-51</pre>
+51
+52
+53</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/backend.pp', line 18</span>
@@ -378,6 +393,8 @@ class storm::backend (
   Array[Storm::Backend::WebdavPoolMember] $webdav_pool_members = $storm::backend::params::webdav_pool_members,
 
   Array[Storm::Backend::StorageArea] $storage_areas = $storm::backend::params::storage_areas,
+
+  String $frontend_public_host = lookup(&#39;storm::backend::srm_hostname&#39;, String, undef, $hostname)
 
 ) inherits storm::backend::params {
 

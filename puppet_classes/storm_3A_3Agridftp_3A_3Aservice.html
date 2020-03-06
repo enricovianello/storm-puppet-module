@@ -109,7 +109,7 @@ class storm::gridftp::service {
   service { &#39;storm-globus-gridftp&#39;:
     ensure  =&gt; running,
     enable  =&gt; true,
-    require =&gt; Package[storm-globus-gridftp-mp],
+    require =&gt; Package[storm-globus-gridftp-server],
   }
 }</pre>
       </td>
