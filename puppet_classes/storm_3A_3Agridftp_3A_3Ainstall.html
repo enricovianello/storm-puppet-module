@@ -119,7 +119,8 @@
 27
 28
 29
-30</pre>
+30
+31</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/gridftp/install.pp', line 3</span>
@@ -128,7 +129,8 @@ class storm::gridftp::install (
 
 ) {
 
-  $dependencies = [
+  # Based on storm-globus-gridftp-mp required rpms
+  $required = [
     &#39;umd-release&#39;,
     &#39;fetch-crl&#39;,
     &#39;edg-mkgridmap&#39;,
@@ -143,7 +145,7 @@ class storm::gridftp::install (
     &#39;lcg-expiregridmapdir&#39;,
     &#39;cleanup-grid-accounts&#39;,
   ]
-  package { $dependencies:
+  package { $required:
     ensure =&gt; installed,
   }
 

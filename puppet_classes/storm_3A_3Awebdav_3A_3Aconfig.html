@@ -146,7 +146,7 @@
         <span class='type'>(<tt>Any</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$storm::webdav::log_dir</tt>)</em>
+        <em class="default">(defaults to: <tt>&quot;${storm::webdav::log_dir}/webdav&quot;</tt>)</em>
       
       
     </li>
@@ -758,7 +758,7 @@ class storm::webdav::config (
   $user_gid = $storm::webdav::user_gid,
 
   $storage_root_dir = $storm::webdav::storage_root_dir,
-  $log_dir = $storm::webdav::log_dir,
+  $log_dir = &quot;${storm::webdav::log_dir}/webdav&quot;,
 
   $storage_areas = $storm::webdav::storage_areas,
 
@@ -829,7 +829,7 @@ class storm::webdav::config (
     owner   =&gt; $user_name,
     group   =&gt; $user_name,
     mode    =&gt; &#39;0755&#39;,
-    recurse =&gt; false,
+    recurse =&gt; true,
   }
 
   file { &#39;dav::hostcert-dir&#39;:

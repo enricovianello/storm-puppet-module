@@ -98,9 +98,11 @@
 </div></p>
       
       <pre class="example code"><code>class { &#39;storm::frontend&#39;:
-  db_host =&gt; &#39;storm-be.example&#39;,
-  db_passwd =&gt; &#39;secret&#39;,
+  be_xmlrpc_host  =&gt; &#39;storm-backend.example&#39;,
   be_xmlrpc_token =&gt; &#39;secret&#39;,
+  db_host         =&gt; &#39;storm-backend.example&#39;,
+  db_user         =&gt; &#39;storm&#39;,
+  db_passwd       =&gt; &#39;secret&#39;,
 }</code></pre>
     
   </div>
@@ -193,6 +195,42 @@
         &mdash;
         <div class='inline'>
 <p>Configuration directory where storm-frontend-server.conf is stored. Default is /etc/storm/frontend-server.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>hostcert_dir</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::frontend::params::hostcert_dir</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Directory where x509 host certificate and key are stored. Default is /etc/grid-security/storm.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>log_dir</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::frontend::params::log_dir</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Log directory where StoRM Frontend log files are stored. Default is /var/log/storm.</p>
 </div>
       
     </li>
@@ -503,6 +541,42 @@
       
     </li>
   
+    <li>
+      
+        <span class='name'>gridmap_dir</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::frontend::params::gridmap_dir</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Gridmap directory path. Defailt value is: /etc/grid-security/gridmapdir</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>gridmap_file</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::frontend::params::gridmap_file</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Gridmap file path. Defailt value is: /etc/grid-security/grid-mapfile</p>
+</div>
+      
+    </li>
+  
 </ul>
 
 
@@ -513,20 +587,6 @@
         <pre class="lines">
 
 
-77
-78
-79
-80
-81
-82
-83
-84
-85
-86
-87
-88
-89
-90
 91
 92
 93
@@ -556,10 +616,30 @@
 117
 118
 119
-120</pre>
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/frontend.pp', line 77</span>
+        <pre class="code"><span class="info file"># File 'manifests/frontend.pp', line 91</span>
 
 class storm::frontend (
 
@@ -570,6 +650,9 @@ class storm::frontend (
   String $db_passwd = $storm::frontend::params::db_passwd,
 
   String $config_dir = $storm::frontend::params::config_dir,
+
+  String $hostcert_dir = $storm::frontend::params::hostcert_dir,
+  String $log_dir = $storm::frontend::params::log_dir,
 
   Integer $port = $storm::frontend::params::port,
   Integer $threadpool_threads_number = $storm::frontend::params::threadpool_threads_number,
@@ -594,6 +677,9 @@ class storm::frontend (
   Boolean $security_enable_vomscheck = $storm::frontend::params::security_enable_vomscheck,
 
   String $log_debuglevel = $storm::frontend::params::log_debuglevel,
+
+  String $gridmap_dir = $storm::frontend::params::gridmap_dir,
+  String $gridmap_file = $storm::frontend::params::gridmap_file,
 
 ) inherits storm::frontend::params {
 

@@ -140,7 +140,15 @@
 34
 35
 36
-37</pre>
+37
+38
+39
+40
+41
+42
+43
+44
+45</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/frontend/params.pp', line 3</span>
@@ -149,12 +157,16 @@ class storm::frontend::params (
 ) inherits storm::params {
 
   $user_name = $storm::params::user_name
+  $user_uid = $storm::params::user_uid
+  $user_gid = $storm::params::user_gid
 
   $db_host = $storm::params::db_host
   $db_user = $storm::params::db_user
   $db_passwd = $storm::params::db_passwd
 
-  $config_dir = lookup(&#39;storm::frontend::config_dir&#39;, String, undef, &#39;/etc/storm/storm-frontend&#39;)
+  $config_dir = lookup(&#39;storm::frontend::config_dir&#39;, String, undef, &#39;/etc/storm/frontend-server&#39;)
+  $hostcert_dir = lookup(&#39;storm::frontend::hostcert_dir&#39;, String, undef, &#39;/etc/grid-security/storm&#39;)
+  $log_dir = $storm::params::log_dir
 
   $port = lookup(&#39;storm::frontend::port&#39;, Integer, undef, 8444)
   $threadpool_threads_number = lookup(&#39;storm::frontend::threadpool_threads_number&#39;, Integer, undef, 50)
@@ -179,6 +191,10 @@ class storm::frontend::params (
   $security_enable_vomscheck = lookup(&#39;storm::frontend::security_enable_vomscheck&#39;, Boolean, undef, true)
 
   $log_debuglevel = lookup(&#39;storm::frontend::log_debuglevel&#39;, String, undef, &#39;INFO&#39;)
+
+  $gridmap_dir = lookup(&#39;storm::frontend::gridmap_dir&#39;, String, undef, &#39;/etc/grid-security/gridmapdir&#39;)
+  $gridmap_file = lookup(&#39;storm::frontend::gridmap_file&#39;, String, undef, &#39;/etc/grid-security/grid-mapfile&#39;)
+
 }</pre>
       </td>
     </tr>
