@@ -109,7 +109,7 @@ class storm::webdav::service {
   service { &#39;storm-webdav&#39;:
     ensure  =&gt; running,
     enable  =&gt; true,
-    require =&gt; Package[storm-webdav],
+    require =&gt; Package[&#39;storm-webdav&#39;],
   }
 }</pre>
       </td>

@@ -112,7 +112,13 @@
 6
 7
 8
-9</pre>
+9
+10
+11
+12
+13
+14
+15</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/gridftp/params.pp', line 3</span>
@@ -123,6 +129,12 @@ class storm::gridftp::params (
   $port = lookup(&#39;storm::gridftp::port&#39;, Integer, undef, 2811)
   $port_range = lookup(&#39;storm::gridftp::port_range&#39;, String, undef, &#39;20000,25000&#39;)
   $connections_max = lookup(&#39;storm::gridftp::connections_max&#39;, Integer, undef, 2000)
+
+  $log_single = lookup(&#39;storm::gridftp::log_single&#39;, String, undef, &#39;/var/log/storm/storm-gridftp-session.log&#39;)
+  $log_transfer = lookup(&#39;storm::gridftp::log_transfer&#39;, String, undef, &#39;/var/log/storm/storm-globus-gridftp.log&#39;)
+
+  $redirect_lcmaps_log = lookup(&#39;storm::gridftp::redirect_lcmaps_log&#39;, Boolean, undef, false)
+  $llgt_log_file = lookup(&#39;storm::gridftp::llgt_log_file&#39;, String, undef, &#39;/var/log/storm/storm-gridftp-lcmaps.log&#39;)
 }</pre>
       </td>
     </tr>

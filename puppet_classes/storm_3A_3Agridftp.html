@@ -172,6 +172,78 @@
       
     </li>
   
+    <li>
+      
+        <span class='name'>log_single</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::gridftp::params::log_single</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Session log file path. Default is: /var/log/storm/storm-gridftp-session.log</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>log_transfer</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::gridftp::params::log_transfer</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Transfer log file path. Default is: /var/log/storm/storm-globus-gridftp.log</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>redirect_lcmaps_log</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::gridftp::params::redirect_lcmaps_log</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>If true, redirect the LCMAPS log to the file specified by &#39;llgt_log_file&#39;.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>llgt_log_file</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::gridftp::params::llgt_log_file</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The LCMAPS log file used if &#39;redirect_lcmaps_log&#39; is true.</p>
+</div>
+      
+    </li>
+  
 </ul>
 
 
@@ -182,31 +254,43 @@
         <pre class="lines">
 
 
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
 41
 42
 43
-44</pre>
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/gridftp.pp', line 29</span>
+        <pre class="code"><span class="info file"># File 'manifests/gridftp.pp', line 41</span>
 
 class storm::gridftp (
 
   Integer $port = $storm::gridftp::params::port,
   String $port_range = $storm::gridftp::params::port_range,
   Integer $connections_max = $storm::gridftp::params::connections_max,
+
+  String $log_single = $storm::gridftp::params::log_single,
+  String $log_transfer = $storm::gridftp::params::log_transfer,
+
+  Boolean $redirect_lcmaps_log = $storm::gridftp::params::redirect_lcmaps_log,
+  String $llgt_log_file = $storm::gridftp::params::llgt_log_file,
 
 ) inherits storm::gridftp::params {
 
