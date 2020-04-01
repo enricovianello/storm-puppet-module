@@ -100,27 +100,7 @@
 8
 9
 10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31</pre>
+11</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/gridftp/install.pp', line 3</span>
@@ -129,27 +109,7 @@ class storm::gridftp::install (
 
 ) {
 
-  # Based on storm-globus-gridftp-mp required rpms
-  $required = [
-    &#39;umd-release&#39;,
-    &#39;fetch-crl&#39;,
-    &#39;edg-mkgridmap&#39;,
-    &#39;lcas&#39;,
-    &#39;lcas-plugins-basic&#39;,
-    &#39;lcas-plugins-voms&#39;,
-    &#39;lcmaps&#39;,
-    &#39;lcmaps-plugins-basic&#39;,
-    &#39;lcmaps-without-gsi&#39;,
-    &#39;lcmaps-plugins-voms&#39;,
-    &#39;lcas-lcmaps-gt4-interface&#39;,
-    &#39;lcg-expiregridmapdir&#39;,
-    &#39;cleanup-grid-accounts&#39;,
-  ]
-  package { $required:
-    ensure =&gt; installed,
-  }
-
-  package { &#39;storm-globus-gridftp-server&#39;:
+  package { &#39;storm-globus-gridftp-mp&#39;:
     ensure =&gt; installed,
   }
 

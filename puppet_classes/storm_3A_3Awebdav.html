@@ -177,60 +177,6 @@
   
     <li>
       
-        <span class='name'>user_name</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>$storm::webdav::params::user_name</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>Unix user and group name used to run StoRM services.</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>user_uid</span>
-      
-      
-        <span class='type'>(<tt>Integer</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>$storm::webdav::params::user_uid</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>A custom user id for <code>user_name</code></p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>user_gid</span>
-      
-      
-        <span class='type'>(<tt>Integer</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>$storm::webdav::params::user_gid</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>A custom group id for <code>user_name</code></p>
-</div>
-      
-    </li>
-  
-    <li>
-      
         <span class='name'>storage_root_dir</span>
       
       
@@ -249,19 +195,6 @@
   
     <li>
       
-        <span class='name'>log_dir</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>$storm::webdav::params::log_dir</tt>)</em>
-      
-      
-    </li>
-  
-    <li>
-      
         <span class='name'>storage_areas</span>
       
       
@@ -275,37 +208,6 @@
         <div class='inline'>
 <p>List of storage area&#39;s configuration.</p>
 </div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>config_dir</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>$storm::webdav::params::config_dir</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>StoRM WebDAV service configuration directory</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>hostcert_dir</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>$storm::webdav::params::hostcert_dir</tt>)</em>
-      
       
     </li>
   
@@ -357,19 +259,6 @@
       
       
         <em class="default">(defaults to: <tt>$storm::webdav::params::https_port</tt>)</em>
-      
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>trust_anchors_dir</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>$storm::webdav::params::trust_anchors_dir</tt>)</em>
       
       
     </li>
@@ -657,6 +546,24 @@
         <pre class="lines">
 
 
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
 140
 141
 142
@@ -689,57 +596,23 @@
 169
 170
 171
-172
-173
-174
-175
-176
-177
-178
-179
-180
-181
-182
-183
-184
-185
-186
-187
-188
-189
-190
-191
-192
-193
-194
-195
-196
-197
-198</pre>
+172</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/webdav.pp', line 140</span>
+        <pre class="code"><span class="info file"># File 'manifests/webdav.pp', line 122</span>
 
 class storm::webdav (
 
-  String $user_name = $storm::webdav::params::user_name,
-  Integer $user_uid = $storm::webdav::params::user_uid,
-  Integer $user_gid = $storm::webdav::params::user_gid,
-
   String $storage_root_dir = $storm::webdav::params::storage_root_dir,
-  String $log_dir = $storm::webdav::params::log_dir,
 
   Array[Storm::Webdav::StorageArea] $storage_areas = $storm::webdav::params::storage_areas,
 
-  String $config_dir = $storm::webdav::params::config_dir,
-  String $hostcert_dir = $storm::webdav::params::hostcert_dir,
   Array[Storm::Webdav::OAuthIssuer] $oauth_issuers = $storm::webdav::params::oauth_issuers,
   Array[String] $hostnames = $storm::webdav::params::hostnames,
 
   Integer $http_port = $storm::webdav::params::http_port,
   Integer $https_port = $storm::webdav::params::https_port,
 
-  String $trust_anchors_dir = $storm::webdav::params::trust_anchors_dir,
   Integer $trust_anchors_refresh_interval = $storm::webdav::params::trust_anchors_refresh_interval,
 
   Integer $max_concurrent_connections = $storm::webdav::params::max_concurrent_connections,

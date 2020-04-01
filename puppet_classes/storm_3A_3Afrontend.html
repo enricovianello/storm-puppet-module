@@ -111,24 +111,6 @@
   
     <li>
       
-        <span class='name'>user_name</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>$storm::frontend::params::user_name</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>Service user. Default value: storm.</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
         <span class='name'>db_host</span>
       
       
@@ -177,60 +159,6 @@
         &mdash;
         <div class='inline'>
 <p>Password for database connection. Default is password.</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>config_dir</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>$storm::frontend::params::config_dir</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>Configuration directory where storm-frontend-server.conf is stored. Default is /etc/storm/frontend-server.</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>hostcert_dir</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>$storm::frontend::params::hostcert_dir</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>Directory where x509 host certificate and key are stored. Default is /etc/grid-security/storm.</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>log_dir</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>$storm::frontend::params::log_dir</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>Log directory where StoRM Frontend log files are stored. Default is /var/log/storm.</p>
 </div>
       
     </li>
@@ -587,6 +515,18 @@
         <pre class="lines">
 
 
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
 91
 92
 93
@@ -617,42 +557,16 @@
 118
 119
 120
-121
-122
-123
-124
-125
-126
-127
-128
-129
-130
-131
-132
-133
-134
-135
-136
-137
-138
-139
-140</pre>
+121</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/frontend.pp', line 91</span>
+        <pre class="code"><span class="info file"># File 'manifests/frontend.pp', line 79</span>
 
 class storm::frontend (
-
-  String $user_name = $storm::frontend::params::user_name,
 
   String $db_host = $storm::frontend::params::db_host,
   String $db_user = $storm::frontend::params::db_user,
   String $db_passwd = $storm::frontend::params::db_passwd,
-
-  String $config_dir = $storm::frontend::params::config_dir,
-
-  String $hostcert_dir = $storm::frontend::params::hostcert_dir,
-  String $log_dir = $storm::frontend::params::log_dir,
 
   Integer $port = $storm::frontend::params::port,
   Integer $threadpool_threads_number = $storm::frontend::params::threadpool_threads_number,

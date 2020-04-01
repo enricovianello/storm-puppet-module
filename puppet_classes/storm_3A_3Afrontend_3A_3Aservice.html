@@ -109,7 +109,7 @@ class storm::frontend::service {
   service { &#39;storm-frontend-server&#39;:
     ensure  =&gt; running,
     enable  =&gt; true,
-    require =&gt; Package[&#39;storm-frontend-server&#39;],
+    require =&gt; Package[&#39;storm-frontend-mp&#39;],
   }
 }</pre>
       </td>

@@ -88,45 +88,6 @@
   
     <li>
       
-        <span class='name'>user_name</span>
-      
-      
-        <span class='type'>(<tt>Any</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>$storm::webdav::user_name</tt>)</em>
-      
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>user_uid</span>
-      
-      
-        <span class='type'>(<tt>Any</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>$storm::webdav::user_uid</tt>)</em>
-      
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>user_gid</span>
-      
-      
-        <span class='type'>(<tt>Any</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>$storm::webdav::user_gid</tt>)</em>
-      
-      
-    </li>
-  
-    <li>
-      
         <span class='name'>storage_root_dir</span>
       
       
@@ -140,19 +101,6 @@
   
     <li>
       
-        <span class='name'>log_dir</span>
-      
-      
-        <span class='type'>(<tt>Any</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>&quot;${storm::webdav::log_dir}/webdav&quot;</tt>)</em>
-      
-      
-    </li>
-  
-    <li>
-      
         <span class='name'>storage_areas</span>
       
       
@@ -160,32 +108,6 @@
       
       
         <em class="default">(defaults to: <tt>$storm::webdav::storage_areas</tt>)</em>
-      
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>config_dir</span>
-      
-      
-        <span class='type'>(<tt>Any</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>$storm::webdav::config_dir</tt>)</em>
-      
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>hostcert_dir</span>
-      
-      
-        <span class='type'>(<tt>Any</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>$storm::webdav::hostcert_dir</tt>)</em>
       
       
     </li>
@@ -238,19 +160,6 @@
       
       
         <em class="default">(defaults to: <tt>$storm::webdav::https_port</tt>)</em>
-      
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>trust_anchors_dir</span>
-      
-      
-        <span class='type'>(<tt>Any</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>$storm::webdav::trust_anchors_dir</tt>)</em>
       
       
     </li>
@@ -672,105 +581,23 @@
 134
 135
 136
-137
-138
-139
-140
-141
-142
-143
-144
-145
-146
-147
-148
-149
-150
-151
-152
-153
-154
-155
-156
-157
-158
-159
-160
-161
-162
-163
-164
-165
-166
-167
-168
-169
-170
-171
-172
-173
-174
-175
-176
-177
-178
-179
-180
-181
-182
-183
-184
-185
-186
-187
-188
-189
-190
-191
-192
-193
-194
-195
-196
-197
-198
-199
-200
-201
-202
-203
-204
-205
-206
-207
-208
-209
-210
-211</pre>
+137</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/webdav/config.pp', line 3</span>
 
 class storm::webdav::config (
 
-  $user_name = $storm::webdav::user_name,
-  $user_uid = $storm::webdav::user_uid,
-  $user_gid = $storm::webdav::user_gid,
-
   $storage_root_dir = $storm::webdav::storage_root_dir,
-  $log_dir = &quot;${storm::webdav::log_dir}/webdav&quot;,
 
   $storage_areas = $storm::webdav::storage_areas,
 
-  $config_dir = $storm::webdav::config_dir,
-  $hostcert_dir = $storm::webdav::hostcert_dir,
   $oauth_issuers = $storm::webdav::oauth_issuers,
   $hostnames = $storm::webdav::hostnames,
 
   $http_port = $storm::webdav::http_port,
   $https_port = $storm::webdav::https_port,
 
-  $trust_anchors_dir = $storm::webdav::trust_anchors_dir,
   $trust_anchors_refresh_interval = $storm::webdav::trust_anchors_refresh_interval,
 
   $max_concurrent_connections = $storm::webdav::max_concurrent_connections,
@@ -802,80 +629,44 @@ class storm::webdav::config (
 
 ) {
 
-  # storm user&#39;s group
-  group { $user_name:
-    ensure =&gt; present,
-    gid    =&gt; $user_gid,
-  }
-
-  # storm user
-  user { $user_name:
-    ensure =&gt; present,
-    uid    =&gt; $user_uid,
-    gid    =&gt; $user_name,
-  }
-
-  # storage area root path
-  storm::storage_root_dir { &#39;dav::storage-root-dir&#39;:
+  # Storage root directory
+  storm::common_directory { &quot;DAV_${storage_root_dir}&quot;:
     path  =&gt; $storage_root_dir,
-    owner =&gt; $user_name,
-    group =&gt; $user_name,
   }
 
-  # log directory
-  file { &#39;dav::storm-log-dir&#39;:
+  file { &#39;/var/lib/storm-webdav/work&#39;:
     ensure  =&gt; directory,
-    path    =&gt; $log_dir,
-    owner   =&gt; $user_name,
-    group   =&gt; $user_name,
+    owner   =&gt; &#39;storm&#39;,
+    group   =&gt; &#39;storm&#39;,
     mode    =&gt; &#39;0755&#39;,
     recurse =&gt; true,
   }
 
-  file { &#39;dav::hostcert-dir&#39;:
+  # Service&#39;s host credentials directory
+  file { &#39;/etc/grid-security/storm-webdav&#39;:
     ensure  =&gt; directory,
-    path    =&gt; $hostcert_dir,
-    owner   =&gt; $user_name,
-    group   =&gt; $user_name,
+    owner   =&gt; &#39;storm&#39;,
+    group   =&gt; &#39;storm&#39;,
     mode    =&gt; &#39;0755&#39;,
     recurse =&gt; true,
   }
-
-  storm::service_hostcert { &#39;dav::host-credentials&#39;:
-    hostcert =&gt; &quot;${hostcert_dir}/hostcert.pem&quot;,
-    hostkey  =&gt; &quot;${hostcert_dir}/hostkey.pem&quot;,
-    owner    =&gt; $user_name,
-    group    =&gt; $user_name,
-    require  =&gt; File[&#39;dav::hostcert-dir&#39;],
+  # Service&#39;s hostcert
+  file { &#39;/etc/grid-security/storm-webdav/hostcert.pem&#39;:
+    ensure  =&gt; present,
+    mode    =&gt; &#39;0644&#39;,
+    owner   =&gt; &#39;storm&#39;,
+    group   =&gt; &#39;storm&#39;,
+    source  =&gt; &#39;/etc/grid-security/hostcert.pem&#39;,
+    require =&gt; File[&#39;/etc/grid-security/storm-webdav&#39;],
   }
-
-  file { &#39;dav::storm-webdav-config-dir&#39;:
-    ensure  =&gt; directory,
-    path    =&gt; $config_dir,
-    owner   =&gt; &#39;root&#39;,
-    group   =&gt; $user_name,
-    mode    =&gt; &#39;0750&#39;,
-    recurse =&gt; true,
-  }
-
-  file { &#39;dav::storm-webdav-app-config-dir&#39;:
-    ensure  =&gt; directory,
-    path    =&gt; &quot;${config_dir}/config&quot;,
-    owner   =&gt; &#39;root&#39;,
-    group   =&gt; $user_name,
-    mode    =&gt; &#39;0750&#39;,
-    recurse =&gt; true,
-    require =&gt; File[&#39;dav::storm-webdav-config-dir&#39;],
-  }
-
-  file { &#39;dav::storm-webdav-sa-config-dir&#39;:
-    ensure  =&gt; directory,
-    path    =&gt; &quot;${config_dir}/sa.d&quot;,
-    owner   =&gt; &#39;root&#39;,
-    group   =&gt; $user_name,
-    mode    =&gt; &#39;0750&#39;,
-    recurse =&gt; true,
-    require =&gt; File[&#39;dav::storm-webdav-config-dir&#39;],
+  # Service&#39;s hostkey
+  file { &#39;/etc/grid-security/storm-webdav/hostkey.pem&#39;:
+    ensure  =&gt; present,
+    mode    =&gt; &#39;0400&#39;,
+    owner   =&gt; &#39;storm&#39;,
+    group   =&gt; &#39;storm&#39;,
+    source  =&gt; &#39;/etc/grid-security/hostkey.pem&#39;,
+    require =&gt; File[&#39;/etc/grid-security/storm-webdav&#39;],
   }
 
   if $storage_areas {
@@ -890,74 +681,44 @@ class storm::webdav::config (
       $authenticated_read_enabled = $sa[authenticated_read_enabled]
       $anonymous_read_enabled = $sa[anonymous_read_enabled]
       $vo_map_enabled = $sa[vo_map_enabled]
-      $vo_map_grants_write_access = $sa[vo_map_grants_write_access]
+      $vo_map_grants_write_permission = $sa[vo_map_grants_write_permission]
+      $orgs_grant_write_permission = $sa[orgs_grant_write_permission]
       # use template
-      file { &quot;dav::create-${name}-sa-properties-file&quot;:
+      file { &quot;/etc/storm/webdav/sa.d/${name}.properties&quot;:
         ensure  =&gt; present,
-        path    =&gt; &quot;${config_dir}/sa.d/${name}.properties&quot;,
         content =&gt; template($sa_properties_template_file),
-        owner   =&gt; $user_name,
-        require =&gt; [File[&#39;dav::storm-webdav-sa-config-dir&#39;], Package[&#39;storm-webdav&#39;]],
+        owner   =&gt; &#39;root&#39;,
+        group   =&gt; &#39;storm&#39;,
         notify  =&gt; Service[&#39;storm-webdav&#39;],
+        require =&gt; Package[&#39;storm-webdav&#39;],
       }
       # check root path
-      storm::storage_root_dir { &quot;dav::check-${name}-sa-root-dir&quot;:
+      storm::common_directory { &quot;DAV_${root_path}&quot;:
         path  =&gt; $root_path,
-        owner =&gt; $user_name,
-        group =&gt; $user_name,
       }
     }
   }
 
   $application_template_file=&#39;storm/etc/storm/webdav/config/application.yml.erb&#39;
+  $application_file=&#39;/etc/storm/webdav/config/application.yml&#39;
   # configuration of application.yml
-  file { &#39;dav::configure-application-yml&#39;:
+  file { $application_file:
     ensure  =&gt; present,
-    path    =&gt; &quot;${config_dir}/config/application.yml&quot;,
     content =&gt; template($application_template_file),
     owner   =&gt; &#39;root&#39;,
-    group   =&gt; &#39;root&#39;,
+    group   =&gt; &#39;storm&#39;,
     mode    =&gt; &#39;0644&#39;,
-    require =&gt; [File[&#39;dav::storm-webdav-app-config-dir&#39;], Package[&#39;storm-webdav&#39;]],
-    notify  =&gt; Service[&#39;storm-webdav&#39;],
-  }
-
-  $sysconfig_file=&#39;/etc/sysconfig/storm-webdav&#39;
-  $sysconfig_template_file=&#39;storm/etc/sysconfig/storm-webdav.erb&#39;
-  file { &#39;dav::configure-sysconfig-file&#39;:
-    ensure  =&gt; present,
-    path    =&gt; $sysconfig_file,
-    content =&gt; template($sysconfig_template_file),
     notify  =&gt; Service[&#39;storm-webdav&#39;],
     require =&gt; Package[&#39;storm-webdav&#39;],
   }
 
-  case $::osfamily {
-
-    &#39;RedHat&#39;: {
-
-      case $::operatingsystemmajrelease {
-        &#39;7&#39;: {
-          $unit_file=&#39;/etc/systemd/system/storm-webdav.service&#39;
-          $unit_template_file=&#39;storm/etc/systemd/system/storm-webdav.service.erb&#39;
-          file { &#39;dav::configure-unit-file&#39;:
-            ensure  =&gt; present,
-            path    =&gt; $unit_file,
-            content =&gt; template($unit_template_file),
-            notify  =&gt; Service[&#39;storm-webdav&#39;],
-            require =&gt; Package[&#39;storm-webdav&#39;],
-          }
-        }
-        default: {
-          # nothing to do
-        }
-      }
-    }
-
-    # In any other case raise error:
-    default: {
-      fail(&quot;StoRM module not supported on ${::osfamily}/${::operatingsystem}.&quot;)
-    }
+  $sysconfig_file=&#39;/etc/sysconfig/storm-webdav&#39;
+  $sysconfig_template_file=&#39;storm/etc/sysconfig/storm-webdav.erb&#39;
+  file { $sysconfig_file:
+    ensure  =&gt; present,
+    content =&gt; template($sysconfig_template_file),
+    notify  =&gt; Service[&#39;storm-webdav&#39;],
+    require =&gt; Package[&#39;storm-webdav&#39;],
   }
 }</pre>
       </td>

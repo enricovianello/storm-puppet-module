@@ -88,45 +88,6 @@
   
     <li>
       
-        <span class='name'>user_name</span>
-      
-      
-        <span class='type'>(<tt>Any</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>$storm::frontend::user_name</tt>)</em>
-      
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>user_uid</span>
-      
-      
-        <span class='type'>(<tt>Any</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>$storm::frontend::user_uid</tt>)</em>
-      
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>user_gid</span>
-      
-      
-        <span class='type'>(<tt>Any</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>$storm::frontend::user_gid</tt>)</em>
-      
-      
-    </li>
-  
-    <li>
-      
         <span class='name'>db_host</span>
       
       
@@ -160,45 +121,6 @@
       
       
         <em class="default">(defaults to: <tt>$storm::frontend::db_passwd</tt>)</em>
-      
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>config_dir</span>
-      
-      
-        <span class='type'>(<tt>Any</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>$storm::frontend::config_dir</tt>)</em>
-      
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>hostcert_dir</span>
-      
-      
-        <span class='type'>(<tt>Any</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>$storm::frontend::hostcert_dir</tt>)</em>
-      
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>log_dir</span>
-      
-      
-        <span class='type'>(<tt>Any</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>$storm::frontend::log_dir</tt>)</em>
       
       
     </li>
@@ -548,63 +470,16 @@
 88
 89
 90
-91
-92
-93
-94
-95
-96
-97
-98
-99
-100
-101
-102
-103
-104
-105
-106
-107
-108
-109
-110
-111
-112
-113
-114
-115
-116
-117
-118
-119
-120
-121
-122
-123
-124
-125
-126
-127
-128
-129
-130</pre>
+91</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/frontend/config.pp', line 3</span>
 
 class storm::frontend::config (
 
-  $user_name = $storm::frontend::user_name,
-  $user_uid = $storm::frontend::user_uid,
-  $user_gid = $storm::frontend::user_gid,
-
   $db_host = $storm::frontend::db_host,
   $db_user = $storm::frontend::db_user,
   $db_passwd = $storm::frontend::db_passwd,
-
-  $config_dir = $storm::frontend::config_dir,
-  $hostcert_dir = $storm::frontend::hostcert_dir,
-  $log_dir = $storm::frontend::log_dir,
 
   $port = $storm::frontend::port,
 
@@ -636,88 +511,57 @@ class storm::frontend::config (
 
 ) {
 
-  # storm user&#39;s group
-  group { $user_name:
-    ensure =&gt; present,
-    gid    =&gt; $user_gid,
+  # Service&#39;s host credentials directory
+  file { &#39;/etc/grid-security/storm&#39;:
+    ensure  =&gt; directory,
+    owner   =&gt; &#39;storm&#39;,
+    group   =&gt; &#39;storm&#39;,
+    mode    =&gt; &#39;0755&#39;,
+    recurse =&gt; true,
   }
-
-  # storm user
-  user { $user_name:
+  # Service&#39;s hostcert
+  file { &#39;/etc/grid-security/storm/hostcert.pem&#39;:
     ensure  =&gt; present,
-    uid     =&gt; $user_uid,
-    gid     =&gt; $user_name,
-    require =&gt; Group[$user_name],
+    mode    =&gt; &#39;0644&#39;,
+    owner   =&gt; &#39;storm&#39;,
+    group   =&gt; &#39;storm&#39;,
+    source  =&gt; &#39;/etc/grid-security/hostcert.pem&#39;,
+    require =&gt; File[&#39;/etc/grid-security/storm&#39;],
+  }
+  # Service&#39;s hostkey
+  file { &#39;/etc/grid-security/storm/hostkey.pem&#39;:
+    ensure  =&gt; present,
+    mode    =&gt; &#39;0400&#39;,
+    owner   =&gt; &#39;storm&#39;,
+    group   =&gt; &#39;storm&#39;,
+    source  =&gt; &#39;/etc/grid-security/hostkey.pem&#39;,
+    require =&gt; File[&#39;/etc/grid-security/storm&#39;],
   }
 
-  # set ownership and permissions on storm fe config dir
-  file { &#39;fe::storm-fe-config-dir&#39;:
-    ensure  =&gt; directory,
-    path    =&gt; $config_dir,
-    owner   =&gt; $user_name,
-    group   =&gt; $user_name,
-    mode    =&gt; &#39;0750&#39;,
-    recurse =&gt; true,
-    require =&gt; User[$user_name],
-  }
-
-  # log directory
-  file { &#39;dav::storm-log-dir&#39;:
-    ensure  =&gt; directory,
-    path    =&gt; $log_dir,
-    owner   =&gt; $user_name,
-    group   =&gt; $user_name,
-    mode    =&gt; &#39;0755&#39;,
-    recurse =&gt; true,
-  }
-
-  file { &#39;fe::hostcert-dir&#39;:
-    ensure  =&gt; directory,
-    path    =&gt; $hostcert_dir,
-    owner   =&gt; $user_name,
-    group   =&gt; $user_name,
-    mode    =&gt; &#39;0755&#39;,
-    recurse =&gt; true,
-  }
-
-  storm::service_hostcert { &#39;fe::host-credentials&#39;:
-    hostcert =&gt; &quot;${hostcert_dir}/hostcert.pem&quot;,
-    hostkey  =&gt; &quot;${hostcert_dir}/hostkey.pem&quot;,
-    owner    =&gt; $user_name,
-    group    =&gt; $user_name,
-    require  =&gt; File[&#39;fe::hostcert-dir&#39;],
-  }
-
-  $conf_file=&quot;${config_dir}/storm-frontend-server.conf&quot;
+  $conf_file=&#39;/etc/storm/frontend-server/storm-frontend-server.conf&#39;
   $conf_template_file=&#39;storm/etc/storm/frontend-server/storm-frontend-server.conf.erb&#39;
 
-  file { &#39;fe::configure-fe-conf-file&#39;:
+  file { $conf_file:
     ensure  =&gt; present,
-    path    =&gt; $conf_file,
+    owner   =&gt; &#39;root&#39;,
+    group   =&gt; &#39;storm&#39;,
     content =&gt; template($conf_template_file),
     notify  =&gt; Service[&#39;storm-frontend-server&#39;],
-    require =&gt; Package[&#39;storm-frontend-server&#39;],
+    require =&gt; Package[&#39;storm-frontend-mp&#39;],
   }
 
-  case $::os[&#39;architecture&#39;] {
-
-    &#39;x86_64&#39;: {
-      $ld_library_path=&#39;/usr/lib64/storm&#39;
-    }
-    # In any other case:
-    default: {
-      $ld_library_path=&#39;/usr/lib/storm&#39;
-    }
+  $ld_library_path=$::os[&#39;architecture&#39;] ? {
+    &#39;x86_64&#39; =&gt; &#39;/usr/lib64/storm&#39;,
+    default  =&gt; &#39;/usr/lib/storm&#39;,
   }
 
   $sysconfig_file=&#39;/etc/sysconfig/storm-frontend-server&#39;
   $sysconfig_template_file=&#39;storm/etc/sysconfig/storm-frontend-server.erb&#39;
-  file { &#39;fe::configure-sysconfig-file&#39;:
+  file { $sysconfig_file:
     ensure  =&gt; present,
-    path    =&gt; $sysconfig_file,
     content =&gt; template($sysconfig_template_file),
     notify  =&gt; Service[&#39;storm-frontend-server&#39;],
-    require =&gt; Package[&#39;storm-frontend-server&#39;],
+    require =&gt; Package[&#39;storm-frontend-mp&#39;],
   }
 }</pre>
       </td>
