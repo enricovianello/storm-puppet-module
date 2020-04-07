@@ -6,15 +6,15 @@
 <title>
   Puppet Class: storm::webdav
   
-    &mdash; Documentation by YARD 0.9.20
+    &mdash; Documentation by YARD 0.9.24
   
 </title>
 
-  <link rel="stylesheet" href="../css/style.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="../css/style.css" type="text/css" />
 
-  <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="../css/common.css" type="text/css" />
 
-<script type="text/javascript" charset="utf-8">
+<script type="text/javascript">
   pathId = "puppet_classes::storm::webdav";
   relpath = '../';
 </script>
@@ -141,7 +141,6 @@
 </div></p>
       
       <pre class="example code"><code>class { &#39;storm::webdav&#39;:
-  storage_root_dir =&gt; &#39;/storage&#39;,
   storage_areas =&gt; [
     {
       name                       =&gt; &#39;test.vo&#39;,
@@ -174,24 +173,6 @@
   </div>
 <p class="tag_title">Parameters:</p>
 <ul class="param">
-  
-    <li>
-      
-        <span class='name'>storage_root_dir</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>$storm::webdav::params::storage_root_dir</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>Storage areas root directory path.</p>
-</div>
-      
-    </li>
   
     <li>
       
@@ -536,7 +517,21 @@
       
     </li>
   
+    <li>
+      
+        <span class='name'>storm_limit_nofile</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::webdav::params::storm_limit_nofile</tt>)</em>
+      
+      
+    </li>
+  
 </ul>
+
 
 
 </div><div class="method_details_list">
@@ -546,6 +541,8 @@
         <pre class="lines">
 
 
+120
+121
 122
 123
 124
@@ -594,16 +591,12 @@
 167
 168
 169
-170
-171
-172</pre>
+170</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/webdav.pp', line 122</span>
+        <pre class="code"><span class="info file"># File 'manifests/webdav.pp', line 120</span>
 
 class storm::webdav (
-
-  String $storage_root_dir = $storm::webdav::params::storage_root_dir,
 
   Array[Storm::Webdav::StorageArea] $storage_areas = $storm::webdav::params::storage_areas,
 
@@ -641,6 +634,8 @@ class storm::webdav (
   Boolean $debug = $storm::webdav::params::debug,
   Integer $debug_port = $storm::webdav::params::debug_port,
   Boolean $debug_suspend = $storm::webdav::params::debug_suspend,
+
+  Integer $storm_limit_nofile = $storm::webdav::params::storm_limit_nofile,
 
 ) inherits storm::webdav::params {
 

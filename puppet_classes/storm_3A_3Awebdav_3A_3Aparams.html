@@ -6,15 +6,15 @@
 <title>
   Puppet Class: storm::webdav::params
   
-    &mdash; Documentation by YARD 0.9.20
+    &mdash; Documentation by YARD 0.9.24
   
 </title>
 
-  <link rel="stylesheet" href="../css/style.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="../css/style.css" type="text/css" />
 
-  <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="../css/common.css" type="text/css" />
 
-<script type="text/javascript" charset="utf-8">
+<script type="text/javascript">
   pathId = "puppet_classes::storm::webdav::params";
   relpath = '../';
 </script>
@@ -99,6 +99,7 @@
 <div class="tags">
   
 
+
 </div><div class="method_details_list">
   <table class="source_code">
     <tr>
@@ -156,8 +157,6 @@
 class storm::webdav::params (
 ) inherits storm::params {
 
-  $storage_root_dir = $storm::params::storage_root_dir
-
   $storage_areas = lookup(&#39;storm::webdav::storage_areas&#39;, Array[Storm::Webdav::StorageArea], undef, [])
 
   $oauth_issuers = lookup(&#39;storm::webdav::oauth_issuers&#39;, Array[Storm::Webdav::OAuthIssuer], undef, [])
@@ -195,6 +194,8 @@ class storm::webdav::params (
   $debug = lookup(&#39;storm::webdav::debug&#39;, Boolean, undef, false)
   $debug_port = lookup(&#39;storm::webdav::debug_port&#39;, Integer, undef, 1044)
   $debug_suspend = lookup(&#39;storm::webdav::debug_suspend&#39;, Boolean, undef, false)
+
+  $storm_limit_nofile = lookup(&#39;storm::webdav::storm_limit_nofile&#39;, Integer, undef, 65535)
 }</pre>
       </td>
     </tr>

@@ -6,15 +6,15 @@
 <title>
   Puppet Class: storm::webdav::config
   
-    &mdash; Documentation by YARD 0.9.20
+    &mdash; Documentation by YARD 0.9.24
   
 </title>
 
-  <link rel="stylesheet" href="../css/style.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="../css/style.css" type="text/css" />
 
-  <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="../css/common.css" type="text/css" />
 
-<script type="text/javascript" charset="utf-8">
+<script type="text/javascript">
   pathId = "puppet_classes::storm::webdav::config";
   relpath = '../';
 </script>
@@ -85,19 +85,6 @@
 <div class="tags">
   <p class="tag_title">Parameters:</p>
 <ul class="param">
-  
-    <li>
-      
-        <span class='name'>storage_root_dir</span>
-      
-      
-        <span class='type'>(<tt>Any</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>$storm::webdav::storage_root_dir</tt>)</em>
-      
-      
-    </li>
   
     <li>
       
@@ -437,7 +424,21 @@
       
     </li>
   
+    <li>
+      
+        <span class='name'>storm_limit_nofile</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::webdav::storm_limit_nofile</tt>)</em>
+      
+      
+    </li>
+  
 </ul>
+
 
 
 </div><div class="method_details_list">
@@ -581,14 +582,21 @@
 134
 135
 136
-137</pre>
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/webdav/config.pp', line 3</span>
 
 class storm::webdav::config (
-
-  $storage_root_dir = $storm::webdav::storage_root_dir,
 
   $storage_areas = $storm::webdav::storage_areas,
 
@@ -627,12 +635,9 @@ class storm::webdav::config (
   $debug_port = $storm::webdav::debug_port,
   $debug_suspend = $storm::webdav::debug_suspend,
 
-) {
+  $storm_limit_nofile = $storm::webdav::storm_limit_nofile,
 
-  # Storage root directory
-  storm::common_directory { &quot;DAV_${storage_root_dir}&quot;:
-    path  =&gt; $storage_root_dir,
-  }
+) {
 
   file { &#39;/var/lib/storm-webdav/work&#39;:
     ensure  =&gt; directory,
@@ -690,13 +695,29 @@ class storm::webdav::config (
         owner   =&gt; &#39;root&#39;,
         group   =&gt; &#39;storm&#39;,
         notify  =&gt; Service[&#39;storm-webdav&#39;],
-        require =&gt; Package[&#39;storm-webdav&#39;],
-      }
-      # check root path
-      storm::common_directory { &quot;DAV_${root_path}&quot;:
-        path  =&gt; $root_path,
       }
     }
+  }
+
+  $limit_service_dir=&#39;/etc/systemd/system/storm-webdav.service.d&#39;
+  file { $limit_service_dir:
+    ensure =&gt; directory,
+    owner  =&gt; &#39;root&#39;,
+    group  =&gt; &#39;root&#39;,
+    mode   =&gt; &#39;0644&#39;,
+  }
+
+  $limit_template_file=&#39;storm/etc/systemd/system/storm-webdav.service.d/filelimit.conf.erb&#39;
+  $limit_file=&#39;/etc/systemd/system/storm-webdav.service.d/filelimit.conf&#39;
+  # configuration of filelimit.conf
+  file { $limit_file:
+    ensure  =&gt; present,
+    content =&gt; template($limit_template_file),
+    owner   =&gt; &#39;root&#39;,
+    group   =&gt; &#39;root&#39;,
+    mode    =&gt; &#39;0644&#39;,
+    notify  =&gt; Service[&#39;storm-webdav&#39;],
+    require =&gt; File[$limit_service_dir],
   }
 
   $application_template_file=&#39;storm/etc/storm/webdav/config/application.yml.erb&#39;
@@ -709,7 +730,6 @@ class storm::webdav::config (
     group   =&gt; &#39;storm&#39;,
     mode    =&gt; &#39;0644&#39;,
     notify  =&gt; Service[&#39;storm-webdav&#39;],
-    require =&gt; Package[&#39;storm-webdav&#39;],
   }
 
   $sysconfig_file=&#39;/etc/sysconfig/storm-webdav&#39;
@@ -718,7 +738,6 @@ class storm::webdav::config (
     ensure  =&gt; present,
     content =&gt; template($sysconfig_template_file),
     notify  =&gt; Service[&#39;storm-webdav&#39;],
-    require =&gt; Package[&#39;storm-webdav&#39;],
   }
 }</pre>
       </td>

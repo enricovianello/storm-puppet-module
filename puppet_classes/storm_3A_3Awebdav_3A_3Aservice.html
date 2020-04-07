@@ -6,15 +6,15 @@
 <title>
   Puppet Class: storm::webdav::service
   
-    &mdash; Documentation by YARD 0.9.20
+    &mdash; Documentation by YARD 0.9.24
   
 </title>
 
-  <link rel="stylesheet" href="../css/style.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="../css/style.css" type="text/css" />
 
-  <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="../css/common.css" type="text/css" />
 
-<script type="text/javascript" charset="utf-8">
+<script type="text/javascript">
   pathId = "puppet_classes::storm::webdav::service";
   relpath = '../';
 </script>
@@ -85,6 +85,7 @@
 <div class="tags">
   
 
+
 </div><div class="method_details_list">
   <table class="source_code">
     <tr>
@@ -98,8 +99,7 @@
 6
 7
 8
-9
-10</pre>
+9</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/webdav/service.pp', line 3</span>
@@ -107,9 +107,8 @@
 class storm::webdav::service {
 
   service { &#39;storm-webdav&#39;:
-    ensure  =&gt; running,
-    enable  =&gt; true,
-    require =&gt; Package[&#39;storm-webdav&#39;],
+    ensure =&gt; running,
+    enable =&gt; true,
   }
 }</pre>
       </td>

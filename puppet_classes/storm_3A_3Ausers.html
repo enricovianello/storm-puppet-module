@@ -6,15 +6,15 @@
 <title>
   Puppet Class: storm::users
   
-    &mdash; Documentation by YARD 0.9.20
+    &mdash; Documentation by YARD 0.9.24
   
 </title>
 
-  <link rel="stylesheet" href="../css/style.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="../css/style.css" type="text/css" />
 
-  <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="../css/common.css" type="text/css" />
 
-<script type="text/javascript" charset="utf-8">
+<script type="text/javascript">
   pathId = "puppet_classes::storm::users";
   relpath = '../';
 </script>
@@ -80,22 +80,7 @@
     
 <h2 id="label-Parameters">Parameters</h2>
 
-<p>StoRM needs a &#39;storm&#39; Unix user, member of an &#39;edguser&#39; group. This class allows the creation of storm and edguser users. The parameters are:</p>
-<ul><li>
-<p><code>edguser_uid</code>: the user id of <code>edguser</code> user;</p>
-</li><li>
-<p><code>edguser_gid</code>: the group id of <code>edguser</code> group;</p>
-</li><li>
-<p><code>edguser_home</code>: the home path of <code>edguser</code>;</p>
-</li><li>
-<p><code>storm_uid</code>: the user id of <code>storm</code> user;</p>
-</li><li>
-<p><code>storm_gid</code>: the group id of <code>storm</code> group;</p>
-</li><li>
-<p><code>storm_home</code>: the home path of <code>storm</code>;</p>
-</li><li>
-<p><code>storm_groups</code>: the list of <code>storm</code> user memberships;</p>
-</li></ul>
+<p>StoRM needs a &#39;storm&#39; Unix user, member of an &#39;edguser&#39; group. This class creates all the necessary users.</p>
 
   </div>
 </div>
@@ -112,9 +97,25 @@
 </div></p>
       
       <pre class="example code"><code>class { &#39;storm::users&#39;:
-  storm_uid =&gt; 991,
-  storm_gid =&gt; 991,
-  storm_groups =&gt; [&#39;storm&#39;, &#39;edguser&#39;, &#39;test&#39;],
+  groups =&gt; {
+    &#39;infosys&#39; =&gt; {
+      gid =&gt; &#39;996&#39;,
+    },
+  },
+  users =&gt; {
+    &#39;edguser&#39; =&gt; {
+      &#39;comment&#39; =&gt; &#39;Edguser user&#39;,
+      &#39;groups&#39;  =&gt; [ edguser, infosys, storm, ],
+      &#39;uid&#39;     =&gt; &#39;995&#39;,
+      &#39;gid&#39;     =&gt; &#39;995&#39;,
+    },
+    &#39;storm&#39; =&gt; {
+      &#39;comment&#39; =&gt; &#39;StoRM user&#39;,
+      &#39;groups&#39;  =&gt; [ storm, edguser, ],
+      &#39;uid&#39;     =&gt; &#39;991&#39;,
+      &#39;gid&#39;     =&gt; &#39;991&#39;,
+    },
+  }
 }</code></pre>
     
   </div>
@@ -123,101 +124,51 @@
   
     <li>
       
-        <span class='name'>edguser_uid</span>
+        <span class='name'>groups</span>
       
       
-        <span class='type'>(<tt>Integer</tt>)</span>
+        <span class='type'>(<tt>Accounts::Group::Hash</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>995</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>The user id of <code>edguser</code> user.</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>edguser_gid</span>
-      
-      
-        <span class='type'>(<tt>Integer</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>995</tt>)</em>
+        <em class="default">(defaults to: <tt>{
+    &#39;infosys&#39; =&gt; {
+      gid =&gt; &#39;996&#39;,
+    },
+  }</tt>)</em>
       
       
     </li>
   
     <li>
       
-        <span class='name'>edguser_home</span>
+        <span class='name'>users</span>
       
       
-        <span class='type'>(<tt>String</tt>)</span>
+        <span class='type'>(<tt>Accounts::User::Hash</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>&#39;/var/local/edguser&#39;</tt>)</em>
-      
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>storm_uid</span>
-      
-      
-        <span class='type'>(<tt>Integer</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>991</tt>)</em>
-      
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>storm_gid</span>
-      
-      
-        <span class='type'>(<tt>Integer</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>991</tt>)</em>
-      
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>storm_home</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>&#39;/home/storm&#39;</tt>)</em>
-      
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>storm_groups</span>
-      
-      
-        <span class='type'>(<tt>Array[String]</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>[&#39;storm&#39;,&#39;edguser&#39;]</tt>)</em>
+        <em class="default">(defaults to: <tt>{
+    &#39;edguser&#39; =&gt; {
+      &#39;comment&#39; =&gt; &#39;Edguser user&#39;,
+      &#39;groups&#39;  =&gt; [ edguser, infosys, storm, ],
+      &#39;uid&#39;     =&gt; &#39;995&#39;,
+      &#39;gid&#39;     =&gt; &#39;995&#39;,
+      &#39;home&#39;    =&gt; &#39;/home/edguser&#39;,
+    },
+    &#39;storm&#39; =&gt; {
+      &#39;comment&#39; =&gt; &#39;StoRM user&#39;,
+      &#39;groups&#39;  =&gt; [ storm, edguser, ],
+      &#39;uid&#39;     =&gt; &#39;991&#39;,
+      &#39;gid&#39;     =&gt; &#39;991&#39;,
+      &#39;home&#39;    =&gt; &#39;/home/storm&#39;,
+    },
+  }</tt>)</em>
       
       
     </li>
   
 </ul>
+
 
 
 </div><div class="method_details_list">
@@ -227,6 +178,10 @@
         <pre class="lines">
 
 
+37
+38
+39
+40
 41
 42
 43
@@ -251,57 +206,39 @@
 62
 63
 64
-65
-66
-67
-68
-69
-70
-71
-72
-73
-74
-75
-76</pre>
+65</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/users.pp', line 41</span>
+        <pre class="code"><span class="info file"># File 'manifests/users.pp', line 37</span>
 
 class storm::users (
 
-  Integer $edguser_uid = 995,
-  Integer $edguser_gid = 995,
-  String $edguser_home = &#39;/var/local/edguser&#39;,
-
-  Integer $storm_uid = 991,
-  Integer $storm_gid = 991,
-  String $storm_home = &#39;/home/storm&#39;,
-  Array[String] $storm_groups = [&#39;storm&#39;,&#39;edguser&#39;],
+  Accounts::Group::Hash $groups = {
+    &#39;infosys&#39; =&gt; {
+      gid =&gt; &#39;996&#39;,
+    },
+  },
+  Accounts::User::Hash $users = {
+    &#39;edguser&#39; =&gt; {
+      &#39;comment&#39; =&gt; &#39;Edguser user&#39;,
+      &#39;groups&#39;  =&gt; [ edguser, infosys, storm, ],
+      &#39;uid&#39;     =&gt; &#39;995&#39;,
+      &#39;gid&#39;     =&gt; &#39;995&#39;,
+      &#39;home&#39;    =&gt; &#39;/home/edguser&#39;,
+    },
+    &#39;storm&#39; =&gt; {
+      &#39;comment&#39; =&gt; &#39;StoRM user&#39;,
+      &#39;groups&#39;  =&gt; [ storm, edguser, ],
+      &#39;uid&#39;     =&gt; &#39;991&#39;,
+      &#39;gid&#39;     =&gt; &#39;991&#39;,
+      &#39;home&#39;    =&gt; &#39;/home/storm&#39;,
+    },
+  }
 
 ) {
 
-  accounts::user { &#39;edguser&#39;:
-    ensure     =&gt; &#39;present&#39;,
-    uid        =&gt; $edguser_uid,
-    gid        =&gt; $edguser_gid,
-    group      =&gt; &#39;edguser&#39;,
-    home       =&gt; $edguser_home,
-    comment    =&gt; &#39;EDG user&#39;,
-    membership =&gt; &#39;inclusive&#39;,
-  }
-
-  accounts::user { &#39;storm&#39;:
-    ensure     =&gt; &#39;present&#39;,
-    uid        =&gt; $storm_uid,
-    gid        =&gt; $storm_gid,
-    group      =&gt; &#39;storm&#39;,
-    groups     =&gt; $storm_groups,
-    home       =&gt; $storm_home,
-    comment    =&gt; &#39;StoRM user&#39;,
-    membership =&gt; &#39;inclusive&#39;,
-    require    =&gt; [Accounts::User[&#39;edguser&#39;]],
-  }
-
+  create_resources(&#39;group&#39;, $groups)
+  create_resources(&#39;accounts::user&#39;, $users)
 }</pre>
       </td>
     </tr>

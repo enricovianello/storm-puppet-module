@@ -6,15 +6,15 @@
 <title>
   Puppet Class: storm::backend::params
   
-    &mdash; Documentation by YARD 0.9.20
+    &mdash; Documentation by YARD 0.9.24
   
 </title>
 
-  <link rel="stylesheet" href="../css/style.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="../css/style.css" type="text/css" />
 
-  <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="../css/common.css" type="text/css" />
 
-<script type="text/javascript" charset="utf-8">
+<script type="text/javascript">
   pathId = "puppet_classes::storm::backend::params";
   relpath = '../';
 </script>
@@ -99,6 +99,7 @@
 <div class="tags">
   
 
+
 </div><div class="method_details_list">
   <table class="source_code">
     <tr>
@@ -126,11 +127,7 @@
 20
 21
 22
-23
-24
-25
-26
-27</pre>
+23</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/backend/params.pp', line 3</span>
@@ -138,13 +135,9 @@
 class storm::backend::params (
 ) inherits storm::params {
 
-  $user_name = $storm::params::user_name
-
   $db_host = $storm::params::db_host
   $db_user = $storm::params::db_user
   $db_passwd = $storm::params::db_passwd
-
-  $config_dir = lookup(&#39;storm::backend::config_dir&#39;, String, undef, &#39;/etc/storm/backend-server&#39;)
 
   $rfio_port = lookup(&#39;storm::backend::rfio_port&#39;, Integer, undef, 5001)
   $xroot_port = lookup(&#39;storm::backend::xroot_port&#39;, Integer, undef, 1094)

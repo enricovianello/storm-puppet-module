@@ -6,15 +6,15 @@
 <title>
   Puppet Class: storm::backend
   
-    &mdash; Documentation by YARD 0.9.20
+    &mdash; Documentation by YARD 0.9.24
   
 </title>
 
-  <link rel="stylesheet" href="../css/style.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="../css/style.css" type="text/css" />
 
-  <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="../css/common.css" type="text/css" />
 
-<script type="text/javascript" charset="utf-8">
+<script type="text/javascript">
   pathId = "puppet_classes::storm::backend";
   relpath = '../';
 </script>
@@ -140,19 +140,6 @@
   
     <li>
       
-        <span class='name'>user_name</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>$storm::backend::params::user_name</tt>)</em>
-      
-      
-    </li>
-  
-    <li>
-      
         <span class='name'>db_host</span>
       
       
@@ -186,19 +173,6 @@
       
       
         <em class="default">(defaults to: <tt>$storm::backend::params::db_passwd</tt>)</em>
-      
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>config_dir</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>$storm::backend::params::config_dir</tt>)</em>
       
       
     </li>
@@ -323,6 +297,7 @@
 </ul>
 
 
+
 </div><div class="method_details_list">
   <table class="source_code">
     <tr>
@@ -361,11 +336,7 @@
 46
 47
 48
-49
-50
-51
-52
-53</pre>
+49</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/backend.pp', line 18</span>
@@ -374,13 +345,9 @@ class storm::backend (
 
   String $hostname,
 
-  String $user_name = $storm::backend::params::user_name,
-
   String $db_host = $storm::backend::params::db_host,
   String $db_user = $storm::backend::params::db_user,
   String $db_passwd = $storm::backend::params::db_passwd,
-
-  String $config_dir = $storm::backend::params::config_dir,
 
   String $rfio_hostname = lookup(&#39;storm::backend::rfio_hostname&#39;, String, undef, $hostname),
   Integer $rfio_port = $storm::backend::params::rfio_port,
