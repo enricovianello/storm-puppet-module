@@ -6,15 +6,15 @@
 <title>
   Puppet Class: storm::frontend::params
   
-    &mdash; Documentation by YARD 0.9.24
+    &mdash; Documentation by YARD 0.9.20
   
 </title>
 
-  <link rel="stylesheet" href="../css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../css/style.css" type="text/css" charset="utf-8" />
 
-  <link rel="stylesheet" href="../css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
 
-<script type="text/javascript">
+<script type="text/javascript" charset="utf-8">
   pathId = "puppet_classes::storm::frontend::params";
   relpath = '../';
 </script>
@@ -99,7 +99,6 @@
 <div class="tags">
   
 
-
 </div><div class="method_details_list">
   <table class="source_code">
     <tr>
@@ -149,9 +148,9 @@
 class storm::frontend::params (
 ) inherits storm::params {
 
-  $db_host = $storm::params::db_host
-  $db_user = $storm::params::db_user
-  $db_passwd = $storm::params::db_passwd
+  $db_host = lookup(&#39;storm::frontend::db::host&#39;, String, undef, &#39;localhost&#39;)
+  $db_user = lookup(&#39;storm::frontend::db::user&#39;, String, undef, &#39;storm&#39;)
+  $db_passwd = lookup(&#39;storm::frontend::db::passwd&#39;, String, undef, &#39;storm&#39;)
 
   $port = lookup(&#39;storm::frontend::port&#39;, Integer, undef, 8444)
   $threadpool_threads_number = lookup(&#39;storm::frontend::threadpool_threads_number&#39;, Integer, undef, 50)

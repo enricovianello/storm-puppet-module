@@ -4,7 +4,7 @@
     <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>
-  Puppet Class: storm::gridftp::params
+  Puppet Class: storm::info::params
   
     &mdash; Documentation by YARD 0.9.20
   
@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
 
 <script type="text/javascript" charset="utf-8">
-  pathId = "puppet_classes::storm::gridftp::params";
+  pathId = "puppet_classes::storm::info::params";
   relpath = '../';
 </script>
 
@@ -39,7 +39,7 @@
     <a href="../_index.html">Index (s)</a> &raquo;
     <span class='title'><span class='object_link'>Puppet Classes</span></span>
      &raquo; 
-    <span class="title">storm::gridftp::params</span>
+    <span class="title">storm::info::params</span>
   
 </div>
 
@@ -59,7 +59,7 @@
         <div class="clear"></div>
       </div>
 
-      <div id="content"><h1>Puppet Class: storm::gridftp::params</h1>
+      <div id="content"><h1>Puppet Class: storm::info::params</h1>
 <div class="box_info">
   
   <dl>
@@ -72,7 +72,7 @@
     <dt>Inherited by:</dt>
     <dd>
       
-      <span class='object_link'><a href="storm_3A_3Agridftp.html" title="puppet_classes::storm::gridftp (puppet_class)">storm::gridftp</a></span><br/>
+      <span class='object_link'><a href="storm_3A_3Ainfo.html" title="puppet_classes::storm::info (puppet_class)">storm::info</a></span><br/>
       
     </dd>
   </dl>
@@ -80,13 +80,13 @@
   <dl>
     <dt>Defined in:</dt>
     <dd>
-      manifests/gridftp/params.pp
+      manifests/info/params.pp
     </dd>
   </dl>
 </div>
 
   <h2>Summary</h2>
-  StoRM GridFTP params class
+  StoRM Info params class
 
 <h2>Overview</h2>
 <div class="docstring">
@@ -126,25 +126,25 @@
 20</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/gridftp/params.pp', line 3</span>
+        <pre class="code"><span class="info file"># File 'manifests/info/params.pp', line 3</span>
 
-class storm::gridftp::params (
+class storm::info::params (
+
 ) inherits storm::params {
 
-  $port = lookup(&#39;storm::gridftp::port&#39;, Integer, undef, 2811)
-  $port_range = lookup(&#39;storm::gridftp::port_range&#39;, String, undef, &#39;20000,25000&#39;)
-  $connections_max = lookup(&#39;storm::gridftp::connections_max&#39;, Integer, undef, 2000)
+  $config_file = lookup(&#39;storm::info::config_file&#39;, String, undef, &#39;/etc/storm/info-provider/storm-yaim-variables.conf&#39;)
 
-  $log_single = lookup(&#39;storm::gridftp::log_single&#39;, String, undef, &#39;/var/log/storm/storm-gridftp-session.log&#39;)
-  $log_transfer = lookup(&#39;storm::gridftp::log_transfer&#39;, String, undef, &#39;/var/log/storm/storm-globus-gridftp.log&#39;)
-
-  $redirect_lcmaps_log = lookup(&#39;storm::gridftp::redirect_lcmaps_log&#39;, Boolean, undef, false)
-  $llgt_log_file = lookup(&#39;storm::gridftp::llgt_log_file&#39;, String, undef, &#39;/var/log/storm/storm-gridftp-lcmaps.log&#39;)
-
-  $lcmaps_debug_level = lookup(&#39;storm::gridftp::lcmaps_debug_level&#39;, Integer, undef, 3)
-  $lcas_debug_level = lookup(&#39;storm::gridftp::lcas_debug_level&#39;, Integer, undef, 3)
-
-  $load_storm_dsi_module = lookup(&#39;storm::gridftp::load_storm_dsi_module&#39;, Boolean, undef, true)
+  $sitename = lookup(&#39;storm::info::sitename&#39;, String, undef, &#39;StoRM&#39;)
+  $backend_hostname =lookup(&#39;storm::info::backend_hostname&#39;, String, undef, &#39;backend.example.org&#39;)
+  $storage_default_root = lookup(&#39;storm::info::storage_default_root&#39;, String, undef, &#39;/storage&#39;)
+  $storage_areas = lookup(&#39;storm::info::storage_areas&#39;, Array[Storm::Backend::StorageArea], undef, [])
+  $frontend_public_host =lookup(&#39;storm::info::frontend_public_host&#39;, String, undef, &#39;frontend.example.org&#39;)
+  $frontend_path = lookup(&#39;storm::info::frontend_path&#39;, String, undef, &#39;/srm/managerv2&#39;)
+  $frontend_port = lookup(&#39;storm::info::frontend_port&#39;, Integer, undef, 8444)
+  $rest_services_port = lookup(&#39;storm::info::rest_services_port&#39;, Integer, undef, 9998)
+  $endpoint_quality_level = lookup(&#39;storm::info::endpoint_quality_level&#39;, Integer, undef, 2)
+  $webdav_pool_members = lookup(&#39;storm::info::webdav_pool_members&#39;, Array[Storm::Backend::WebdavPoolMember], undef, [])
+  $srm_pool_members = lookup(&#39;storm::info::srm_pool_members&#39;, Array[Storm::Backend::SrmPoolMember], undef, [])
 }</pre>
       </td>
     </tr>

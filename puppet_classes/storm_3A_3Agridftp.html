@@ -6,15 +6,15 @@
 <title>
   Puppet Class: storm::gridftp
   
-    &mdash; Documentation by YARD 0.9.24
+    &mdash; Documentation by YARD 0.9.20
   
 </title>
 
-  <link rel="stylesheet" href="../css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../css/style.css" type="text/css" charset="utf-8" />
 
-  <link rel="stylesheet" href="../css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
 
-<script type="text/javascript">
+<script type="text/javascript" charset="utf-8">
   pathId = "puppet_classes::storm::gridftp";
   relpath = '../';
 </script>
@@ -244,8 +244,61 @@
       
     </li>
   
+    <li>
+      
+        <span class='name'>lcmaps_debug_level</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::gridftp::params::lcmaps_debug_level</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The LCMAPS logging level. Values from 0 (ERROR) to 5 (DEBUG). Default: 3 (INFO)</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>lcas_debug_level</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::gridftp::params::lcas_debug_level</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The LCAS logging level. Values from 0 (ERROR) to 5 (DEBUG). Default: 3 (INFO)</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>load_storm_dsi_module</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::gridftp::params::load_storm_dsi_module</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Enable/Disable StoRM DSI module. Default: true (enabled)</p>
+</div>
+      
+    </li>
+  
 </ul>
-
 
 
 </div><div class="method_details_list">
@@ -255,14 +308,6 @@
         <pre class="lines">
 
 
-41
-42
-43
-44
-45
-46
-47
-48
 49
 50
 51
@@ -276,10 +321,23 @@
 59
 60
 61
-62</pre>
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/gridftp.pp', line 41</span>
+        <pre class="code"><span class="info file"># File 'manifests/gridftp.pp', line 49</span>
 
 class storm::gridftp (
 
@@ -292,6 +350,11 @@ class storm::gridftp (
 
   Boolean $redirect_lcmaps_log = $storm::gridftp::params::redirect_lcmaps_log,
   String $llgt_log_file = $storm::gridftp::params::llgt_log_file,
+
+  Integer $lcmaps_debug_level = $storm::gridftp::params::lcmaps_debug_level,
+  Integer $lcas_debug_level = $storm::gridftp::params::lcas_debug_level,
+
+  Boolean $load_storm_dsi_module = $storm::gridftp::params::load_storm_dsi_module,
 
 ) inherits storm::gridftp::params {
 

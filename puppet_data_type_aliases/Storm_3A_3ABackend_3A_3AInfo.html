@@ -4,7 +4,7 @@
     <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>
-  Data Type: Storm::Backend::WebdavPoolMember
+  Data Type: Storm::Backend::Info
   
     &mdash; Documentation by YARD 0.9.20
   
@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
 
 <script type="text/javascript" charset="utf-8">
-  pathId = "puppet_data_type_aliases::Storm::Backend::WebdavPoolMember";
+  pathId = "puppet_data_type_aliases::Storm::Backend::Info";
   relpath = '../';
 </script>
 
@@ -39,7 +39,7 @@
     <a href="../_index.html">Index (S)</a> &raquo;
     <span class='title'><span class='object_link'>Puppet Data Type Aliases</span></span>
      &raquo; 
-    <span class="title">Storm::Backend::WebdavPoolMember</span>
+    <span class="title">Storm::Backend::Info</span>
   
 </div>
 
@@ -59,12 +59,12 @@
         <div class="clear"></div>
       </div>
 
-      <div id="content"><h1>Puppet Data Type Alias: Storm::Backend::WebdavPoolMember</h1>
+      <div id="content"><h1>Puppet Data Type Alias: Storm::Backend::Info</h1>
 <div class="box_info">
   <dl>
     <dt>Defined in:</dt>
     <dd>
-      types/backend/webdavpoolmember.pp
+      types/backend/info.pp
     </dd>
   </dl>
 </div>
@@ -81,9 +81,16 @@
   <div class="docstring">
     <div class="discussion">
       <pre class="code"><span class="info">Struct[{
-  hostname => String,
-  http_port => Optional[Integer],
-  https_port => Optional[Integer],
+  sitename => Optional[String],
+  backend_hostname => Optional[String],
+  storage_default_root => Optional[String],
+  frontend_public_host => Optional[String],
+  frontend_path => Optional[String],
+  frontend_port => Optional[Integer],
+  rest_services_port => Optional[Integer],
+  endpoint_quality_level => Optional[Integer],
+  webdav_pool_list => Optional[String],
+  frontend_host_list => Optional[String],
 }]</span></pre>
     </div>
   </div>
@@ -104,7 +111,7 @@
 </pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'types/backend/webdavpoolmember.pp', line 1</span>
+        <pre class="code"><span class="info file"># File 'types/backend/info.pp', line 1</span>
 
 </pre>
       </td>

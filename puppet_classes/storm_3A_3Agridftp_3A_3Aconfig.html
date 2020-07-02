@@ -6,15 +6,15 @@
 <title>
   Puppet Class: storm::gridftp::config
   
-    &mdash; Documentation by YARD 0.9.24
+    &mdash; Documentation by YARD 0.9.20
   
 </title>
 
-  <link rel="stylesheet" href="../css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../css/style.css" type="text/css" charset="utf-8" />
 
-  <link rel="stylesheet" href="../css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
 
-<script type="text/javascript">
+<script type="text/javascript" charset="utf-8">
   pathId = "puppet_classes::storm::gridftp::config";
   relpath = '../';
 </script>
@@ -177,8 +177,46 @@
       
     </li>
   
+    <li>
+      
+        <span class='name'>lcmaps_debug_level</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::gridftp::lcmaps_debug_level</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>lcas_debug_level</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::gridftp::lcas_debug_level</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>load_storm_dsi_module</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::gridftp::load_storm_dsi_module</tt>)</em>
+      
+      
+    </li>
+  
 </ul>
-
 
 
 </div><div class="method_details_list">
@@ -221,7 +259,12 @@
 33
 34
 35
-36</pre>
+36
+37
+38
+39
+40
+41</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/gridftp/config.pp', line 3</span>
@@ -237,6 +280,11 @@ class storm::gridftp::config (
 
   $redirect_lcmaps_log = $storm::gridftp::redirect_lcmaps_log,
   $llgt_log_file = $storm::gridftp::llgt_log_file,
+
+  $lcmaps_debug_level = $storm::gridftp::lcmaps_debug_level,
+  $lcas_debug_level = $storm::gridftp::lcas_debug_level,
+
+  $load_storm_dsi_module = $storm::gridftp::load_storm_dsi_module,
 ) {
 
   $conf_file=&#39;/etc/gridftp.conf&#39;

@@ -6,15 +6,15 @@
 <title>
   Puppet Class: storm::backend
   
-    &mdash; Documentation by YARD 0.9.24
+    &mdash; Documentation by YARD 0.9.20
   
 </title>
 
-  <link rel="stylesheet" href="../css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../css/style.css" type="text/css" charset="utf-8" />
 
-  <link rel="stylesheet" href="../css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
 
-<script type="text/javascript">
+<script type="text/javascript" charset="utf-8">
   pathId = "puppet_classes::storm::backend";
   relpath = '../';
 </script>
@@ -83,13 +83,6 @@
 <div class="docstring">
   <div class="discussion">
     
-<h2 id="label-Parameters">Parameters</h2>
-
-<p>The StoRM Backend configuration parameters are:</p>
-<ul><li>
-<p><code>name</code>: description</p>
-</li></ul>
-
   </div>
 </div>
 
@@ -113,22 +106,6 @@
   
     <li>
       
-        <span class='name'>name</span>
-      
-      
-        <span class='type'></span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>Description</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
         <span class='name'>hostname</span>
       
       
@@ -136,43 +113,35 @@
       
       
       
-    </li>
-  
-    <li>
-      
-        <span class='name'>db_host</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>$storm::backend::params::db_host</tt>)</em>
-      
+        &mdash;
+        <div class='inline'>
+<p>StoRM Backend Fully Qualified Domain Name</p>
+</div>
       
     </li>
   
     <li>
       
-        <span class='name'>db_user</span>
+        <span class='name'>info</span>
       
       
-        <span class='type'>(<tt>String</tt>)</span>
+        <span class='type'>(<tt>Storm::Backend::Info</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$storm::backend::params::db_user</tt>)</em>
+        <em class="default">(defaults to: <tt>$storm::backend::params::info</tt>)</em>
       
       
     </li>
   
     <li>
       
-        <span class='name'>db_passwd</span>
+        <span class='name'>database</span>
       
       
-        <span class='type'>(<tt>String</tt>)</span>
+        <span class='type'>(<tt>Storm::Backend::Database</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$storm::backend::params::db_passwd</tt>)</em>
+        <em class="default">(defaults to: <tt>$storm::backend::params::database</tt>)</em>
       
       
     </li>
@@ -270,6 +239,19 @@
   
     <li>
       
+        <span class='name'>srm_pool_members</span>
+      
+      
+        <span class='type'>(<tt>Array[Storm::Backend::SrmPoolMember]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::srm_pool_members</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>storage_areas</span>
       
       
@@ -294,8 +276,657 @@
       
     </li>
   
+    <li>
+      
+        <span class='name'>frontend_port</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::frontend_port</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>directory_automatic_creation</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::directory_automatic_creation</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>directory_writeperm</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::directory_writeperm</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>rest_services_port</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::rest_services_port</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>rest_services_max_threads</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::rest_services_max_threads</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>rest_services_max_queue_size</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::rest_services_max_queue_size</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>synchcall_xmlrpc_unsecure_server_port</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::synchcall_xmlrpc_unsecure_server_port</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>synchcall_xmlrpc_maxthread</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::synchcall_xmlrpc_maxthread</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>synchcall_xmlrpc_max_queue_size</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::synchcall_xmlrpc_max_queue_size</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>synchcall_xmlrpc_security_enabled</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::synchcall_xmlrpc_security_enabled</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>synchcall_xmlrpc_security_token</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::synchcall_xmlrpc_security_token</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>ptg_skip_acl_setup</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::ptg_skip_acl_setup</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>pinlifetime_default</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::pinlifetime_default</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>pinlifetime_maximum</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::pinlifetime_maximum</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>sanity_check_enabled</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::sanity_check_enabled</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>service_du_enabled</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::service_du_enabled</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>service_du_delay</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::service_du_delay</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>service_du_interval</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::service_du_interval</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>synchcall_max_ls_entries</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::synchcall_max_ls_entries</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>gc_pinnedfiles_cleaning_delay</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::gc_pinnedfiles_cleaning_delay</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>gc_pinnedfiles_cleaning_interval</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::gc_pinnedfiles_cleaning_interval</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>gc_purge_enabled</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::gc_purge_enabled</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>gc_purge_interval</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::gc_purge_interval</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>gc_purge_size</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::gc_purge_size</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>gc_expired_request_time</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::gc_expired_request_time</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>gc_ptp_transit_interval</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::gc_ptp_transit_interval</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>gc_ptp_transit_start_delay</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::gc_ptp_transit_start_delay</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>extraslashes_file</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::extraslashes_file</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>extraslashes_root</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::extraslashes_root</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>extraslashes_gsiftp</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::extraslashes_gsiftp</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>db_connection_pool_enabled</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::db_connection_pool_enabled</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>db_connection_pool_max_active</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::db_connection_pool_max_active</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>db_connection_pool_max_wait</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::db_connection_pool_max_wait</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>asynch_db_reconnect_period</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::asynch_db_reconnect_period</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>asynch_db_delay_period</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::asynch_db_delay_period</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>asynch_picking_initial_delay</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::asynch_picking_initial_delay</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>asynch_picking_time_interval</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::asynch_picking_time_interval</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>asynch_picking_max_batch_size</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::asynch_picking_max_batch_size</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>requests_scheduler_core_size</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::requests_scheduler_core_size</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>requests_scheduler_max_size</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::requests_scheduler_max_size</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>requests_scheduler_queue_size</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::requests_scheduler_queue_size</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>ptp_requests_scheduler_core_size</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::ptp_requests_scheduler_core_size</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>ptp_requests_scheduler_max_size</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::ptp_requests_scheduler_max_size</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>ptp_requests_scheduler_queue_size</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::ptp_requests_scheduler_queue_size</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>ptg_requests_scheduler_core_size</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::ptg_requests_scheduler_core_size</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>ptg_requests_scheduler_max_size</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::ptg_requests_scheduler_max_size</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>ptg_requests_scheduler_queue_size</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::ptg_requests_scheduler_queue_size</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>bol_requests_scheduler_core_size</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::bol_requests_scheduler_core_size</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>bol_requests_scheduler_max_size</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::bol_requests_scheduler_max_size</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>bol_requests_scheduler_queue_size</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::bol_requests_scheduler_queue_size</tt>)</em>
+      
+      
+    </li>
+  
 </ul>
-
 
 
 </div><div class="method_details_list">
@@ -305,49 +936,142 @@
         <pre class="lines">
 
 
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45
-46
-47
-48
-49</pre>
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/backend.pp', line 18</span>
+        <pre class="code"><span class="info file"># File 'manifests/backend.pp', line 135</span>
 
 class storm::backend (
 
   String $hostname,
 
-  String $db_host = $storm::backend::params::db_host,
-  String $db_user = $storm::backend::params::db_user,
-  String $db_passwd = $storm::backend::params::db_passwd,
+  Storm::Backend::Info $info = $storm::backend::params::info,
+  Storm::Backend::Database $database = $storm::backend::params::database,
 
   String $rfio_hostname = lookup(&#39;storm::backend::rfio_hostname&#39;, String, undef, $hostname),
   Integer $rfio_port = $storm::backend::params::rfio_port,
@@ -358,10 +1082,87 @@ class storm::backend (
   Storm::Backend::BalanceStrategy $gsiftp_pool_balance_strategy = $storm::backend::params::gsiftp_pool_balance_strategy,
   Array[Storm::Backend::GsiftpPoolMember] $gsiftp_pool_members = $storm::backend::params::gsiftp_pool_members,
   Array[Storm::Backend::WebdavPoolMember] $webdav_pool_members = $storm::backend::params::webdav_pool_members,
+  Array[Storm::Backend::SrmPoolMember] $srm_pool_members = $storm::backend::params::srm_pool_members,
 
   Array[Storm::Backend::StorageArea] $storage_areas = $storm::backend::params::storage_areas,
 
-  String $frontend_public_host = lookup(&#39;storm::backend::srm_hostname&#39;, String, undef, $hostname)
+  String $frontend_public_host = lookup(&#39;storm::backend::srm_hostname&#39;, String, undef, $hostname),
+  Integer $frontend_port = $storm::backend::params::frontend_port,
+
+  Boolean $directory_automatic_creation = $storm::backend::params::directory_automatic_creation,
+  Boolean $directory_writeperm = $storm::backend::params::directory_writeperm,
+
+  Integer $rest_services_port = $storm::backend::params::rest_services_port,
+  Integer $rest_services_max_threads = $storm::backend::params::rest_services_max_threads,
+  Integer $rest_services_max_queue_size = $storm::backend::params::rest_services_max_queue_size,
+
+  # XMLRPC Server parameter
+  Integer $synchcall_xmlrpc_unsecure_server_port = $storm::backend::params::synchcall_xmlrpc_unsecure_server_port,
+  Integer $synchcall_xmlrpc_maxthread = $storm::backend::params::synchcall_xmlrpc_maxthread,
+  Integer $synchcall_xmlrpc_max_queue_size = $storm::backend::params::synchcall_xmlrpc_max_queue_size,
+  Boolean $synchcall_xmlrpc_security_enabled = $storm::backend::params::synchcall_xmlrpc_security_enabled,
+  String $synchcall_xmlrpc_security_token = $storm::backend::params::synchcall_xmlrpc_security_token,
+
+  # Skip ACL setup for PTG requests
+  Boolean $ptg_skip_acl_setup = $storm::backend::params::ptg_skip_acl_setup,
+
+  # Pin lifetime
+  Integer $pinlifetime_default = $storm::backend::params::pinlifetime_default,
+  Integer $pinlifetime_maximum = $storm::backend::params::pinlifetime_maximum,
+
+  # Sanity checks
+  Boolean $sanity_check_enabled = $storm::backend::params::sanity_check_enabled,
+
+  # DU service
+  Boolean $service_du_enabled = $storm::backend::params::service_du_enabled,
+  Integer $service_du_delay = $storm::backend::params::service_du_delay,
+  Integer $service_du_interval = $storm::backend::params::service_du_interval,
+
+  # Ls max entries
+  Integer $synchcall_max_ls_entries = $storm::backend::params::synchcall_max_ls_entries,
+
+  # Pinned Files cleaning parameters
+  Integer $gc_pinnedfiles_cleaning_delay = $storm::backend::params::gc_pinnedfiles_cleaning_delay,
+  Integer $gc_pinnedfiles_cleaning_interval = $storm::backend::params::gc_pinnedfiles_cleaning_interval,
+
+  # Garbage Collector
+  Boolean $gc_purge_enabled = $storm::backend::params::gc_purge_enabled,
+  Integer $gc_purge_interval = $storm::backend::params::gc_purge_interval,
+  Integer $gc_purge_size = $storm::backend::params::gc_purge_size,
+  Integer $gc_expired_request_time = $storm::backend::params::gc_expired_request_time,
+  Integer $gc_ptp_transit_interval = $storm::backend::params::gc_ptp_transit_interval,
+  Integer $gc_ptp_transit_start_delay = $storm::backend::params::gc_ptp_transit_start_delay,
+
+  # Extraslashes
+  String $extraslashes_file = $storm::backend::params::extraslashes_file,
+  String $extraslashes_root = $storm::backend::params::extraslashes_root,
+  String $extraslashes_gsiftp = $storm::backend::params::extraslashes_gsiftp,
+
+  # Db Connection Pool
+  Boolean $db_connection_pool_enabled = $storm::backend::params::db_connection_pool_enabled,
+  Integer $db_connection_pool_max_active = $storm::backend::params::db_connection_pool_max_active,
+  Integer $db_connection_pool_max_wait = $storm::backend::params::db_connection_pool_max_wait,
+
+  # Asynch Picker
+  Integer $asynch_db_reconnect_period = $storm::backend::params::asynch_db_reconnect_period,
+  Integer $asynch_db_delay_period = $storm::backend::params::asynch_db_delay_period,
+  Integer $asynch_picking_initial_delay = $storm::backend::params::asynch_picking_initial_delay,
+  Integer $asynch_picking_time_interval = $storm::backend::params::asynch_picking_time_interval,
+  Integer $asynch_picking_max_batch_size = $storm::backend::params::asynch_picking_max_batch_size,
+
+  # Requests schedulers
+  Integer $requests_scheduler_core_size = $storm::backend::params::requests_scheduler_core_size,
+  Integer $requests_scheduler_max_size = $storm::backend::params::requests_scheduler_max_size,
+  Integer $requests_scheduler_queue_size = $storm::backend::params::requests_scheduler_queue_size,
+  Integer $ptp_requests_scheduler_core_size = $storm::backend::params::ptp_requests_scheduler_core_size,
+  Integer $ptp_requests_scheduler_max_size = $storm::backend::params::ptp_requests_scheduler_max_size,
+  Integer $ptp_requests_scheduler_queue_size = $storm::backend::params::ptp_requests_scheduler_queue_size,
+  Integer $ptg_requests_scheduler_core_size = $storm::backend::params::ptg_requests_scheduler_core_size,
+  Integer $ptg_requests_scheduler_max_size = $storm::backend::params::ptg_requests_scheduler_max_size,
+  Integer $ptg_requests_scheduler_queue_size = $storm::backend::params::ptg_requests_scheduler_queue_size,
+  Integer $bol_requests_scheduler_core_size = $storm::backend::params::bol_requests_scheduler_core_size,
+  Integer $bol_requests_scheduler_max_size = $storm::backend::params::bol_requests_scheduler_max_size,
+  Integer $bol_requests_scheduler_queue_size = $storm::backend::params::bol_requests_scheduler_queue_size,
 
 ) inherits storm::backend::params {
 
@@ -369,9 +1170,27 @@ class storm::backend (
   contain storm::backend::config
   contain storm::backend::service
 
-  Class[&#39;storm::backend::install&#39;]
+  class { &#39;bdii&#39;:
+    selinux =&gt; false,
+  }
+  -&gt; class { &#39;storm::db&#39;:
+    fqdn_hostname  =&gt; $hostname,
+    storm_username =&gt; $database[storm_username],
+    storm_password =&gt; $database[storm_password],
+  }
+  -&gt; Class[&#39;storm::backend::install&#39;]
   -&gt; Class[&#39;storm::backend::config&#39;]
   -&gt; Class[&#39;storm::backend::service&#39;]
+  -&gt; class { &#39;storm::info&#39;:
+    backend_hostname     =&gt; $hostname,
+    sitename             =&gt; $info[sitename],
+    storage_default_root =&gt; $info[storage_default_root],
+    frontend_public_host =&gt; $frontend_public_host,
+    frontend_port        =&gt; $frontend_port,
+    rest_services_port   =&gt; $rest_services_port,
+    webdav_pool_members  =&gt; $webdav_pool_members,
+    srm_pool_members     =&gt; $srm_pool_members,
+  }
 }</pre>
       </td>
     </tr>

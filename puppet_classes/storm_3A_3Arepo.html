@@ -6,15 +6,15 @@
 <title>
   Puppet Class: storm::repo
   
-    &mdash; Documentation by YARD 0.9.24
+    &mdash; Documentation by YARD 0.9.20
   
 </title>
 
-  <link rel="stylesheet" href="../css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../css/style.css" type="text/css" charset="utf-8" />
 
-  <link rel="stylesheet" href="../css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
 
-<script type="text/javascript">
+<script type="text/javascript" charset="utf-8">
   pathId = "puppet_classes::storm::repo";
   relpath = '../';
 </script>
@@ -138,10 +138,10 @@
   
     <li>
       
-        <span class='name'>customs</span>
+        <span class='name'>extra</span>
       
       
-        <span class='type'>(<tt>Array[Struct[{ name =&gt; String, url =&gt; String }]]</tt>)</span>
+        <span class='type'>(<tt>Array[Storm::CustomRepo]</tt>)</span>
       
       
         <em class="default">(defaults to: <tt>[]</tt>)</em>
@@ -149,13 +149,12 @@
       
         &mdash;
         <div class='inline'>
-<p>A list of repository URLs that have to be installed and enabled. Optional.</p>
+<p>A list of repository that have to be created. Optional.</p>
 </div>
       
     </li>
   
 </ul>
-
 
 
 </div><div class="method_details_list">
@@ -206,50 +205,56 @@
 54
 55
 56
-57</pre>
+57
+58
+59
+60</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/repo.pp', line 16</span>
 
 class storm::repo (
+
   Array[Enum[&#39;stable&#39;, &#39;beta&#39;, &#39;nightly&#39;]] $installed = [&#39;stable&#39;, &#39;beta&#39;, &#39;nightly&#39;],
   Array[Enum[&#39;stable&#39;, &#39;beta&#39;, &#39;nightly&#39;]] $enabled = [&#39;stable&#39;],
-  Array[Struct[{ name =&gt; String, url =&gt; String }]] $customs = [],
+
+  Array[Storm::CustomRepo] $extra = [],
+
 ) {
 
-  $yum_config_manager = &#39;/bin/yum-config-manager&#39;
+  $base = &#39;https://repo.cloud.cnaf.infn.it/repository&#39;
+  $el = $::operatingsystemmajrelease
 
-  if ($installed.length &gt; 0) {
+  $installed.each | $repo | {
 
-    $el = $::operatingsystemmajrelease
-    $repo_dir = &#39;/etc/yum.repos.d&#39;
+    $enabled = $repo in $enabled ? { true =&gt; 1, default =&gt; 0 }
+    $name = &quot;storm-${repo}-centos${el}&quot;
+    $baseurl = &quot;${base}/storm-rpm-${repo}/centos${el}/&quot;
 
-    $installed.each | $name | {
-
-      $repo_url = &quot;https://repo.cloud.cnaf.infn.it/repository/storm/${name}/storm-${name}-centos${el}.repo&quot;
-      $repo_name = &quot;storm-${name}-centos${el}&quot;
-
-      exec {&quot;download-${name}-repo-el${el}&quot;:
-        command =&gt; &quot;${yum_config_manager} --add-repo=${repo_url}&quot;,
-        creates =&gt; &quot;${repo_dir}/${repo_name}.repo&quot;,
-      }
-      if $name in $enabled {
-        exec {&quot;enable-${name}-repo-el${el}&quot;:
-          command =&gt; &quot;${yum_config_manager} --enable ${repo_name}&quot;,
-        }
-      } else {
-        exec {&quot;disable-${name}-repo-el${el}&quot;:
-          command =&gt; &quot;${yum_config_manager} --disable ${repo_name}&quot;,
-        }
-      }
+    yumrepo { $name:
+      ensure   =&gt; present,
+      descr    =&gt; $name,
+      baseurl  =&gt; $baseurl,
+      enabled  =&gt; $enabled,
+      protect  =&gt; 1,
+      priority =&gt; 1,
+      gpgcheck =&gt; 0,
     }
   }
 
-  $customs.each | $repo | {
+  $extra.each | $repo | {
+
     $name = $repo[name]
-    $url = $repo[url]
-    exec {&quot;download-custom-${name}-repo&quot;:
-      command =&gt; &quot;${yum_config_manager} --add-repo=${url}&quot;,
+    $baseurl = $repo[baseurl]
+
+    yumrepo { $name:
+      ensure   =&gt; present,
+      descr    =&gt; $name,
+      baseurl  =&gt; $baseurl,
+      enabled  =&gt; 1,
+      protect  =&gt; 1,
+      priority =&gt; 1,
+      gpgcheck =&gt; 0,
     }
   }
 }</pre>

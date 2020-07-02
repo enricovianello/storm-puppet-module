@@ -4,7 +4,7 @@
     <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>
-  Defined Type: storm::common_directory
+  Puppet Class: storm::db
   
     &mdash; Documentation by YARD 0.9.20
   
@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
 
 <script type="text/javascript" charset="utf-8">
-  pathId = "puppet_defined_types::storm::common_directory";
+  pathId = "puppet_classes::storm::db";
   relpath = '../';
 </script>
 
@@ -28,7 +28,7 @@
   </head>
   <body>
     <div class="nav_wrap">
-      <iframe id="nav" src="../puppet_defined_type_list.html?1"></iframe>
+      <iframe id="nav" src="../puppet_class_list.html?1"></iframe>
       <div id="resizer"></div>
     </div>
 
@@ -37,9 +37,9 @@
         <div id="menu">
   
     <a href="../_index.html">Index (s)</a> &raquo;
-    <span class='title'><span class='object_link'>Defined Types</span></span>
+    <span class='title'><span class='object_link'>Puppet Classes</span></span>
      &raquo; 
-    <span class="title">storm::common_directory</span>
+    <span class="title">storm::db</span>
   
 </div>
 
@@ -59,18 +59,34 @@
         <div class="clear"></div>
       </div>
 
-      <div id="content"><h1>Defined Type: storm::common_directory</h1>
+      <div id="content"><h1>Puppet Class: storm::db</h1>
 <div class="box_info">
+  
+  <dl>
+    <dt>Inherits:</dt>
+    <dd><span class='object_link'><a href="storm_3A_3Adb_3A_3Aparams.html" title="puppet_classes::storm::db::params (puppet_class)">storm::db::params</a></span></dd>
+  </dl>
+  
+  
+  <dl>
+    <dt>Inherited by:</dt>
+    <dd>
+      
+      <span class='object_link'><a href="storm_3A_3Adb_3A_3Ainstall.html" title="puppet_classes::storm::db::install (puppet_class)">storm::db::install</a></span><br/>
+      
+    </dd>
+  </dl>
+  
   <dl>
     <dt>Defined in:</dt>
     <dd>
-      manifests/common_directory.pp
+      manifests/db.pp
     </dd>
   </dl>
 </div>
 
   <h2>Summary</h2>
-  Check if a directory path exists. If not, a new directory is created with specific owner and permissions.
+  StoRM Database class
 
 <h2>Overview</h2>
 <div class="docstring">
@@ -87,11 +103,13 @@
     
       
         <p class="example_title"><div class='inline'>
-<p>Basic usage</p>
+<p>Install and configure database as follow:</p>
 </div></p>
       
-      <pre class="example code"><code>storm::common_directory { &#39;check-root-dir&#39;:
-  path =&gt; &#39;/storage&#39;,
+      <pre class="example code"><code>class { &#39;storm::db&#39;:
+  fqdn_hostname  =&gt; &#39;be.test.example&#39;,
+  root_password  =&gt; &#39;secret&#39;,
+  storm_password =&gt; &#39;secret&#39;,
 }</code></pre>
     
   </div>
@@ -100,88 +118,72 @@
   
     <li>
       
-        <span class='name'>path</span>
+        <span class='name'>fqdn_hostname</span>
       
       
         <span class='type'>(<tt>String</tt>)</span>
       
       
+        <em class="default">(defaults to: <tt>$storm::db::params::fqdn_hostname</tt>)</em>
+      
       
         &mdash;
         <div class='inline'>
-<p>The directory path. Required.</p>
+<p>The Fully Qualyfied Domain Name of the host where database is installed. Required.</p>
 </div>
       
     </li>
   
     <li>
       
-        <span class='name'>owner</span>
+        <span class='name'>root_password</span>
       
       
         <span class='type'>(<tt>String</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>&#39;storm&#39;</tt>)</em>
+        <em class="default">(defaults to: <tt>$storm::db::params::root_password</tt>)</em>
       
       
         &mdash;
         <div class='inline'>
-<p>Directory&#39;s owner. Optional. Default: &#39;storm&#39;.</p>
+<p>The MySQL root user password. Optional.</p>
 </div>
       
     </li>
   
     <li>
       
-        <span class='name'>group</span>
+        <span class='name'>storm_username</span>
       
       
         <span class='type'>(<tt>String</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>&#39;storm&#39;</tt>)</em>
+        <em class="default">(defaults to: <tt>$storm::db::params::storm_username</tt>)</em>
       
       
         &mdash;
         <div class='inline'>
-<p>Directory&#39;s group. Optional. Default: &#39;storm&#39;.</p>
+<p>The database user used by StoRM services. Default: &#39;storm&#39;. Optional.</p>
 </div>
       
     </li>
   
     <li>
       
-        <span class='name'>permissions</span>
+        <span class='name'>storm_password</span>
       
       
         <span class='type'>(<tt>String</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>&#39;755&#39;</tt>)</em>
+        <em class="default">(defaults to: <tt>$storm::db::params::storm_password</tt>)</em>
       
       
         &mdash;
         <div class='inline'>
-<p>Directory&#39;s permissions. Optional. Default: &#39;755&#39;.</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>recurse</span>
-      
-      
-        <span class='type'>(<tt>Boolean</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>false</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>If recursion is enabled. Optional. Default: false.</p>
+<p>The password of database user used by StoRM services. Default: &#39;bluemoon&#39;. Optional.</p>
 </div>
       
     </li>
@@ -196,6 +198,7 @@
         <pre class="lines">
 
 
+21
 22
 23
 24
@@ -210,49 +213,26 @@
 33
 34
 35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45
-46
-47
-48</pre>
+36</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/common_directory.pp', line 22</span>
+        <pre class="code"><span class="info file"># File 'manifests/db.pp', line 21</span>
 
-define storm::common_directory (
-  String $path,
-  String $owner = &#39;storm&#39;,
-  String $group = &#39;storm&#39;,
-  String $permissions = &#39;755&#39;,
-  Boolean $recurse = false,
-) {
+class storm::db (
 
-  exec { &quot;mkdir_${title}&quot;:
-    command =&gt; &quot;/bin/mkdir -p ${path}&quot;,
-    unless  =&gt; &quot;/bin/test -d ${path}&quot;,
-    creates =&gt; $path,
-  }
+  String $fqdn_hostname = $storm::db::params::fqdn_hostname,
+  String $root_password = $storm::db::params::root_password,
+  String $storm_username = $storm::db::params::storm_username,
+  String $storm_password = $storm::db::params::storm_password,
 
-  $opt = $recurse ? {
-    true =&gt; &#39;-R&#39;,
-    default =&gt; &#39;&#39;,
-  }
-  exec { &quot;chown_${title}&quot;:
-    command =&gt; &quot;/bin/chown ${opt} ${owner}:${group} ${path}&quot;,
-    require =&gt; Exec[&quot;mkdir_${title}&quot;],
-  }
-  exec { &quot;chmod_${title}&quot;:
-    command =&gt; &quot;/bin/chmod ${$permissions} ${path}&quot;,
-    require =&gt; Exec[&quot;chown_${title}&quot;],
-  }
+) inherits storm::db::params {
+
+  contain storm::db::install
+  contain storm::db::config
+
+  Class[&#39;storm::db::install&#39;]
+  -&gt; Class[&#39;storm::db::config&#39;]
+
 }</pre>
       </td>
     </tr>

@@ -4,7 +4,7 @@
     <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>
-  Puppet Class: storm::gridftp::params
+  Puppet Class: storm::db::install
   
     &mdash; Documentation by YARD 0.9.20
   
@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
 
 <script type="text/javascript" charset="utf-8">
-  pathId = "puppet_classes::storm::gridftp::params";
+  pathId = "puppet_classes::storm::db::install";
   relpath = '../';
 </script>
 
@@ -39,7 +39,7 @@
     <a href="../_index.html">Index (s)</a> &raquo;
     <span class='title'><span class='object_link'>Puppet Classes</span></span>
      &raquo; 
-    <span class="title">storm::gridftp::params</span>
+    <span class="title">storm::db::install</span>
   
 </div>
 
@@ -59,34 +59,25 @@
         <div class="clear"></div>
       </div>
 
-      <div id="content"><h1>Puppet Class: storm::gridftp::params</h1>
+      <div id="content"><h1>Puppet Class: storm::db::install</h1>
 <div class="box_info">
   
   <dl>
     <dt>Inherits:</dt>
-    <dd><span class='object_link'><a href="storm_3A_3Aparams.html" title="puppet_classes::storm::params (puppet_class)">storm::params</a></span></dd>
+    <dd><span class='object_link'><a href="storm_3A_3Adb.html" title="puppet_classes::storm::db (puppet_class)">storm::db</a></span></dd>
   </dl>
   
-  
-  <dl>
-    <dt>Inherited by:</dt>
-    <dd>
-      
-      <span class='object_link'><a href="storm_3A_3Agridftp.html" title="puppet_classes::storm::gridftp (puppet_class)">storm::gridftp</a></span><br/>
-      
-    </dd>
-  </dl>
   
   <dl>
     <dt>Defined in:</dt>
     <dd>
-      manifests/gridftp/params.pp
+      manifests/db/install.pp
     </dd>
   </dl>
 </div>
 
   <h2>Summary</h2>
-  StoRM GridFTP params class
+  StoRM DB install class
 
 <h2>Overview</h2>
 <div class="docstring">
@@ -97,7 +88,24 @@
 
 
 <div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
   
+    <li>
+      
+        <span class='name'>root_password</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::db::root_password</tt>)</em>
+      
+      
+    </li>
+  
+</ul>
+
 
 </div><div class="method_details_list">
   <table class="source_code">
@@ -123,28 +131,72 @@
 17
 18
 19
-20</pre>
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/gridftp/params.pp', line 3</span>
+        <pre class="code"><span class="info file"># File 'manifests/db/install.pp', line 3</span>
 
-class storm::gridftp::params (
-) inherits storm::params {
+class storm::db::install (
 
-  $port = lookup(&#39;storm::gridftp::port&#39;, Integer, undef, 2811)
-  $port_range = lookup(&#39;storm::gridftp::port_range&#39;, String, undef, &#39;20000,25000&#39;)
-  $connections_max = lookup(&#39;storm::gridftp::connections_max&#39;, Integer, undef, 2000)
+  $root_password = $storm::db::root_password,
 
-  $log_single = lookup(&#39;storm::gridftp::log_single&#39;, String, undef, &#39;/var/log/storm/storm-gridftp-session.log&#39;)
-  $log_transfer = lookup(&#39;storm::gridftp::log_transfer&#39;, String, undef, &#39;/var/log/storm/storm-globus-gridftp.log&#39;)
+) inherits storm::db {
 
-  $redirect_lcmaps_log = lookup(&#39;storm::gridftp::redirect_lcmaps_log&#39;, Boolean, undef, false)
-  $llgt_log_file = lookup(&#39;storm::gridftp::llgt_log_file&#39;, String, undef, &#39;/var/log/storm/storm-gridftp-lcmaps.log&#39;)
+  $basearch = &#39;x86_64&#39;
+  $el = $::operatingsystemmajrelease
 
-  $lcmaps_debug_level = lookup(&#39;storm::gridftp::lcmaps_debug_level&#39;, Integer, undef, 3)
-  $lcas_debug_level = lookup(&#39;storm::gridftp::lcas_debug_level&#39;, Integer, undef, 3)
+  yumrepo { &#39;repo.mysql.com&#39;:
+    ensure   =&gt; present,
+    descr    =&gt; &#39;repo.mysql.com&#39;,
+    baseurl  =&gt; &quot;http://repo.mysql.com/yum/mysql-5.6-community/el/${el}/${basearch}/&quot;,
+    enabled  =&gt; 1,
+    gpgcheck =&gt; true,
+    gpgkey   =&gt; &#39;http://repo.mysql.com/RPM-GPG-KEY-mysql&#39;,
+  }
 
-  $load_storm_dsi_module = lookup(&#39;storm::gridftp::load_storm_dsi_module&#39;, Boolean, undef, true)
+  class { &#39;mysql::client&#39;:
+    package_name =&gt; &#39;mysql-community-client&#39;,
+    require      =&gt; Yumrepo[&#39;repo.mysql.com&#39;],
+  }
+
+  class { &#39;mysql::server&#39;:
+    package_name       =&gt; &#39;mysql-community-server&#39;,
+    root_password      =&gt; $root_password,
+    manage_config_file =&gt; true,
+    service_name       =&gt; &#39;mysqld&#39;,
+    require            =&gt; Yumrepo[&#39;repo.mysql.com&#39;],
+    override_options   =&gt; {
+      mysqld      =&gt; {
+        &#39;bind-address&#39; =&gt; &#39;127.0.0.1&#39;,
+        &#39;log-error&#39;    =&gt; &#39;/var/log/mysqld.log&#39;,
+      },
+      mysqld_safe =&gt; {
+        &#39;log-error&#39; =&gt; &#39;/var/log/mysqld.log&#39;,
+      },
+    },
+  }
 }</pre>
       </td>
     </tr>

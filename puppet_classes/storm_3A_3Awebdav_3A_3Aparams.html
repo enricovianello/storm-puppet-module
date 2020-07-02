@@ -6,15 +6,15 @@
 <title>
   Puppet Class: storm::webdav::params
   
-    &mdash; Documentation by YARD 0.9.24
+    &mdash; Documentation by YARD 0.9.20
   
 </title>
 
-  <link rel="stylesheet" href="../css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../css/style.css" type="text/css" charset="utf-8" />
 
-  <link rel="stylesheet" href="../css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
 
-<script type="text/javascript">
+<script type="text/javascript" charset="utf-8">
   pathId = "puppet_classes::storm::webdav::params";
   relpath = '../';
 </script>
@@ -98,7 +98,6 @@
 
 <div class="tags">
   
-
 
 </div><div class="method_details_list">
   <table class="source_code">
@@ -187,9 +186,9 @@ class storm::webdav::params (
   $authz_server_secret = lookup(&#39;storm::webdav::authz_server_secret&#39;, String, undef, &#39;areasonablesecretlongerthan256bits&#39;)
   $require_client_cert = lookup(&#39;storm::webdav::require_client_cert&#39;, Boolean, undef, false)
 
-  $use_conscrypt = lookup(&#39;storm::webdav::use_conscrypt&#39;, Boolean, undef, true)
-  $tpc_use_conscrypt = lookup(&#39;storm::webdav::tpc_use_conscrypt&#39;, Boolean, undef, true)
-  $enable_http2 = lookup(&#39;storm::webdav::enable_http2&#39;, Boolean, undef, true)
+  $use_conscrypt = lookup(&#39;storm::webdav::use_conscrypt&#39;, Boolean, undef, false)
+  $tpc_use_conscrypt = lookup(&#39;storm::webdav::tpc_use_conscrypt&#39;, Boolean, undef, false)
+  $enable_http2 = lookup(&#39;storm::webdav::enable_http2&#39;, Boolean, undef, false)
 
   $debug = lookup(&#39;storm::webdav::debug&#39;, Boolean, undef, false)
   $debug_port = lookup(&#39;storm::webdav::debug_port&#39;, Integer, undef, 1044)

@@ -6,15 +6,15 @@
 <title>
   Puppet Class: storm::webdav::config
   
-    &mdash; Documentation by YARD 0.9.24
+    &mdash; Documentation by YARD 0.9.20
   
 </title>
 
-  <link rel="stylesheet" href="../css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../css/style.css" type="text/css" charset="utf-8" />
 
-  <link rel="stylesheet" href="../css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
 
-<script type="text/javascript">
+<script type="text/javascript" charset="utf-8">
   pathId = "puppet_classes::storm::webdav::config";
   relpath = '../';
 </script>
@@ -354,7 +354,7 @@
         <span class='type'>(<tt>Any</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$storm::webdav::params::use_conscrypt</tt>)</em>
+        <em class="default">(defaults to: <tt>$storm::webdav::use_conscrypt</tt>)</em>
       
       
     </li>
@@ -367,7 +367,7 @@
         <span class='type'>(<tt>Any</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$storm::webdav::params::tpc_use_conscrypt</tt>)</em>
+        <em class="default">(defaults to: <tt>$storm::webdav::tpc_use_conscrypt</tt>)</em>
       
       
     </li>
@@ -380,7 +380,7 @@
         <span class='type'>(<tt>Any</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$storm::webdav::params::enable_http2</tt>)</em>
+        <em class="default">(defaults to: <tt>$storm::webdav::enable_http2</tt>)</em>
       
       
     </li>
@@ -438,7 +438,6 @@
     </li>
   
 </ul>
-
 
 
 </div><div class="method_details_list">
@@ -627,9 +626,9 @@ class storm::webdav::config (
   $authz_server_secret = $storm::webdav::authz_server_secret,
   $require_client_cert = $storm::webdav::require_client_cert,
 
-  $use_conscrypt = $storm::webdav::params::use_conscrypt,
-  $tpc_use_conscrypt = $storm::webdav::params::tpc_use_conscrypt,
-  $enable_http2 = $storm::webdav::params::enable_http2,
+  $use_conscrypt = $storm::webdav::use_conscrypt,
+  $tpc_use_conscrypt = $storm::webdav::tpc_use_conscrypt,
+  $enable_http2 = $storm::webdav::enable_http2,
 
   $debug = $storm::webdav::debug,
   $debug_port = $storm::webdav::debug_port,

@@ -6,15 +6,15 @@
 <title>
   File: README
   
-    &mdash; Documentation by YARD 0.9.24
+    &mdash; Documentation by YARD 0.9.20
   
 </title>
 
-  <link rel="stylesheet" href="css/style.css" type="text/css" />
+  <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
 
-  <link rel="stylesheet" href="css/common.css" type="text/css" />
+  <link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
 
-<script type="text/javascript">
+<script type="text/javascript" charset="utf-8">
   pathId = "";
   relpath = '';
 </script>
@@ -78,6 +78,8 @@
 <p>StoRM WebDAV</p>
 </li><li>
 <p>StoRM Globus GridFTP server</p>
+</li><li>
+<p>StoRM Frontend</p>
 </li></ul>
 
 <h2 id="label-Setup">Setup</h2>
@@ -85,12 +87,94 @@
 <p>Build and install module as follow:</p>
 
 <pre class="code ruby"><code class="ruby">puppet module build
-puppet module install ./pkg/mwdevel-storm-0.1.0.tar.gz
+puppet module install ./pkg/cnafsd-storm-0.2.2.tar.gz
 </code></pre>
 
 <h2 id="label-Usage">Usage</h2>
 
-<p>Check <a href="https://github.com/italiangrid/storm-puppet-module/blob/master/examples/init.pp">this</a> example of <code>manifest.pp</code> or <a href="#label-Documentation">Documentation</a> section.</p>
+<p>With this Puppet module, administrators can configure StoRM services, users and storage directories if needed.</p>
+
+<h3 id="label-Customize+StoRM+users">Customize StoRM users</h3>
+
+<p>To create the default StoRM users and groups use <code>storm::users</code> class.</p>
+
+<p>Use:</p>
+
+<pre class="code ruby"><code class="ruby">class { &#39;storm::users&#39;: }
+</code></pre>
+
+<p>to create default scenario:</p>
+<ul><li>
+<p><code>storm</code> group with id 991</p>
+</li><li>
+<p><code>edguser</code> group with id 995</p>
+</li><li>
+<p><code>infosys</code> group with id 996</p>
+</li><li>
+<p><code>storm</code> user with id 991, member of <code>storm</code> and <code>edguser</code> groups</p>
+</li><li>
+<p><code>edguser</code> user with id 995</p>
+</li></ul>
+
+<p>Check <a href="https://italiangrid.github.io/storm-puppet-module/puppet_classes/storm_3A_3Ausers.html">here</a> for all the class options.</p>
+
+<h3 id="label-Customize+StoRM+WebDAV+component">Customize StoRM WebDAV component</h3>
+
+<p>Example of StoRM WebDAV configuration:</p>
+
+<pre class="code ruby"><code class="ruby">class { &#39;storm::webdav&#39;:
+  storage_areas =&gt; [
+    {
+      name                       =&gt; &#39;test.vo&#39;,
+      root_path                  =&gt; &#39;/storage/test.vo&#39;,
+      access_points              =&gt; [&#39;/test.vo&#39;],
+      vos                        =&gt; [&#39;test.vo&#39;],
+      authenticated_read_enabled =&gt; false,
+      anonymous_read_enabled     =&gt; false,
+      vo_map_enabled             =&gt; false,
+    },
+    {
+      name                       =&gt; &#39;test.vo.2&#39;,
+      root_path                  =&gt; &#39;/storage/test.vo.2&#39;,
+      access_points              =&gt; [&#39;/test.vo.2&#39;],
+      vos                        =&gt; [&#39;test.vo.2&#39;],
+      authenticated_read_enabled =&gt; true,
+      anonymous_read_enabled     =&gt; false,
+      vo_map_enabled             =&gt; false,
+    },
+  ],
+  hostnames =&gt; [&#39;storm-webdav.example.org&#39;, &#39;alias-for-storm-webdav.example.org&#39;],
+}
+</code></pre>
+
+<p>Check <a href="https://italiangrid.github.io/storm-puppet-module/puppet_classes/storm_3A_3Awebdav.html">here</a> for all WebDAV class options.</p>
+
+<h3 id="label-Customize+StoRM+GridFTP+component">Customize StoRM GridFTP component</h3>
+
+<p>Example of StoRM Gridftp configuration:</p>
+
+<pre class="code ruby"><code class="ruby">class { &#39;storm::gridftp&#39;:
+  redirect_lcmaps_log =&gt; true,
+  llgt_log_file       =&gt; &#39;/var/log/storm/storm-gridftp-lcmaps.log&#39;,
+}
+</code></pre>
+
+<p>Check <a href="https://italiangrid.github.io/storm-puppet-module/puppet_classes/storm_3A_3Agridftp.html">here</a> for all GridFTP class options.</p>
+
+<h3 id="label-Customize+StoRM+Frontend+component">Customize StoRM Frontend component</h3>
+
+<p>Example of StoRM Frontend configuration:</p>
+
+<pre class="code ruby"><code class="ruby">class { &#39;storm::frontend&#39;:
+  be_xmlrpc_host  =&gt; &#39;storm-backend.example&#39;,
+  be_xmlrpc_token =&gt; &#39;secret&#39;,
+  db_host         =&gt; &#39;storm-backend.example&#39;,
+  db_user         =&gt; &#39;storm&#39;,
+  db_passwd       =&gt; &#39;secret&#39;,
+}
+</code></pre>
+
+<p>Check <a href="https://italiangrid.github.io/storm-puppet-module/puppet_classes/storm_3A_3Afrontend.html">here</a> for all Frontend class options.</p>
 
 <h2 id="label-Documentation">Documentation</h2>
 
