@@ -101,39 +101,65 @@
   
     <li>
       
-        <span class='name'>info</span>
+        <span class='name'>db_root_password</span>
       
       
         <span class='type'>(<tt>Any</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$storm::backend::info</tt>)</em>
+        <em class="default">(defaults to: <tt>$storm::backend::db_root_password</tt>)</em>
       
       
     </li>
   
     <li>
       
-        <span class='name'>database</span>
+        <span class='name'>db_storm_username</span>
       
       
         <span class='type'>(<tt>Any</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$storm::backend::database</tt>)</em>
+        <em class="default">(defaults to: <tt>$storm::backend::db_storm_username</tt>)</em>
       
       
     </li>
   
     <li>
       
-        <span class='name'>storage_areas</span>
+        <span class='name'>db_storm_password</span>
       
       
         <span class='type'>(<tt>Any</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$storm::backend::storage_areas</tt>)</em>
+        <em class="default">(defaults to: <tt>$storm::backend::db_storm_password</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>xroot_hostname</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::xroot_hostname</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>xroot_port</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::xroot_port</tt>)</em>
       
       
     </li>
@@ -192,65 +218,39 @@
   
     <li>
       
-        <span class='name'>rfio_hostname</span>
+        <span class='name'>transfer_protocols</span>
       
       
         <span class='type'>(<tt>Any</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$storm::backend::rfio_hostname</tt>)</em>
+        <em class="default">(defaults to: <tt>$storm::backend::transfer_protocols</tt>)</em>
       
       
     </li>
   
     <li>
       
-        <span class='name'>rfio_port</span>
+        <span class='name'>fs_type</span>
       
       
         <span class='type'>(<tt>Any</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$storm::backend::rfio_port</tt>)</em>
+        <em class="default">(defaults to: <tt>$storm::backend::fs_type</tt>)</em>
       
       
     </li>
   
     <li>
       
-        <span class='name'>xroot_hostname</span>
+        <span class='name'>storage_areas</span>
       
       
         <span class='type'>(<tt>Any</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$storm::backend::xroot_hostname</tt>)</em>
-      
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>xroot_port</span>
-      
-      
-        <span class='type'>(<tt>Any</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>$storm::backend::xroot_port</tt>)</em>
-      
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>srm_hostname</span>
-      
-      
-        <span class='type'>(<tt>Any</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>$storm::backend::frontend_public_host</tt>)</em>
+        <em class="default">(defaults to: <tt>$storm::backend::storage_areas</tt>)</em>
       
       
     </li>
@@ -1036,7 +1036,10 @@
 108
 109
 110
-111</pre>
+111
+112
+113
+114</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/backend/config.pp', line 3</span>
@@ -1045,19 +1048,22 @@ class storm::backend::config (
 
   $hostname = $storm::backend::hostname,
 
-  $info = $storm::backend::info,
-  $database = $storm::backend::database,
+  $db_root_password = $storm::backend::db_root_password,
+  $db_storm_username = $storm::backend::db_storm_username,
+  $db_storm_password = $storm::backend::db_storm_password,
 
-  $storage_areas = $storm::backend::storage_areas,
+  $xroot_hostname = $storm::backend::xroot_hostname,
+  $xroot_port = $storm::backend::xroot_port,
+
   $gsiftp_pool_members = $storm::backend::gsiftp_pool_members,
   $gsiftp_pool_balance_strategy = $storm::backend::gsiftp_pool_balance_strategy,
   $webdav_pool_members = $storm::backend::webdav_pool_members,
   $srm_pool_members = $storm::backend::srm_pool_members,
-  $rfio_hostname = $storm::backend::rfio_hostname,
-  $rfio_port = $storm::backend::rfio_port,
-  $xroot_hostname = $storm::backend::xroot_hostname,
-  $xroot_port = $storm::backend::xroot_port,
-  $srm_hostname = $storm::backend::frontend_public_host,
+  $transfer_protocols = $storm::backend::transfer_protocols,
+  $fs_type = $storm::backend::fs_type,
+
+  $storage_areas = $storm::backend::storage_areas,
+
   $frontend_public_host = $storm::backend::frontend_public_host,
   $frontend_port = $storm::backend::frontend_port,
 

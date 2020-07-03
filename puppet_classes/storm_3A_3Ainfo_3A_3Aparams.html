@@ -123,7 +123,8 @@
 17
 18
 19
-20</pre>
+20
+21</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/info/params.pp', line 3</span>
@@ -145,6 +146,7 @@ class storm::info::params (
   $endpoint_quality_level = lookup(&#39;storm::info::endpoint_quality_level&#39;, Integer, undef, 2)
   $webdav_pool_members = lookup(&#39;storm::info::webdav_pool_members&#39;, Array[Storm::Backend::WebdavPoolMember], undef, [])
   $srm_pool_members = lookup(&#39;storm::info::srm_pool_members&#39;, Array[Storm::Backend::SrmPoolMember], undef, [])
+  $transfer_protocols = lookup(&#39;storm::info::transfer_protocols&#39;, Array[Storm::Backend::TransferProtocol], undef, [&#39;file&#39;, &#39;gsiftp&#39;])
 }</pre>
       </td>
     </tr>

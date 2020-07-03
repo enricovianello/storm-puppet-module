@@ -98,6 +98,29 @@
 </div></p>
       
       <pre class="example code"><code>class { &#39;storm::backend&#39;:
+  hostname =&gt; &#39;be.test.example&#39;,
+  db_root_password  =&gt; &#39;storm&#39;,
+  db_storm_password =&gt; &#39;bluemoon&#39;,
+  gsiftp_pool_members =&gt; [
+    {
+      &#39;hostname&#39; =&gt; &#39;gridftp.test.example&#39;,
+    },
+  ],
+  webdav_pool_members =&gt; [
+    {
+      &#39;hostname&#39; =&gt; &#39;webdav.test.example&#39;,
+    },
+  ],
+  storage_areas =&gt; [
+    {
+      &#39;name&#39;               =&gt; &#39;test.vo&#39;,
+      &#39;root_path&#39;          =&gt; &#39;/storage/test.vo&#39;,
+      &#39;access_points&#39;      =&gt; [&#39;/test.vo&#39;],
+      &#39;vos&#39;                =&gt; [&#39;test.vo&#39;],
+      &#39;storage_class&#39;      =&gt; &#39;T0D1&#39;,
+      &#39;online_size&#39;        =&gt; 4,
+      &#39;transfer_protocols&#39; =&gt; [&#39;file&#39;, &#39;gsiftp&#39;, &#39;https&#39;],
+    },
 }</code></pre>
     
   </div>
@@ -122,53 +145,55 @@
   
     <li>
       
-        <span class='name'>info</span>
-      
-      
-        <span class='type'>(<tt>Storm::Backend::Info</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>$storm::backend::params::info</tt>)</em>
-      
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>database</span>
-      
-      
-        <span class='type'>(<tt>Storm::Backend::Database</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>$storm::backend::params::database</tt>)</em>
-      
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>rfio_hostname</span>
+        <span class='name'>db_root_password</span>
       
       
         <span class='type'>(<tt>String</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>lookup(&#39;storm::backend::rfio_hostname&#39;, String, undef, $hostname)</tt>)</em>
+        <em class="default">(defaults to: <tt>$storm::backend::params::db_root_password</tt>)</em>
       
+      
+        &mdash;
+        <div class='inline'>
+<p>MySQL root user password</p>
+</div>
       
     </li>
   
     <li>
       
-        <span class='name'>rfio_port</span>
+        <span class='name'>db_storm_username</span>
       
       
-        <span class='type'>(<tt>Integer</tt>)</span>
+        <span class='type'>(<tt>String</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$storm::backend::params::rfio_port</tt>)</em>
+        <em class="default">(defaults to: <tt>$storm::backend::params::db_storm_username</tt>)</em>
       
+      
+        &mdash;
+        <div class='inline'>
+<p>The name of user used to connect to local database. Default: storm</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>db_storm_password</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::db_storm_password</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Password for the user in <code>db_storm_username</code></p>
+</div>
       
     </li>
   
@@ -183,6 +208,11 @@
         <em class="default">(defaults to: <tt>lookup(&#39;storm::backend::xroot_hostname&#39;, String, undef, $hostname)</tt>)</em>
       
       
+        &mdash;
+        <div class='inline'>
+<p>Root server (default value for all Storage Areas). Note: you may change the settings for each SA acting on its configuration.</p>
+</div>
+      
     </li>
   
     <li>
@@ -195,6 +225,11 @@
       
         <em class="default">(defaults to: <tt>$storm::backend::params::xroot_port</tt>)</em>
       
+      
+        &mdash;
+        <div class='inline'>
+<p>Root server port (default value for all Storage Areas).</p>
+</div>
       
     </li>
   
@@ -209,6 +244,11 @@
         <em class="default">(defaults to: <tt>$storm::backend::params::gsiftp_pool_balance_strategy</tt>)</em>
       
       
+        &mdash;
+        <div class='inline'>
+<p>Load balancing strategy for GridFTP server pool (default value for all Storage Areas). Note: you may change the settings for each SA acting on its configuration. Available values: round-robin, smart-rr, random, weight. Default value: round-robin</p>
+</div>
+      
     </li>
   
     <li>
@@ -221,6 +261,11 @@
       
         <em class="default">(defaults to: <tt>$storm::backend::params::gsiftp_pool_members</tt>)</em>
       
+      
+        &mdash;
+        <div class='inline'>
+<p>Array of Storm::Backend::GsiftpPoolMember. GridFTP servers pool list (default value for all Storage Areas). Note: you may change the settings for each SA acting on its configuration.</p>
+</div>
       
     </li>
   
@@ -235,6 +280,11 @@
         <em class="default">(defaults to: <tt>$storm::backend::params::webdav_pool_members</tt>)</em>
       
       
+        &mdash;
+        <div class='inline'>
+<p>Array of Storm::Backend::WebdavPoolMember. WebDAV endpoints pool list (default value for all Storage Areas). Note: you may change the settings for each SA acting on its configuration.</p>
+</div>
+      
     </li>
   
     <li>
@@ -247,6 +297,47 @@
       
         <em class="default">(defaults to: <tt>$storm::backend::params::srm_pool_members</tt>)</em>
       
+      
+        &mdash;
+        <div class='inline'>
+<p>Array of Storm::Backend::SrmPoolMember. Frontend endpoints pool list (default value for all Storage Areas). Note: you may change the settings for each SA acting on its configuration.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>transfer_protocols</span>
+      
+      
+        <span class='type'>(<tt>Array[Storm::Backend::TransferProtocol]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::transfer_protocols</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>List of supported (and published) transfer protocols (default value for all Storage Areas). Note: you may change the settings for each SA acting on its configuration.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>fs_type</span>
+      
+      
+        <span class='type'>(<tt>Storm::Backend::FsType</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::fs_type</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>File System Type (default value for all Storage Areas). Note: you may change the settings for each SA acting on its configuration. Available values: posixfs, gpfs and test. Default value: posixfs</p>
+</div>
       
     </li>
   
@@ -261,6 +352,11 @@
         <em class="default">(defaults to: <tt>$storm::backend::params::storage_areas</tt>)</em>
       
       
+        &mdash;
+        <div class='inline'>
+<p>List of supported Storage Areas. Array of Storm::Backend::StorageArea.</p>
+</div>
+      
     </li>
   
     <li>
@@ -274,6 +370,11 @@
         <em class="default">(defaults to: <tt>lookup(&#39;storm::backend::srm_hostname&#39;, String, undef, $hostname)</tt>)</em>
       
       
+        &mdash;
+        <div class='inline'>
+<p>StoRM Frontend service public host. It’s used by StoRM Info Provider to publish the SRM endpoint into the Resource BDII. Default value: <code>hostname</code></p>
+</div>
+      
     </li>
   
     <li>
@@ -286,6 +387,11 @@
       
         <em class="default">(defaults to: <tt>$storm::backend::params::frontend_port</tt>)</em>
       
+      
+        &mdash;
+        <div class='inline'>
+<p>StoRM Frontend service port. Default value: 8444</p>
+</div>
       
     </li>
   
@@ -325,6 +431,11 @@
       
         <em class="default">(defaults to: <tt>$storm::backend::params::rest_services_port</tt>)</em>
       
+      
+        &mdash;
+        <div class='inline'>
+<p>StoRM backend server rest port. Default value: 9998</p>
+</div>
       
     </li>
   
@@ -416,6 +527,11 @@
       
         <em class="default">(defaults to: <tt>$storm::backend::params::synchcall_xmlrpc_security_token</tt>)</em>
       
+      
+        &mdash;
+        <div class='inline'>
+<p>Token used in communication to the StoRM Frontend</p>
+</div>
       
     </li>
   
@@ -926,6 +1042,83 @@
       
     </li>
   
+    <li>
+      
+        <span class='name'>info_sitename</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::info_sitename</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>It’s the human-readable name of your site used to set the Glue-SiteName attribute.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>info_storage_default_root</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::info_storage_default_root</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Default directory for Storage Areas.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>info_endpoint_quality_level</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::info_endpoint_quality_level</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>info_webdav_pool_list</span>
+      
+      
+        <span class='type'>(<tt>Array[Storm::Backend::WebdavPoolMember]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>lookup(&#39;storm::backend::info_webdav_pool_list&#39;,
+    Array[Storm::Backend::WebdavPoolMember], undef, $webdav_pool_members)</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>info_frontend_host_list</span>
+      
+      
+        <span class='type'>(<tt>Array[Storm::Backend::SrmPoolMember]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>lookup(&#39;storm::backend::info_frontend_host_list&#39;,
+    Array[Storm::Backend::SrmPoolMember], undef, $srm_pool_members)</tt>)</em>
+      
+      
+    </li>
+  
 </ul>
 
 
@@ -936,72 +1129,6 @@
         <pre class="lines">
 
 
-135
-136
-137
-138
-139
-140
-141
-142
-143
-144
-145
-146
-147
-148
-149
-150
-151
-152
-153
-154
-155
-156
-157
-158
-159
-160
-161
-162
-163
-164
-165
-166
-167
-168
-169
-170
-171
-172
-173
-174
-175
-176
-177
-178
-179
-180
-181
-182
-183
-184
-185
-186
-187
-188
-189
-190
-191
-192
-193
-194
-195
-196
-197
-198
-199
-200
 201
 202
 203
@@ -1061,37 +1188,135 @@
 257
 258
 259
-260</pre>
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
+312
+313
+314
+315
+316
+317
+318
+319
+320
+321
+322
+323
+324
+325
+326
+327
+328
+329
+330
+331
+332
+333
+334
+335
+336
+337
+338
+339
+340
+341
+342
+343
+344
+345
+346
+347</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/backend.pp', line 135</span>
+        <pre class="code"><span class="info file"># File 'manifests/backend.pp', line 201</span>
 
 class storm::backend (
 
   String $hostname,
 
-  Storm::Backend::Info $info = $storm::backend::params::info,
-  Storm::Backend::Database $database = $storm::backend::params::database,
+  # Db
+  String $db_root_password = $storm::backend::params::db_root_password,
+  String $db_storm_username = $storm::backend::params::db_storm_username,
+  String $db_storm_password = $storm::backend::params::db_storm_password,
 
-  String $rfio_hostname = lookup(&#39;storm::backend::rfio_hostname&#39;, String, undef, $hostname),
-  Integer $rfio_port = $storm::backend::params::rfio_port,
-
+  ### Default values for Storage Areas
+  # 1. xroot
   String $xroot_hostname = lookup(&#39;storm::backend::xroot_hostname&#39;, String, undef, $hostname),
   Integer $xroot_port = $storm::backend::params::xroot_port,
-
+  # 2. gridftp pool
   Storm::Backend::BalanceStrategy $gsiftp_pool_balance_strategy = $storm::backend::params::gsiftp_pool_balance_strategy,
   Array[Storm::Backend::GsiftpPoolMember] $gsiftp_pool_members = $storm::backend::params::gsiftp_pool_members,
+  # 3. webdav pool
   Array[Storm::Backend::WebdavPoolMember] $webdav_pool_members = $storm::backend::params::webdav_pool_members,
+  # 4. frontend pool
   Array[Storm::Backend::SrmPoolMember] $srm_pool_members = $storm::backend::params::srm_pool_members,
+  # 5. transfer protocols
+  Array[Storm::Backend::TransferProtocol] $transfer_protocols = $storm::backend::params::transfer_protocols,
+  # 6. fs-type
+  Storm::Backend::FsType $fs_type = $storm::backend::params::fs_type,
 
+  # Storage Areas
   Array[Storm::Backend::StorageArea] $storage_areas = $storm::backend::params::storage_areas,
 
+  # Frontend public host and port
   String $frontend_public_host = lookup(&#39;storm::backend::srm_hostname&#39;, String, undef, $hostname),
   Integer $frontend_port = $storm::backend::params::frontend_port,
 
+  # Directory options
   Boolean $directory_automatic_creation = $storm::backend::params::directory_automatic_creation,
   Boolean $directory_writeperm = $storm::backend::params::directory_writeperm,
 
+  # REST server conf
   Integer $rest_services_port = $storm::backend::params::rest_services_port,
   Integer $rest_services_max_threads = $storm::backend::params::rest_services_max_threads,
   Integer $rest_services_max_queue_size = $storm::backend::params::rest_services_max_queue_size,
@@ -1164,6 +1389,15 @@ class storm::backend (
   Integer $bol_requests_scheduler_max_size = $storm::backend::params::bol_requests_scheduler_max_size,
   Integer $bol_requests_scheduler_queue_size = $storm::backend::params::bol_requests_scheduler_queue_size,
 
+  # Info Provider
+  String $info_sitename = $storm::backend::params::info_sitename,
+  String $info_storage_default_root = $storm::backend::params::info_storage_default_root,
+  Integer $info_endpoint_quality_level = $storm::backend::params::info_endpoint_quality_level,
+  Array[Storm::Backend::WebdavPoolMember] $info_webdav_pool_list = lookup(&#39;storm::backend::info_webdav_pool_list&#39;,
+    Array[Storm::Backend::WebdavPoolMember], undef, $webdav_pool_members),
+  Array[Storm::Backend::SrmPoolMember] $info_frontend_host_list = lookup(&#39;storm::backend::info_frontend_host_list&#39;,
+    Array[Storm::Backend::SrmPoolMember], undef, $srm_pool_members),
+
 ) inherits storm::backend::params {
 
   contain storm::backend::install
@@ -1175,21 +1409,22 @@ class storm::backend (
   }
   -&gt; class { &#39;storm::db&#39;:
     fqdn_hostname  =&gt; $hostname,
-    storm_username =&gt; $database[storm_username],
-    storm_password =&gt; $database[storm_password],
+    storm_username =&gt; $db_storm_username,
+    storm_password =&gt; $db_storm_password,
   }
   -&gt; Class[&#39;storm::backend::install&#39;]
   -&gt; Class[&#39;storm::backend::config&#39;]
   -&gt; Class[&#39;storm::backend::service&#39;]
   -&gt; class { &#39;storm::info&#39;:
-    backend_hostname     =&gt; $hostname,
-    sitename             =&gt; $info[sitename],
-    storage_default_root =&gt; $info[storage_default_root],
-    frontend_public_host =&gt; $frontend_public_host,
-    frontend_port        =&gt; $frontend_port,
-    rest_services_port   =&gt; $rest_services_port,
-    webdav_pool_members  =&gt; $webdav_pool_members,
-    srm_pool_members     =&gt; $srm_pool_members,
+    backend_hostname       =&gt; $hostname,
+    sitename               =&gt; $info_sitename,
+    storage_default_root   =&gt; $info_storage_default_root,
+    endpoint_quality_level =&gt; $info_endpoint_quality_level,
+    frontend_public_host   =&gt; $frontend_public_host,
+    frontend_port          =&gt; $frontend_port,
+    rest_services_port     =&gt; $rest_services_port,
+    webdav_pool_members    =&gt; $info_webdav_pool_list,
+    srm_pool_members       =&gt; $info_frontend_host_list,
   }
 }</pre>
       </td>

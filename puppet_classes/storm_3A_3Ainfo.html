@@ -260,6 +260,19 @@
       
     </li>
   
+    <li>
+      
+        <span class='name'>transfer_protocols</span>
+      
+      
+        <span class='type'>(<tt>Array[Storm::Backend::TransferProtocol]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::info::params::transfer_protocols</tt>)</em>
+      
+      
+    </li>
+  
 </ul>
 
 
@@ -295,7 +308,9 @@
 53
 54
 55
-56</pre>
+56
+57
+58</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/info.pp', line 31</span>
@@ -314,6 +329,8 @@ class storm::info (
   Integer $endpoint_quality_level = $storm::info::params::endpoint_quality_level,
   Array[Storm::Backend::WebdavPoolMember] $webdav_pool_members = $storm::info::params::webdav_pool_members,
   Array[Storm::Backend::SrmPoolMember] $srm_pool_members = $storm::info::params::srm_pool_members,
+
+  Array[Storm::Backend::TransferProtocol] $transfer_protocols = $storm::info::params::transfer_protocols,
 
   String $config_file = $storm::info::params::config_file,
 
