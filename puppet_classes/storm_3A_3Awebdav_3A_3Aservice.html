@@ -98,16 +98,26 @@
 6
 7
 8
-9</pre>
+9
+10
+11
+12
+13
+14</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/webdav/service.pp', line 3</span>
 
 class storm::webdav::service {
 
+  exec { &#39;webdav-daemon-reload&#39;:
+    command     =&gt; &#39;/usr/bin/systemctl daemon-reload&#39;,
+    refreshonly =&gt; true,
+  }
   service { &#39;storm-webdav&#39;:
-    ensure =&gt; running,
-    enable =&gt; true,
+    ensure  =&gt; running,
+    enable  =&gt; true,
+    require =&gt; Exec[&#39;webdav-daemon-reload&#39;],
   }
 }</pre>
       </td>

@@ -98,9 +98,14 @@
 </div></p>
       
       <pre class="example code"><code>class { &#39;storm::backend&#39;:
-  hostname =&gt; &#39;be.test.example&#39;,
+  hostname =&gt; &#39;backend.test.example&#39;,
   db_root_password  =&gt; &#39;storm&#39;,
   db_storm_password =&gt; &#39;bluemoon&#39;,
+  srm_pool_members =&gt; [
+    {
+      &#39;hostname&#39; =&gt; &#39;frontend.test.example&#39;,
+    }
+  ],
   gsiftp_pool_members =&gt; [
     {
       &#39;hostname&#39; =&gt; &#39;gridftp.test.example&#39;,
@@ -121,6 +126,7 @@
       &#39;online_size&#39;        =&gt; 4,
       &#39;transfer_protocols&#39; =&gt; [&#39;file&#39;, &#39;gsiftp&#39;, &#39;https&#39;],
     },
+  ],
 }</code></pre>
     
   </div>
@@ -139,6 +145,42 @@
         &mdash;
         <div class='inline'>
 <p>StoRM Backend Fully Qualified Domain Name</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>install_native_libs_gpfs</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::install_native_libs_gpfs</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Set this if you need to install storm-native-libs-gpfs. Default: false.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>install_mysql_and_create_database</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::install_mysql_and_create_database</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Set this to true if you need to install MySQL and create StoRM database. Default: false.</p>
 </div>
       
     </li>
@@ -192,7 +234,7 @@
       
         &mdash;
         <div class='inline'>
-<p>Password for the user in <code>db_storm_username</code></p>
+<p>Password for the user in <code>db_storm_username</code>. Default: bluemoon</p>
 </div>
       
     </li>
@@ -246,7 +288,7 @@
       
         &mdash;
         <div class='inline'>
-<p>Load balancing strategy for GridFTP server pool (default value for all Storage Areas). Note: you may change the settings for each SA acting on its configuration. Available values: round-robin, smart-rr, random, weight. Default value: round-robin</p>
+<p>Load balancing strategy for GridFTP server pool (default value for all Storage Areas). Note: you may change the settings for each SA acting on its configuration. Available values: round-robin, smart-rr, random, weight. Default value: round-robin. See <a href="#stormbackendbalancestrategy">Storm::Backend::BalanceStrategy</a>.</p>
 </div>
       
     </li>
@@ -264,7 +306,7 @@
       
         &mdash;
         <div class='inline'>
-<p>Array of Storm::Backend::GsiftpPoolMember. GridFTP servers pool list (default value for all Storage Areas). Note: you may change the settings for each SA acting on its configuration.</p>
+<p>Array of <a href="#stormbackendgsiftppoolmember">Storm::Backend::GsiftpPoolMember</a>. GridFTP servers pool list (default value for all Storage Areas). Note: you may change the settings for each SA acting on its configuration.</p>
 </div>
       
     </li>
@@ -282,7 +324,7 @@
       
         &mdash;
         <div class='inline'>
-<p>Array of Storm::Backend::WebdavPoolMember. WebDAV endpoints pool list (default value for all Storage Areas). Note: you may change the settings for each SA acting on its configuration.</p>
+<p>Array of <a href="#stormbackendwebdavpoolmember">Storm::Backend::WebdavPoolMember</a>. WebDAV endpoints pool list (default value for all Storage Areas). Note: you may change the settings for each SA acting on its configuration.</p>
 </div>
       
     </li>
@@ -300,7 +342,7 @@
       
         &mdash;
         <div class='inline'>
-<p>Array of Storm::Backend::SrmPoolMember. Frontend endpoints pool list (default value for all Storage Areas). Note: you may change the settings for each SA acting on its configuration.</p>
+<p>Array of <a href="#stormbackendsrmpoolmember">Storm::Backend::SrmPoolMember</a>. Frontend endpoints pool list (default value for all Storage Areas). Note: you may change the settings for each SA acting on its configuration.</p>
 </div>
       
     </li>
@@ -336,7 +378,7 @@
       
         &mdash;
         <div class='inline'>
-<p>File System Type (default value for all Storage Areas). Note: you may change the settings for each SA acting on its configuration. Available values: posixfs, gpfs and test. Default value: posixfs</p>
+<p>File System Type (default value for all Storage Areas). Note: you may change the settings for each SA acting on its configuration. Available values: posixfs, gpfs and test. Default value: posixfs See <a href="#stormbackendfstype">Storm::Backend::FsType</a>.</p>
 </div>
       
     </li>
@@ -354,7 +396,7 @@
       
         &mdash;
         <div class='inline'>
-<p>List of supported Storage Areas. Array of Storm::Backend::StorageArea.</p>
+<p>List of supported Storage Areas. Array of <a href="#stormbackendstoragearea">Storm::Backend::StorageArea</a>.</p>
 </div>
       
     </li>
@@ -406,6 +448,11 @@
         <em class="default">(defaults to: <tt>$storm::backend::params::directory_automatic_creation</tt>)</em>
       
       
+        &mdash;
+        <div class='inline'>
+<p>Flag to enable automatic missing directory creation upon srmPrepareToPut requests. Default: false.</p>
+</div>
+      
     </li>
   
     <li>
@@ -418,6 +465,11 @@
       
         <em class="default">(defaults to: <tt>$storm::backend::params::directory_writeperm</tt>)</em>
       
+      
+        &mdash;
+        <div class='inline'>
+<p>Flag to enable directory write permission setting upon srmMkDir requests on created directories. Default: false.</p>
+</div>
       
     </li>
   
@@ -434,7 +486,7 @@
       
         &mdash;
         <div class='inline'>
-<p>StoRM backend server rest port. Default value: 9998</p>
+<p>REST services port. Default value: 9998</p>
 </div>
       
     </li>
@@ -450,6 +502,11 @@
         <em class="default">(defaults to: <tt>$storm::backend::params::rest_services_max_threads</tt>)</em>
       
       
+        &mdash;
+        <div class='inline'>
+<p>REST services max active requests. Default: 100</p>
+</div>
+      
     </li>
   
     <li>
@@ -463,74 +520,99 @@
         <em class="default">(defaults to: <tt>$storm::backend::params::rest_services_max_queue_size</tt>)</em>
       
       
+        &mdash;
+        <div class='inline'>
+<p>REST services max queue size of accepted requests. Default: 1000</p>
+</div>
+      
     </li>
   
     <li>
       
-        <span class='name'>synchcall_xmlrpc_unsecure_server_port</span>
+        <span class='name'>xmlrpc_unsecure_server_port</span>
       
       
         <span class='type'>(<tt>Integer</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$storm::backend::params::synchcall_xmlrpc_unsecure_server_port</tt>)</em>
+        <em class="default">(defaults to: <tt>$storm::backend::params::xmlrpc_unsecure_server_port</tt>)</em>
       
+      
+        &mdash;
+        <div class='inline'>
+<p>Port to listen on for incoming XML-RPC connections from Frontends(s). Default: 8080</p>
+</div>
       
     </li>
   
     <li>
       
-        <span class='name'>synchcall_xmlrpc_maxthread</span>
+        <span class='name'>xmlrpc_maxthread</span>
       
       
         <span class='type'>(<tt>Integer</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$storm::backend::params::synchcall_xmlrpc_maxthread</tt>)</em>
+        <em class="default">(defaults to: <tt>$storm::backend::params::xmlrpc_maxthread</tt>)</em>
       
+      
+        &mdash;
+        <div class='inline'>
+<p>Number of threads managing XML-RPC connection from Frontends(s). A well sized value for this parameter have to be at least equal to the sum of the number of working threads in all Frontends. Default: 100.</p>
+</div>
       
     </li>
   
     <li>
       
-        <span class='name'>synchcall_xmlrpc_max_queue_size</span>
+        <span class='name'>xmlrpc_max_queue_size</span>
       
       
         <span class='type'>(<tt>Integer</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$storm::backend::params::synchcall_xmlrpc_max_queue_size</tt>)</em>
+        <em class="default">(defaults to: <tt>$storm::backend::params::xmlrpc_max_queue_size</tt>)</em>
       
+      
+        &mdash;
+        <div class='inline'>
+<p>Max number of accepted and queued XML-RPC connection from Frontends(s). Default: <strong>1000</strong></p>
+</div>
       
     </li>
   
     <li>
       
-        <span class='name'>synchcall_xmlrpc_security_enabled</span>
+        <span class='name'>xmlrpc_security_enabled</span>
       
       
         <span class='type'>(<tt>Boolean</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$storm::backend::params::synchcall_xmlrpc_security_enabled</tt>)</em>
+        <em class="default">(defaults to: <tt>$storm::backend::params::xmlrpc_security_enabled</tt>)</em>
       
+      
+        &mdash;
+        <div class='inline'>
+<p>Whether the backend will require a token to be present for accepting XML-RPC requests. Default: true.</p>
+</div>
       
     </li>
   
     <li>
       
-        <span class='name'>synchcall_xmlrpc_security_token</span>
+        <span class='name'>xmlrpc_security_token</span>
       
       
         <span class='type'>(<tt>String</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$storm::backend::params::synchcall_xmlrpc_security_token</tt>)</em>
+        <em class="default">(defaults to: <tt>$storm::backend::params::xmlrpc_security_token</tt>)</em>
       
       
         &mdash;
         <div class='inline'>
-<p>Token used in communication to the StoRM Frontend</p>
+<p>The token that the backend will require to be present for accepting XML-RPC requests. Mandatory if xmlrpc_security_enabled is true.</p>
 </div>
       
     </li>
@@ -546,6 +628,11 @@
         <em class="default">(defaults to: <tt>$storm::backend::params::ptg_skip_acl_setup</tt>)</em>
       
       
+        &mdash;
+        <div class='inline'>
+<p>Skip ACL setup for PtG requests. Default: false.</p>
+</div>
+      
     </li>
   
     <li>
@@ -558,6 +645,11 @@
       
         <em class="default">(defaults to: <tt>$storm::backend::params::pinlifetime_default</tt>)</em>
       
+      
+        &mdash;
+        <div class='inline'>
+<p>Default PinLifetime in seconds used for pinning files in case of srmPrepareToPut or srmPrepareToGet operation without any pinLifetime specified. Default: 259200.</p>
+</div>
       
     </li>
   
@@ -572,6 +664,11 @@
         <em class="default">(defaults to: <tt>$storm::backend::params::pinlifetime_maximum</tt>)</em>
       
       
+        &mdash;
+        <div class='inline'>
+<p>Maximum PinLifetime allowed in seconds. Default: 1814400.</p>
+</div>
+      
     </li>
   
     <li>
@@ -584,6 +681,11 @@
       
         <em class="default">(defaults to: <tt>$storm::backend::params::sanity_check_enabled</tt>)</em>
       
+      
+        &mdash;
+        <div class='inline'>
+<p>Enable/disable sanity checks during bootstrap phase. Default: true.</p>
+</div>
       
     </li>
   
@@ -598,6 +700,11 @@
         <em class="default">(defaults to: <tt>$storm::backend::params::service_du_enabled</tt>)</em>
       
       
+        &mdash;
+        <div class='inline'>
+<p>Flag to enable disk usage service. Default: false.</p>
+</div>
+      
     </li>
   
     <li>
@@ -610,6 +717,11 @@
       
         <em class="default">(defaults to: <tt>$storm::backend::params::service_du_delay</tt>)</em>
       
+      
+        &mdash;
+        <div class='inline'>
+<p>The initial delay before the service is started (seconds). Default: 60.</p>
+</div>
       
     </li>
   
@@ -624,18 +736,28 @@
         <em class="default">(defaults to: <tt>$storm::backend::params::service_du_interval</tt>)</em>
       
       
+        &mdash;
+        <div class='inline'>
+<p>The interval in seconds between successive run. Default: 360.</p>
+</div>
+      
     </li>
   
     <li>
       
-        <span class='name'>synchcall_max_ls_entries</span>
+        <span class='name'>max_ls_entries</span>
       
       
         <span class='type'>(<tt>Integer</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$storm::backend::params::synchcall_max_ls_entries</tt>)</em>
+        <em class="default">(defaults to: <tt>$storm::backend::params::max_ls_entries</tt>)</em>
       
+      
+        &mdash;
+        <div class='inline'>
+<p>Maximum number of entries returned by an srmLs call. Since in case of recursive srmLs results can be in order of million, this prevent a server overload. Default: 500.</p>
+</div>
       
     </li>
   
@@ -650,6 +772,11 @@
         <em class="default">(defaults to: <tt>$storm::backend::params::gc_pinnedfiles_cleaning_delay</tt>)</em>
       
       
+        &mdash;
+        <div class='inline'>
+<p>Initial delay before starting the reserved space, JIT ACLs and pinned files garbage collection process, in seconds. Default: 10.</p>
+</div>
+      
     </li>
   
     <li>
@@ -662,6 +789,11 @@
       
         <em class="default">(defaults to: <tt>$storm::backend::params::gc_pinnedfiles_cleaning_interval</tt>)</em>
       
+      
+        &mdash;
+        <div class='inline'>
+<p>Time interval in seconds between successive purging run. Default: 300.</p>
+</div>
       
     </li>
   
@@ -676,6 +808,11 @@
         <em class="default">(defaults to: <tt>$storm::backend::params::gc_purge_enabled</tt>)</em>
       
       
+        &mdash;
+        <div class='inline'>
+<p>Enable the request garbage collector. Default: true.</p>
+</div>
+      
     </li>
   
     <li>
@@ -688,6 +825,11 @@
       
         <em class="default">(defaults to: <tt>$storm::backend::params::gc_purge_interval</tt>)</em>
       
+      
+        &mdash;
+        <div class='inline'>
+<p>Time interval in seconds between successive purging run. Default: 600.</p>
+</div>
       
     </li>
   
@@ -702,6 +844,11 @@
         <em class="default">(defaults to: <tt>$storm::backend::params::gc_purge_size</tt>)</em>
       
       
+        &mdash;
+        <div class='inline'>
+<p>Number of requests picked up for cleaning from the requests garbage collector at each run. This value is use also by Tape Recall Garbage Collector. Default: 800</p>
+</div>
+      
     </li>
   
     <li>
@@ -714,6 +861,29 @@
       
         <em class="default">(defaults to: <tt>$storm::backend::params::gc_expired_request_time</tt>)</em>
       
+      
+        &mdash;
+        <div class='inline'>
+<p>Time in seconds to consider a request expired after its submission. Default: 604800 seconds (1 week). From StoRM 1.11.13 it is used also to identify how much time is needed to consider a completed recall task as cleanable.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>gc_expired_inprogress_time</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::gc_expired_inprogress_time</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Time in seconds to consider an in-progress ptp request as expired. Default: 2592000 seconds (1 month).</p>
+</div>
       
     </li>
   
@@ -728,6 +898,11 @@
         <em class="default">(defaults to: <tt>$storm::backend::params::gc_ptp_transit_interval</tt>)</em>
       
       
+        &mdash;
+        <div class='inline'>
+<p>Time interval in seconds between successive expired put requests agent run. Default: 3000.</p>
+</div>
+      
     </li>
   
     <li>
@@ -740,6 +915,11 @@
       
         <em class="default">(defaults to: <tt>$storm::backend::params::gc_ptp_transit_start_delay</tt>)</em>
       
+      
+        &mdash;
+        <div class='inline'>
+<p>Initial delay before starting the expired put requests agent process, in seconds. Default: 60</p>
+</div>
       
     </li>
   
@@ -754,6 +934,11 @@
         <em class="default">(defaults to: <tt>$storm::backend::params::extraslashes_file</tt>)</em>
       
       
+        &mdash;
+        <div class='inline'>
+<p>Add extra slashes after the “authority” part of a TURL for file protocol. Defaul: &#39;&#39;</p>
+</div>
+      
     </li>
   
     <li>
@@ -766,6 +951,11 @@
       
         <em class="default">(defaults to: <tt>$storm::backend::params::extraslashes_root</tt>)</em>
       
+      
+        &mdash;
+        <div class='inline'>
+<p>Add extra slashes after the “authority” part of a TURL for xroot protocol. Default: &#39;&#39;</p>
+</div>
       
     </li>
   
@@ -780,6 +970,11 @@
         <em class="default">(defaults to: <tt>$storm::backend::params::extraslashes_gsiftp</tt>)</em>
       
       
+        &mdash;
+        <div class='inline'>
+<p>Add extra slashes after the “authority” part of a TURL for gsiftp protocol. Default: &#39;/&#39;</p>
+</div>
+      
     </li>
   
     <li>
@@ -792,6 +987,11 @@
       
         <em class="default">(defaults to: <tt>$storm::backend::params::db_connection_pool_enabled</tt>)</em>
       
+      
+        &mdash;
+        <div class='inline'>
+<p>Enable the database connection pool. Default: true</p>
+</div>
       
     </li>
   
@@ -806,6 +1006,11 @@
         <em class="default">(defaults to: <tt>$storm::backend::params::db_connection_pool_max_active</tt>)</em>
       
       
+        &mdash;
+        <div class='inline'>
+<p>Database connection pool max active connections. Default: 10</p>
+</div>
+      
     </li>
   
     <li>
@@ -818,6 +1023,11 @@
       
         <em class="default">(defaults to: <tt>$storm::backend::params::db_connection_pool_max_wait</tt>)</em>
       
+      
+        &mdash;
+        <div class='inline'>
+<p>Database connection pool max wait time to provide a connection. Default: 50</p>
+</div>
       
     </li>
   
@@ -832,6 +1042,11 @@
         <em class="default">(defaults to: <tt>$storm::backend::params::asynch_db_reconnect_period</tt>)</em>
       
       
+        &mdash;
+        <div class='inline'>
+<p>Database connection refresh time intervall in seconds. Default: 18000</p>
+</div>
+      
     </li>
   
     <li>
@@ -844,6 +1059,11 @@
       
         <em class="default">(defaults to: <tt>$storm::backend::params::asynch_db_delay_period</tt>)</em>
       
+      
+        &mdash;
+        <div class='inline'>
+<p>Database connection refresh initial delay in seconds. Default: 30.</p>
+</div>
       
     </li>
   
@@ -858,6 +1078,11 @@
         <em class="default">(defaults to: <tt>$storm::backend::params::asynch_picking_initial_delay</tt>)</em>
       
       
+        &mdash;
+        <div class='inline'>
+<p>Initial delay before starting to pick requests from the DB, in seconds. Default: 1.</p>
+</div>
+      
     </li>
   
     <li>
@@ -870,6 +1095,11 @@
       
         <em class="default">(defaults to: <tt>$storm::backend::params::asynch_picking_time_interval</tt>)</em>
       
+      
+        &mdash;
+        <div class='inline'>
+<p>Polling interval in seconds to pick up new SRM requests. Default: 2.</p>
+</div>
       
     </li>
   
@@ -884,6 +1114,11 @@
         <em class="default">(defaults to: <tt>$storm::backend::params::asynch_picking_max_batch_size</tt>)</em>
       
       
+        &mdash;
+        <div class='inline'>
+<p>Maximum number of requests picked up at each polling time. Default: 100.</p>
+</div>
+      
     </li>
   
     <li>
@@ -896,6 +1131,11 @@
       
         <em class="default">(defaults to: <tt>$storm::backend::params::requests_scheduler_core_size</tt>)</em>
       
+      
+        &mdash;
+        <div class='inline'>
+<p>Crusher Scheduler worker pool base size. Default: 50.</p>
+</div>
       
     </li>
   
@@ -910,6 +1150,11 @@
         <em class="default">(defaults to: <tt>$storm::backend::params::requests_scheduler_max_size</tt>)</em>
       
       
+        &mdash;
+        <div class='inline'>
+<p>Crusher Schedule worker pool max size. Default: 200.</p>
+</div>
+      
     </li>
   
     <li>
@@ -922,6 +1167,11 @@
       
         <em class="default">(defaults to: <tt>$storm::backend::params::requests_scheduler_queue_size</tt>)</em>
       
+      
+        &mdash;
+        <div class='inline'>
+<p>Request queue maximum size. Default: 2000.</p>
+</div>
       
     </li>
   
@@ -936,6 +1186,11 @@
         <em class="default">(defaults to: <tt>$storm::backend::params::ptp_requests_scheduler_core_size</tt>)</em>
       
       
+        &mdash;
+        <div class='inline'>
+<p>PrepareToPut worker pool base size. Default: 50.</p>
+</div>
+      
     </li>
   
     <li>
@@ -948,6 +1203,11 @@
       
         <em class="default">(defaults to: <tt>$storm::backend::params::ptp_requests_scheduler_max_size</tt>)</em>
       
+      
+        &mdash;
+        <div class='inline'>
+<p>PrepareToPut worker pool max size. Default: 200.</p>
+</div>
       
     </li>
   
@@ -962,6 +1222,11 @@
         <em class="default">(defaults to: <tt>$storm::backend::params::ptp_requests_scheduler_queue_size</tt>)</em>
       
       
+        &mdash;
+        <div class='inline'>
+<p>PrepareToPut request queue maximum size. Default: 1000.</p>
+</div>
+      
     </li>
   
     <li>
@@ -974,6 +1239,11 @@
       
         <em class="default">(defaults to: <tt>$storm::backend::params::ptg_requests_scheduler_core_size</tt>)</em>
       
+      
+        &mdash;
+        <div class='inline'>
+<p>PrepareToGet worker pool base size. Default: 50.</p>
+</div>
       
     </li>
   
@@ -988,6 +1258,11 @@
         <em class="default">(defaults to: <tt>$storm::backend::params::ptg_requests_scheduler_max_size</tt>)</em>
       
       
+        &mdash;
+        <div class='inline'>
+<p>PrepareToGet worker pool max size. Default: 200.</p>
+</div>
+      
     </li>
   
     <li>
@@ -1000,6 +1275,11 @@
       
         <em class="default">(defaults to: <tt>$storm::backend::params::ptg_requests_scheduler_queue_size</tt>)</em>
       
+      
+        &mdash;
+        <div class='inline'>
+<p>PrepareToGet request queue maximum size. Default: 2000.</p>
+</div>
       
     </li>
   
@@ -1014,6 +1294,11 @@
         <em class="default">(defaults to: <tt>$storm::backend::params::bol_requests_scheduler_core_size</tt>)</em>
       
       
+        &mdash;
+        <div class='inline'>
+<p>BringOnline worker pool base size. Default: 50.</p>
+</div>
+      
     </li>
   
     <li>
@@ -1027,6 +1312,11 @@
         <em class="default">(defaults to: <tt>$storm::backend::params::bol_requests_scheduler_max_size</tt>)</em>
       
       
+        &mdash;
+        <div class='inline'>
+<p>BringOnline Worker pool max size. Default: 200.</p>
+</div>
+      
     </li>
   
     <li>
@@ -1039,6 +1329,11 @@
       
         <em class="default">(defaults to: <tt>$storm::backend::params::bol_requests_scheduler_queue_size</tt>)</em>
       
+      
+        &mdash;
+        <div class='inline'>
+<p>BringOnline request queue maximum size. Default: 2000.</p>
+</div>
       
     </li>
   
@@ -1089,6 +1384,11 @@
         <em class="default">(defaults to: <tt>$storm::backend::params::info_endpoint_quality_level</tt>)</em>
       
       
+        &mdash;
+        <div class='inline'>
+<p>Endpoint maturity level to be published by the StoRM info provider. Default value: 2.</p>
+</div>
+      
     </li>
   
     <li>
@@ -1102,6 +1402,11 @@
         <em class="default">(defaults to: <tt>lookup(&#39;storm::backend::info_webdav_pool_list&#39;,
     Array[Storm::Backend::WebdavPoolMember], undef, $webdav_pool_members)</tt>)</em>
       
+      
+        &mdash;
+        <div class='inline'>
+<p>List of published webdav endpoints.</p>
+</div>
       
     </li>
   
@@ -1117,6 +1422,167 @@
     Array[Storm::Backend::SrmPoolMember], undef, $srm_pool_members)</tt>)</em>
       
       
+        &mdash;
+        <div class='inline'>
+<p>List of published srm endpoints.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>jvm_options</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::jvm_options</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>jmx</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::jmx</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>jmx_options</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::jmx_options</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>debug</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::debug</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>debug_port</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::debug_port</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>debug_suspend</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::debug_suspend</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>lcmaps_db_file</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::lcmaps_db_file</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>lcmaps_policy_name</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::lcmaps_policy_name</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>lcmaps_log_file</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::lcmaps_log_file</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>lcmaps_debug_level</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::lcmaps_debug_level</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>http_turl_prefix</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::http_turl_prefix</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>info_config_file</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::info_config_file</tt>)</em>
+      
+      
     </li>
   
 </ul>
@@ -1129,103 +1595,6 @@
         <pre class="lines">
 
 
-201
-202
-203
-204
-205
-206
-207
-208
-209
-210
-211
-212
-213
-214
-215
-216
-217
-218
-219
-220
-221
-222
-223
-224
-225
-226
-227
-228
-229
-230
-231
-232
-233
-234
-235
-236
-237
-238
-239
-240
-241
-242
-243
-244
-245
-246
-247
-248
-249
-250
-251
-252
-253
-254
-255
-256
-257
-258
-259
-260
-261
-262
-263
-264
-265
-266
-267
-268
-269
-270
-271
-272
-273
-274
-275
-276
-277
-278
-279
-280
-281
-282
-283
-284
-285
-286
-287
-288
-289
-290
-291
-292
-293
-294
-295
-296
-297
 298
 299
 300
@@ -1275,17 +1644,128 @@
 344
 345
 346
-347</pre>
+347
+348
+349
+350
+351
+352
+353
+354
+355
+356
+357
+358
+359
+360
+361
+362
+363
+364
+365
+366
+367
+368
+369
+370
+371
+372
+373
+374
+375
+376
+377
+378
+379
+380
+381
+382
+383
+384
+385
+386
+387
+388
+389
+390
+391
+392
+393
+394
+395
+396
+397
+398
+399
+400
+401
+402
+403
+404
+405
+406
+407
+408
+409
+410
+411
+412
+413
+414
+415
+416
+417
+418
+419
+420
+421
+422
+423
+424
+425
+426
+427
+428
+429
+430
+431
+432
+433
+434
+435
+436
+437
+438
+439
+440
+441
+442
+443
+444
+445
+446
+447
+448
+449
+450
+451
+452
+453</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/backend.pp', line 201</span>
+        <pre class="code"><span class="info file"># File 'manifests/backend.pp', line 298</span>
 
 class storm::backend (
 
   String $hostname,
 
-  # Db
+  # Install native libs gpfs
+  Boolean $install_native_libs_gpfs = $storm::backend::params::install_native_libs_gpfs,
+
+  # Install MySQL and/or create database
+  Boolean $install_mysql_and_create_database = $storm::backend::params::install_mysql_and_create_database,
   String $db_root_password = $storm::backend::params::db_root_password,
+  # Db connection
   String $db_storm_username = $storm::backend::params::db_storm_username,
   String $db_storm_password = $storm::backend::params::db_storm_password,
 
@@ -1322,11 +1802,11 @@ class storm::backend (
   Integer $rest_services_max_queue_size = $storm::backend::params::rest_services_max_queue_size,
 
   # XMLRPC Server parameter
-  Integer $synchcall_xmlrpc_unsecure_server_port = $storm::backend::params::synchcall_xmlrpc_unsecure_server_port,
-  Integer $synchcall_xmlrpc_maxthread = $storm::backend::params::synchcall_xmlrpc_maxthread,
-  Integer $synchcall_xmlrpc_max_queue_size = $storm::backend::params::synchcall_xmlrpc_max_queue_size,
-  Boolean $synchcall_xmlrpc_security_enabled = $storm::backend::params::synchcall_xmlrpc_security_enabled,
-  String $synchcall_xmlrpc_security_token = $storm::backend::params::synchcall_xmlrpc_security_token,
+  Integer $xmlrpc_unsecure_server_port = $storm::backend::params::xmlrpc_unsecure_server_port,
+  Integer $xmlrpc_maxthread = $storm::backend::params::xmlrpc_maxthread,
+  Integer $xmlrpc_max_queue_size = $storm::backend::params::xmlrpc_max_queue_size,
+  Boolean $xmlrpc_security_enabled = $storm::backend::params::xmlrpc_security_enabled,
+  String $xmlrpc_security_token = $storm::backend::params::xmlrpc_security_token,
 
   # Skip ACL setup for PTG requests
   Boolean $ptg_skip_acl_setup = $storm::backend::params::ptg_skip_acl_setup,
@@ -1344,7 +1824,7 @@ class storm::backend (
   Integer $service_du_interval = $storm::backend::params::service_du_interval,
 
   # Ls max entries
-  Integer $synchcall_max_ls_entries = $storm::backend::params::synchcall_max_ls_entries,
+  Integer $max_ls_entries = $storm::backend::params::max_ls_entries,
 
   # Pinned Files cleaning parameters
   Integer $gc_pinnedfiles_cleaning_delay = $storm::backend::params::gc_pinnedfiles_cleaning_delay,
@@ -1355,6 +1835,7 @@ class storm::backend (
   Integer $gc_purge_interval = $storm::backend::params::gc_purge_interval,
   Integer $gc_purge_size = $storm::backend::params::gc_purge_size,
   Integer $gc_expired_request_time = $storm::backend::params::gc_expired_request_time,
+  Integer $gc_expired_inprogress_time = $storm::backend::params::gc_expired_inprogress_time,
   Integer $gc_ptp_transit_interval = $storm::backend::params::gc_ptp_transit_interval,
   Integer $gc_ptp_transit_start_delay = $storm::backend::params::gc_ptp_transit_start_delay,
 
@@ -1390,6 +1871,7 @@ class storm::backend (
   Integer $bol_requests_scheduler_queue_size = $storm::backend::params::bol_requests_scheduler_queue_size,
 
   # Info Provider
+  String $info_config_file = $storm::backend::params::info_config_file,
   String $info_sitename = $storm::backend::params::info_sitename,
   String $info_storage_default_root = $storm::backend::params::info_storage_default_root,
   Integer $info_endpoint_quality_level = $storm::backend::params::info_endpoint_quality_level,
@@ -1398,34 +1880,36 @@ class storm::backend (
   Array[Storm::Backend::SrmPoolMember] $info_frontend_host_list = lookup(&#39;storm::backend::info_frontend_host_list&#39;,
     Array[Storm::Backend::SrmPoolMember], undef, $srm_pool_members),
 
+  # JVM options
+  String $jvm_options = $storm::backend::params::jvm_options,
+
+  # JMX options
+  Boolean $jmx = $storm::backend::params::jmx,
+  String $jmx_options = $storm::backend::params::jmx_options,
+
+  # Debug options
+  Boolean $debug = $storm::backend::params::debug,
+  Integer $debug_port = $storm::backend::params::debug_port,
+  Boolean $debug_suspend = $storm::backend::params::debug_suspend,
+
+  # LCMAPS
+  String $lcmaps_db_file = $storm::backend::params::lcmaps_db_file,
+  String $lcmaps_policy_name = $storm::backend::params::lcmaps_policy_name,
+  String $lcmaps_log_file = $storm::backend::params::lcmaps_log_file,
+  Integer $lcmaps_debug_level = $storm::backend::params::lcmaps_debug_level,
+
+  # HTTP TURL prefix
+  String $http_turl_prefix = $storm::backend::params::http_turl_prefix,
+
 ) inherits storm::backend::params {
 
   contain storm::backend::install
   contain storm::backend::config
   contain storm::backend::service
 
-  class { &#39;bdii&#39;:
-    selinux =&gt; false,
-  }
-  -&gt; class { &#39;storm::db&#39;:
-    fqdn_hostname  =&gt; $hostname,
-    storm_username =&gt; $db_storm_username,
-    storm_password =&gt; $db_storm_password,
-  }
-  -&gt; Class[&#39;storm::backend::install&#39;]
+  Class[&#39;storm::backend::install&#39;]
   -&gt; Class[&#39;storm::backend::config&#39;]
   -&gt; Class[&#39;storm::backend::service&#39;]
-  -&gt; class { &#39;storm::info&#39;:
-    backend_hostname       =&gt; $hostname,
-    sitename               =&gt; $info_sitename,
-    storage_default_root   =&gt; $info_storage_default_root,
-    endpoint_quality_level =&gt; $info_endpoint_quality_level,
-    frontend_public_host   =&gt; $frontend_public_host,
-    frontend_port          =&gt; $frontend_port,
-    rest_services_port     =&gt; $rest_services_port,
-    webdav_pool_members    =&gt; $info_webdav_pool_list,
-    srm_pool_members       =&gt; $info_frontend_host_list,
-  }
 }</pre>
       </td>
     </tr>

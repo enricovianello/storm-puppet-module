@@ -76,6 +76,8 @@
 <div class="docstring">
   <div class="discussion">
     
+<p>Mandatory fields: name, root_path, online_size | Property Name | Description | |:——————|:——————| | name | The name of the storage area. Mandatory. | | root_path | The absolute real path of the storage area parent directory. Mandatory. | | access_points | List of relative logical paths used to access storage area. Optional variable. Default value: /<code>name</code>. |</p>
+
   </div>
 </div>
 
@@ -107,6 +109,7 @@
   gsiftp_pool_balance_strategy => Optional[Storm::Backend::BalanceStrategy],
   gsiftp_pool_members          => Optional[Array[Storm::Backend::GsiftpPoolMember]],
   webdav_pool_members          => Optional[Array[Storm::Backend::WebdavPoolMember]],
+  use_gpfs_preallocation       => Optional[Boolean],
 }]</span></pre>
     </div>
   </div>
@@ -127,7 +130,7 @@
 </pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'types/backend/storagearea.pp', line 2</span>
+        <pre class="code"><span class="info file"># File 'types/backend/storagearea.pp', line 8</span>
 
 </pre>
       </td>

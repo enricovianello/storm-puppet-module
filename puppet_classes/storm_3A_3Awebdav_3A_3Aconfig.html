@@ -590,7 +590,8 @@
 143
 144
 145
-146</pre>
+146
+147</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/webdav/config.pp', line 3</span>
@@ -698,8 +699,20 @@ class storm::webdav::config (
     }
   }
 
-  $limit_service_dir=&#39;/etc/systemd/system/storm-webdav.service.d&#39;
-  file { $limit_service_dir:
+  $application_template_file=&#39;storm/etc/storm/webdav/config/application.yml.erb&#39;
+  $application_file=&#39;/etc/storm/webdav/config/application.yml&#39;
+  # configuration of application.yml
+  file { $application_file:
+    ensure  =&gt; present,
+    content =&gt; template($application_template_file),
+    owner   =&gt; &#39;root&#39;,
+    group   =&gt; &#39;storm&#39;,
+    mode    =&gt; &#39;0644&#39;,
+    notify  =&gt; Service[&#39;storm-webdav&#39;],
+  }
+
+  $service_dir=&#39;/etc/systemd/system/storm-webdav.service.d&#39;
+  file { $service_dir:
     ensure =&gt; directory,
     owner  =&gt; &#39;root&#39;,
     group  =&gt; &#39;root&#39;,
@@ -715,28 +728,17 @@ class storm::webdav::config (
     owner   =&gt; &#39;root&#39;,
     group   =&gt; &#39;root&#39;,
     mode    =&gt; &#39;0644&#39;,
-    notify  =&gt; Service[&#39;storm-webdav&#39;],
-    require =&gt; File[$limit_service_dir],
+    notify  =&gt; [Exec[&#39;webdav-daemon-reload&#39;], Service[&#39;storm-webdav&#39;]],
+    require =&gt; File[$service_dir],
   }
 
-  $application_template_file=&#39;storm/etc/storm/webdav/config/application.yml.erb&#39;
-  $application_file=&#39;/etc/storm/webdav/config/application.yml&#39;
-  # configuration of application.yml
-  file { $application_file:
+  $environment_file=&#39;/etc/systemd/system/storm-webdav.service.d/storm-webdav.conf&#39;
+  $environment_template_file=&#39;storm/etc/systemd/system/storm-webdav.service.d/storm-webdav.conf.erb&#39;
+  file { $environment_file:
     ensure  =&gt; present,
-    content =&gt; template($application_template_file),
-    owner   =&gt; &#39;root&#39;,
-    group   =&gt; &#39;storm&#39;,
-    mode    =&gt; &#39;0644&#39;,
-    notify  =&gt; Service[&#39;storm-webdav&#39;],
-  }
-
-  $sysconfig_file=&#39;/etc/sysconfig/storm-webdav&#39;
-  $sysconfig_template_file=&#39;storm/etc/sysconfig/storm-webdav.erb&#39;
-  file { $sysconfig_file:
-    ensure  =&gt; present,
-    content =&gt; template($sysconfig_template_file),
-    notify  =&gt; Service[&#39;storm-webdav&#39;],
+    content =&gt; template($environment_template_file),
+    notify  =&gt; [Exec[&#39;webdav-daemon-reload&#39;], Service[&#39;storm-webdav&#39;]],
+    require =&gt; File[$service_dir],
   }
 }</pre>
       </td>

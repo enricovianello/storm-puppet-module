@@ -80,14 +80,23 @@
 <p>StoRM Globus GridFTP server</p>
 </li><li>
 <p>StoRM Frontend</p>
+</li><li>
+<p>StoRM Backend</p>
 </li></ul>
 
 <h2 id="label-Setup">Setup</h2>
 
-<p>Build and install module as follow:</p>
+<p>StoRM Puppet module is available on puppet forge:</p>
 
-<pre class="code ruby"><code class="ruby">puppet module build
-puppet module install ./pkg/cnafsd-storm-0.2.2.tar.gz
+<pre class="code ruby"><code class="ruby">puppet module install cnafsd-storm
+</code></pre>
+
+<p>You can also build and install module from source code as follow:</p>
+
+<pre class="code ruby"><code class="ruby">git clone https://github.com/italiangrid/storm-puppet-module.git
+cd storm-puppet-module
+puppet module build
+puppet module install ./pkg/cnafsd-storm-*.tar.gz
 </code></pre>
 
 <h2 id="label-Usage">Usage</h2>
@@ -175,6 +184,56 @@ puppet module install ./pkg/cnafsd-storm-0.2.2.tar.gz
 </code></pre>
 
 <p>Check <a href="https://italiangrid.github.io/storm-puppet-module/puppet_classes/storm_3A_3Afrontend.html">here</a> for all Frontend class options.</p>
+
+<h3 id="label-Customize+StoRM+Backend+component">Customize StoRM Backend component</h3>
+
+<p>StoRM Backend class:</p>
+<ul><li>
+<p>installs MySQL community client/server;</p>
+</li><li>
+<p>creates and initializes StoRM database;</p>
+</li><li>
+<p>installs and configures storm-backend-server service;</p>
+</li><li>
+<p>installs and configures storm-info-provider and bdii.</p>
+</li></ul>
+
+<p>| Property Name | Description | |:——————————–|:——————| | <code>hostname</code> &lt;span style=“color:red”&gt;*&lt;/span&gt; | StoRM Backend Fully Qualified Domain Name. <strong>Mandatory</strong>. | | <code>install_native_libs_gpfs</code> | Set this if you need to install storm-native-libs-gpfs. Default value: <strong>false</strong>. | | <code>db_root_password</code> | MySQL root user password. Default value: <strong>storm</strong> | | <code>db_storm_username</code> | The name of user used to connect to local database. Default value: <strong>storm</strong>. | | <code>db_storm_password</code> | Password for the user in <code>db_storm_username</code>. Default value: <strong>bluemoon</strong>. | | <code>xroot_hostname</code> | Root server (default value for all Storage Areas). Note: you may change the settings for each SA acting on its configuration. Default value: <code>hostname</code>| | <code>xroot_port</code> | Root server port (default value for all Storage Areas). Default value: <strong>1094</strong>| | <code>gsiftp_pool_balance_strategy</code> | | | <code>gsiftp_pool_members</code> | | | <code>webdav_pool_members</code> | | | <code>srm_pool_members</code> | | | <code>transfer_protocols</code> | | | <code>fs_type</code> | | | <code>storage_areas</code> | | | <code>frontend_public_host</code> | | | <code>frontend_port</code> | | | <code>directory_automatic_creation</code> | | | <code>directory_writeperm</code> | | | <code>rest_services_port</code> | | | <code>rest_services_max_threads</code> | | | <code>rest_services_max_queue_size</code> | | | <code>synchcall_xmlrpc_unsecure_server_port</code> | | | <code>synchcall_xmlrpc_maxthread</code> | | | <code>synchcall_xmlrpc_max_queue_size</code> | | | <code>synchcall_xmlrpc_security_enabled</code> | | | <code>synchcall_xmlrpc_security_token</code> | | | <code>ptg_skip_acl_setup</code> | | | <code>pinlifetime_default</code> | | | <code>pinlifetime_maximum</code> | | | <code>sanity_check_enabled</code> | | | <code>service_du_enabled</code> | | | <code>service_du_delay</code> | | | <code>service_du_interval</code> | | | <code>synchcall_max_ls_entries</code> | | | <code>gc_pinnedfiles_cleaning_delay</code> | | | <code>gc_pinnedfiles_cleaning_interval</code> | | | <code>gc_purge_enabled</code> | | | <code>gc_purge_interval</code> | | | <code>gc_purge_size</code> | | | <code>gc_expired_request_time</code> | | | <code>gc_expired_inprogress_time</code> | | | <code>gc_ptp_transit_interval</code> | | | <code>gc_ptp_transit_start_delay</code> | | | <code>extraslashes_file</code> | | | <code>extraslashes_root</code> | | | <code>extraslashes_gsiftp</code> | | | <code>db_connection_pool_enabled</code> | | | <code>db_connection_pool_max_active</code> | | | <code>db_connection_pool_max_wait</code> | | | <code>asynch_db_reconnect_period</code> | | | <code>asynch_db_delay_period</code> | | | <code>asynch_picking_initial_delay</code> | | | <code>asynch_picking_time_interval</code> | | | <code>asynch_picking_max_batch_size</code> | | | <code>requests_scheduler_core_size</code> | | | <code>requests_scheduler_max_size</code> | | | <code>requests_scheduler_queue_size</code> | | | <code>ptp_requests_scheduler_core_size</code> | | | <code>ptp_requests_scheduler_max_size</code> | | | <code>ptp_requests_scheduler_queue_size</code> | | | <code>ptg_requests_scheduler_core_size</code> | | | <code>ptg_requests_scheduler_max_size</code> | | | <code>ptg_requests_scheduler_queue_size</code> | | | <code>bol_requests_scheduler_core_size</code> | | | <code>bol_requests_scheduler_max_size</code> | | | <code>bol_requests_scheduler_queue_size</code> | | | <code>info_sitename</code> | | | <code>info_storage_default_root</code> | | | <code>info_endpoint_quality_level</code> | | | <code>info_webdav_pool_list</code> | | | <code>info_frontend_host_list</code> | |</p>
+
+<p>Example of StoRM Backend configuration:</p>
+
+<pre class="code ruby"><code class="ruby">class { &#39;storm::backend&#39;:
+  hostname =&gt; &#39;backend.test.example&#39;,
+  db_root_password  =&gt; &#39;storm&#39;,
+  db_storm_password =&gt; &#39;bluemoon&#39;,
+  srm_pool_members =&gt; [
+    {
+      &#39;hostname&#39; =&gt; &#39;frontend.test.example&#39;,
+    }
+  ],
+  gsiftp_pool_members =&gt; [
+    {
+      &#39;hostname&#39; =&gt; &#39;gridftp.test.example&#39;,
+    },
+  ],
+  webdav_pool_members =&gt; [
+    {
+      &#39;hostname&#39; =&gt; &#39;webdav.test.example&#39;,
+    },
+  ],
+  storage_areas =&gt; [
+    {
+      &#39;name&#39;               =&gt; &#39;test.vo&#39;,
+      &#39;root_path&#39;          =&gt; &#39;/storage/test.vo&#39;,
+      &#39;access_points&#39;      =&gt; [&#39;/test.vo&#39;],
+      &#39;vos&#39;                =&gt; [&#39;test.vo&#39;],
+      &#39;storage_class&#39;      =&gt; &#39;T0D1&#39;,
+      &#39;online_size&#39;        =&gt; 4,
+      &#39;transfer_protocols&#39; =&gt; [&#39;file&#39;, &#39;gsiftp&#39;, &#39;https&#39;],
+    },
+  ],
+}
+</code></pre>
 
 <h2 id="label-Documentation">Documentation</h2>
 

@@ -4,7 +4,7 @@
     <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>
-  Puppet Class: storm::backend::install
+  Defined Type: storm::rootdir
   
     &mdash; Documentation by YARD 0.9.20
   
@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
 
 <script type="text/javascript" charset="utf-8">
-  pathId = "puppet_classes::storm::backend::install";
+  pathId = "puppet_defined_types::storm::rootdir";
   relpath = '../';
 </script>
 
@@ -28,7 +28,7 @@
   </head>
   <body>
     <div class="nav_wrap">
-      <iframe id="nav" src="../puppet_class_list.html?1"></iframe>
+      <iframe id="nav" src="../puppet_defined_type_list.html?1"></iframe>
       <div id="resizer"></div>
     </div>
 
@@ -37,9 +37,9 @@
         <div id="menu">
   
     <a href="../_index.html">Index (s)</a> &raquo;
-    <span class='title'><span class='object_link'>Puppet Classes</span></span>
+    <span class='title'><span class='object_link'>Defined Types</span></span>
      &raquo; 
-    <span class="title">storm::backend::install</span>
+    <span class="title">storm::rootdir</span>
   
 </div>
 
@@ -59,20 +59,18 @@
         <div class="clear"></div>
       </div>
 
-      <div id="content"><h1>Puppet Class: storm::backend::install</h1>
+      <div id="content"><h1>Defined Type: storm::rootdir</h1>
 <div class="box_info">
-  
-  
   <dl>
     <dt>Defined in:</dt>
     <dd>
-      manifests/backend/install.pp
+      manifests/rootdir.pp
     </dd>
   </dl>
 </div>
 
   <h2>Summary</h2>
-  StoRM Backend install class
+  StoRM root directory defined resource
 
 <h2>Overview</h2>
 <div class="docstring">
@@ -83,7 +81,22 @@
 
 
 <div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
   
+    <li>
+      
+        <span class='name'>path</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
 
 </div><div class="method_details_list">
   <table class="source_code">
@@ -92,6 +105,7 @@
         <pre class="lines">
 
 
+2
 3
 4
 5
@@ -101,61 +115,20 @@
 9
 10
 11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33</pre>
+12</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/backend/install.pp', line 3</span>
+        <pre class="code"><span class="info file"># File 'manifests/rootdir.pp', line 2</span>
 
-class storm::backend::install (
-
+define storm::rootdir (
+  String $path,
 ) {
-
-  package { &#39;storm-backend-mp&#39;:
-    ensure  =&gt; installed,
-  }
-
-  if $storm::backend::install_native_libs_gpfs {
-    package { &#39;storm-native-libs-gpfs&#39; :
-      ensure  =&gt; installed,
-      require =&gt; [Package[&#39;storm-backend-mp&#39;]],
-    }
-  } else {
-    # fail in case native libs gfps are needed
-    if $storm::backend::fs_type == &#39;gpfs&#39; {
-      fail(&quot;You have declared fs_type as &#39;gpfs&#39; but &#39;install_native_libs_gpfs&#39; is false. Check your configuration.&quot;)
-    } else {
-      $storm::backend::storage_areas.each | $sa | {
-        if $sa[fs_type] == &#39;gpfs&#39; {
-          fail(&quot;Storage area ${sa[name]} is &#39;gpfs&#39; but &#39;install_native_libs_gpfs&#39; is false. Check your configuration.&quot;)
-        }
-      }
-    }
-  }
-
-  package { &#39;storm-dynamic-info-provider&#39;:
-    ensure  =&gt; installed,
-    require =&gt; [Package[&#39;storm-backend-mp&#39;]],
+  file { $path:
+    ensure  =&gt; &#39;directory&#39;,
+    owner   =&gt; &#39;storm&#39;,
+    group   =&gt; &#39;storm&#39;,
+    mode    =&gt; &#39;0755&#39;,
+    recurse =&gt; true,
   }
 }</pre>
       </td>

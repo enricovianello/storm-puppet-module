@@ -93,11 +93,11 @@
 </div></p>
       
       <pre class="example code"><code>class { &#39;storm::storage&#39;:
-  storage_root =&gt; &#39;/storage&#39;,
-  storage_areas =&gt; {
-    &#39;test.vo&#39; =&gt; &#39;/storage/test.vo&#39;,
-    &#39;tape&#39; =&gt; &#39;/storage/tape&#39;,
-  },
+  root_directories =&gt; [
+    &#39;/storage&#39;,
+    &#39;/storage/disk&#39;,
+    &#39;/storage/tape&#39;,
+  ],
 }</code></pre>
     
   </div>
@@ -106,35 +106,19 @@
   
     <li>
       
-        <span class='name'>storage_root</span>
+        <span class='name'>root_directories</span>
       
       
-        <span class='type'>(<tt>String</tt>)</span>
+        <span class='type'>(<tt>Array[String]</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>&#39;/storage&#39;</tt>)</em>
+        <em class="default">(defaults to: <tt>[&#39;/storage&#39;]</tt>)</em>
       
       
-    </li>
-  
-    <li>
-      
-        <span class='name'>storage_areas</span>
-      
-      
-        <span class='type'>(<tt>Hash[String, String]</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>{
-    &#39;test.vo&#39; =&gt; &#39;/storage/test.vo&#39;,
-    &#39;test.vo.2&#39; =&gt; &#39;/storage/test.vo.2&#39;,
-    &#39;igi&#39; =&gt; &#39;/storage/igi&#39;,
-    &#39;noauth&#39; =&gt; &#39;/storage/noauth&#39;,
-    &#39;test.vo.bis&#39; =&gt; &#39;/storage/test.vo.bis&#39;,
-    &#39;nested&#39; =&gt; &#39;/storage/nested&#39;,
-    &#39;tape&#39; =&gt; &#39;/storage/tape&#39;,
-  }</tt>)</em>
-      
+        &mdash;
+        <div class='inline'>
+<p>A list of all storage root directories owned by storm user. You must add also all parent directories.</p>
+</div>
       
     </li>
   
@@ -148,6 +132,7 @@
         <pre class="lines">
 
 
+15
 16
 17
 18
@@ -158,65 +143,20 @@
 23
 24
 25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45
-46
-47
-48
-49</pre>
+26</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/storage.pp', line 16</span>
+        <pre class="code"><span class="info file"># File 'manifests/storage.pp', line 15</span>
 
 class storm::storage (
 
-  String $storage_root = &#39;/storage&#39;,
-
-  Hash[String, String] $storage_areas = {
-    &#39;test.vo&#39; =&gt; &#39;/storage/test.vo&#39;,
-    &#39;test.vo.2&#39; =&gt; &#39;/storage/test.vo.2&#39;,
-    &#39;igi&#39; =&gt; &#39;/storage/igi&#39;,
-    &#39;noauth&#39; =&gt; &#39;/storage/noauth&#39;,
-    &#39;test.vo.bis&#39; =&gt; &#39;/storage/test.vo.bis&#39;,
-    &#39;nested&#39; =&gt; &#39;/storage/nested&#39;,
-    &#39;tape&#39; =&gt; &#39;/storage/tape&#39;,
-  },
+  Array[String] $root_directories = [&#39;/storage&#39;],
 
 ) {
 
-  file { $storage_root:
-    ensure  =&gt; &#39;directory&#39;,
-    owner   =&gt; &#39;storm&#39;,
-    group   =&gt; &#39;storm&#39;,
-    mode    =&gt; &#39;0755&#39;,
-    recurse =&gt; true,
-  }
-  $storage_areas.each | $name, $path | {
-    file { $path:
-      ensure  =&gt; &#39;directory&#39;,
-      owner   =&gt; &#39;storm&#39;,
-      group   =&gt; &#39;storm&#39;,
-      mode    =&gt; &#39;0755&#39;,
-      recurse =&gt; true,
-      require =&gt; File[$storage_root],
+  $root_directories.each | $path | {
+    storm::rootdir { $path:
+      path =&gt; $path,
     }
   }
 }</pre>

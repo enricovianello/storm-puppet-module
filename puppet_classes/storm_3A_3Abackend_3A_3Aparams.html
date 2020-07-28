@@ -221,7 +221,37 @@
 115
 116
 117
-118</pre>
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/backend/params.pp', line 3</span>
@@ -229,8 +259,14 @@
 class storm::backend::params (
 ) inherits storm::params {
 
-  # Db
+  # Native libs gpfs
+  $install_native_libs_gpfs = lookup(&#39;storm::backend::install_native_libs_gpfs&#39;, Boolean, undef, false)
+
+  # Install MySQL and/or create database
+  $install_mysql_and_create_database = lookup(&#39;storm::backend::install_mysql_and_create_database&#39;, Boolean, undef, false)
   $db_root_password = lookup(&#39;storm::backend::db_root_password&#39;, String, undef, &#39;storm&#39;)
+
+  # Db
   $db_storm_username = lookup(&#39;storm::backend::db_storm_username&#39;, String, undef, &#39;storm&#39;)
   $db_storm_password = lookup(&#39;storm::backend::db_storm_password&#39;, String, undef, &#39;bluemoon&#39;)
 
@@ -269,11 +305,11 @@ class storm::backend::params (
   $rest_services_max_queue_size = lookup(&#39;storm::backend::rest_services_max_queue_size&#39;, Integer, undef, 1000)
 
   # XMLRPC Server parameter
-  $synchcall_xmlrpc_unsecure_server_port = lookup(&#39;storm::backend::synchcall_xmlrpc_unsecure_server_port&#39;, Integer, undef, 8080)
-  $synchcall_xmlrpc_maxthread = lookup(&#39;storm::backend::synchcall_xmlrpc_maxthread&#39;, Integer, undef, 256)
-  $synchcall_xmlrpc_max_queue_size = lookup(&#39;storm::backend::synchcall_xmlrpc_max_queue_size&#39;, Integer, undef, 1000)
-  $synchcall_xmlrpc_security_enabled = lookup(&#39;storm::backend::synchcall_xmlrpc_security_enabled&#39;, Boolean, undef, true)
-  $synchcall_xmlrpc_security_token = lookup(&#39;storm::backend::synchcall_xmlrpc_security_token&#39;, String, undef, &#39;secret&#39;)
+  $xmlrpc_unsecure_server_port = lookup(&#39;storm::backend::xmlrpc_unsecure_server_port&#39;, Integer, undef, 8080)
+  $xmlrpc_maxthread = lookup(&#39;storm::backend::xmlrpc_maxthread&#39;, Integer, undef, 256)
+  $xmlrpc_max_queue_size = lookup(&#39;storm::backend::xmlrpc_max_queue_size&#39;, Integer, undef, 1000)
+  $xmlrpc_security_enabled = lookup(&#39;storm::backend::xmlrpc_security_enabled&#39;, Boolean, undef, true)
+  $xmlrpc_security_token = lookup(&#39;storm::backend::xmlrpc_security_token&#39;, String, undef, &#39;secret&#39;)
 
   # Skip ACL setup for PTG requests
   $ptg_skip_acl_setup = lookup(&#39;storm::backend::ptg_skip_acl_setup&#39;, Boolean, undef, false)
@@ -291,7 +327,7 @@ class storm::backend::params (
   $service_du_interval = lookup(&#39;storm::backend::service_du_interval&#39;, Integer, undef, 360)
 
   # ls max entries
-  $synchcall_max_ls_entries = lookup(&#39;storm::backend::synchcall_max_ls_entries&#39;, Integer, undef, 2000)
+  $max_ls_entries = lookup(&#39;storm::backend::max_ls_entries&#39;, Integer, undef, 2000)
 
   # Pinned Files cleaning parameters
   $gc_pinnedfiles_cleaning_delay = lookup(&#39;storm::backend::gc_pinnedfiles_cleaning_delay&#39;, Integer, undef, 10)
@@ -302,13 +338,14 @@ class storm::backend::params (
   $gc_purge_interval = lookup(&#39;storm::backend::gc_purge_interval&#39;, Integer, undef, 600)
   $gc_purge_size = lookup(&#39;storm::backend::gc_purge_size&#39;, Integer, undef, 800)
   $gc_expired_request_time = lookup(&#39;storm::backend::gc_expired_request_time&#39;, Integer, undef, 21600)
+  $gc_expired_inprogress_time = lookup(&#39;storm::backend::gc_expired_inprogress_time&#39;, Integer, undef, 2592000)
   # Expired-Put-Requests-Agent parameters
   $gc_ptp_transit_interval = lookup(&#39;storm::backend::gc_ptp_transit_interval&#39;, Integer, undef, 300)
   $gc_ptp_transit_start_delay = lookup(&#39;storm::backend::gc_ptp_transit_start_delay&#39;, Integer, undef, 10)
 
   # extraslashes
   $extraslashes_file = lookup(&#39;storm::backend::extraslashes_file&#39;, String, undef, &#39;&#39;)
-  $extraslashes_root = lookup(&#39;storm::backend::extraslashes_root&#39;, String, undef, &#39;/&#39;)
+  $extraslashes_root = lookup(&#39;storm::backend::extraslashes_root&#39;, String, undef, &#39;&#39;)
   $extraslashes_gsiftp = lookup(&#39;storm::backend::extraslashes_gsiftp&#39;, String, undef, &#39;/&#39;)
 
   # Db Connection Pool
@@ -338,9 +375,32 @@ class storm::backend::params (
   $bol_requests_scheduler_queue_size = lookup(&#39;storm::backend::bol_requests_scheduler_queue_size&#39;, Integer, undef, 2000)
 
   # Info Provider
+  $info_config_file = lookup(&#39;storm::backend::info_config_file&#39;, String, undef, &#39;/etc/storm/info-provider/storm-yaim-variables.conf&#39;)
   $info_sitename = lookup(&#39;storm::backend::info_sitename&#39;, String, undef, &#39;StoRM site&#39;)
   $info_storage_default_root = lookup(&#39;storm::backend::info_storage_default_root&#39;, String, undef, &#39;/storage&#39;)
   $info_endpoint_quality_level = lookup(&#39;storm::backend::info_endpoint_quality_level&#39;, Integer, undef, 2)
+
+  # JVM Options
+  $jvm_options = lookup(&#39;storm::backend::jvm_options&#39;, String, undef, &#39;-Xms512m -Xmx512m&#39;)
+
+  # JMX options
+  $jmx = lookup(&#39;storm::backend::jmx&#39;, Boolean, undef, false)
+  $jmx_options = lookup(&#39;storm::backend::jmx_options&#39;, String, undef, &#39;-Dcom.sun.management.jmxremote.port=8501 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false&#39;)
+
+  # Debug options
+  $debug = lookup(&#39;storm::backend::debug&#39;, Boolean, undef, false)
+  $debug_port = lookup(&#39;storm::backend::debug_port&#39;, Integer, undef, 1044)
+  $debug_suspend = lookup(&#39;storm::backend::debug_suspend&#39;, Boolean, undef, false)
+
+  # LCMAPS options
+  $lcmaps_db_file = lookup(&#39;storm::backend::lcmaps_db_file&#39;, String, undef, &#39;/etc/storm/backend-server/lcmaps.db&#39;)
+  $lcmaps_policy_name = lookup(&#39;storm::backend::lcmaps_policy_name&#39;, String, undef, &#39;standard&#39;)
+  $lcmaps_log_file = lookup(&#39;storm::backend::lcmaps_log_file&#39;, String, undef, &#39;/var/log/storm/lcmaps.log&#39;)
+  $lcmaps_debug_level = lookup(&#39;storm::backend::lcmaps_debug_level&#39;, Integer, undef, 0)
+
+  # HTTP TURL prefix
+  $http_turl_prefix = lookup(&#39;storm::backend::http_turl_prefix&#39;, String, undef, &#39;&#39;)
+
 }</pre>
       </td>
     </tr>

@@ -99,17 +99,35 @@
 7
 8
 9
-10</pre>
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/backend/service.pp', line 3</span>
 
 class storm::backend::service {
 
+  exec { &#39;backend-daemon-reload&#39;:
+    command     =&gt; &#39;/usr/bin/systemctl daemon-reload&#39;,
+    refreshonly =&gt; true,
+  }
   service { &#39;storm-backend-server&#39;:
     ensure  =&gt; running,
     enable  =&gt; true,
-    require =&gt; Package[&#39;storm-backend-mp&#39;],
+    require =&gt; Exec[&#39;backend-daemon-reload&#39;],
+  }
+  exec { &#39;configure-info-provider&#39;:
+    command     =&gt; &#39;/usr/libexec/storm-info-provider configure&#39;,
+    refreshonly =&gt; true,
+    require     =&gt; [Service[&#39;storm-backend-server&#39;]],
   }
 }</pre>
       </td>
