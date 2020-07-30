@@ -188,6 +188,24 @@
       
     </li>
   
+    <li>
+      
+        <span class='name'>max_connections</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::db::params::max_connections</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Sets max_connections option&#39;s value into /etc/my.cnf</p>
+</div>
+      
+    </li>
+  
 </ul>
 
 
@@ -198,9 +216,6 @@
         <pre class="lines">
 
 
-21
-22
-23
 24
 25
 26
@@ -213,10 +228,14 @@
 33
 34
 35
-36</pre>
+36
+37
+38
+39
+40</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/db.pp', line 21</span>
+        <pre class="code"><span class="info file"># File 'manifests/db.pp', line 24</span>
 
 class storm::db (
 
@@ -224,6 +243,7 @@ class storm::db (
   String $root_password = $storm::db::params::root_password,
   String $storm_username = $storm::db::params::storm_username,
   String $storm_password = $storm::db::params::storm_password,
+  Integer $max_connections = $storm::db::params::max_connections,
 
 ) inherits storm::db::params {
 

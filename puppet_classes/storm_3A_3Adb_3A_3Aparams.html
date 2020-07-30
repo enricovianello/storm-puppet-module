@@ -115,7 +115,8 @@
 9
 10
 11
-12</pre>
+12
+13</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/db/params.pp', line 3</span>
@@ -128,6 +129,7 @@ class storm::db::params (
   $root_password = lookup(&#39;storm::db::root_password&#39;, String, undef, &#39;storm&#39;)
   $storm_username = lookup(&#39;storm::db::storm_username&#39;, String, undef, &#39;storm&#39;)
   $storm_password = lookup(&#39;storm::db::storm_password&#39;, String, undef, &#39;bluemoon&#39;)
+  $max_connections = lookup(&#39;storm::db::max_connections&#39;, Integer, undef, 1024)
 
 }</pre>
       </td>

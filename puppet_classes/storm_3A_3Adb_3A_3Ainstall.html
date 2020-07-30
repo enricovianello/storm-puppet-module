@@ -104,6 +104,19 @@
       
     </li>
   
+    <li>
+      
+        <span class='name'>max_connections</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::db::max_connections</tt>)</em>
+      
+      
+    </li>
+  
 </ul>
 
 
@@ -153,7 +166,9 @@
 39
 40
 41
-42</pre>
+42
+43
+44</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/db/install.pp', line 3</span>
@@ -161,6 +176,7 @@
 class storm::db::install (
 
   $root_password = $storm::db::root_password,
+  $max_connections = $storm::db::max_connections,
 
 ) inherits storm::db {
 
@@ -189,8 +205,9 @@ class storm::db::install (
     require            =&gt; Yumrepo[&#39;repo.mysql.com&#39;],
     override_options   =&gt; {
       mysqld      =&gt; {
-        &#39;bind-address&#39; =&gt; &#39;127.0.0.1&#39;,
-        &#39;log-error&#39;    =&gt; &#39;/var/log/mysqld.log&#39;,
+        &#39;bind-address&#39;    =&gt; &#39;127.0.0.1&#39;,
+        &#39;log-error&#39;       =&gt; &#39;/var/log/mysqld.log&#39;,
+        &#39;max_connections&#39; =&gt; $max_connections,
       },
       mysqld_safe =&gt; {
         &#39;log-error&#39; =&gt; &#39;/var/log/mysqld.log&#39;,
