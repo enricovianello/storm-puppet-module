@@ -251,7 +251,17 @@
 145
 146
 147
-148</pre>
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/backend/params.pp', line 3</span>
@@ -262,13 +272,23 @@ class storm::backend::params (
   # Native libs gpfs
   $install_native_libs_gpfs = lookup(&#39;storm::backend::install_native_libs_gpfs&#39;, Boolean, undef, false)
 
-  # Install MySQL and/or create database
-  $install_mysql_and_create_database = lookup(&#39;storm::backend::install_mysql_and_create_database&#39;, Boolean, undef, false)
-  $db_root_password = lookup(&#39;storm::backend::db_root_password&#39;, String, undef, &#39;storm&#39;)
+  # Db connection
+  $db_username = lookup(&#39;storm::backend::db_username&#39;, String, undef, &#39;storm&#39;)
+  $db_password = lookup(&#39;storm::backend::db_password&#39;, String, undef, &#39;bluemoon&#39;)
 
-  # Db
-  $db_storm_username = lookup(&#39;storm::backend::db_storm_username&#39;, String, undef, &#39;storm&#39;)
-  $db_storm_password = lookup(&#39;storm::backend::db_storm_password&#39;, String, undef, &#39;bluemoon&#39;)
+  # Db MySQL server
+  $mysql_server_install = lookup(&#39;storm::backend::mysql_server_install&#39;, Boolean, undef, false)
+  $mysql_server_root_password = lookup(&#39;storm::backend::mysql_server_root_password&#39;, String, undef, &#39;storm&#39;)
+  $mysql_server_override_options = lookup(&#39;storm::backend::mysql_server_override_options&#39;, Data, undef, {
+    &#39;mysqld&#39;      =&gt; {
+      &#39;bind-address&#39;    =&gt; &#39;127.0.0.1&#39;,
+      &#39;log-error&#39;       =&gt; &#39;/var/log/mysqld.log&#39;,
+      &#39;max_connections&#39; =&gt; 2048,
+    },
+    &#39;mysqld_safe&#39; =&gt; {
+      &#39;log-error&#39; =&gt; &#39;/var/log/mysqld.log&#39;,
+    },
+  })
 
   ### Default values for Storage Areas
   # 1. xroot

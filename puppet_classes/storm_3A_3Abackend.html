@@ -99,8 +99,8 @@
       
       <pre class="example code"><code>class { &#39;storm::backend&#39;:
   hostname =&gt; &#39;backend.test.example&#39;,
-  db_root_password  =&gt; &#39;storm&#39;,
-  db_storm_password =&gt; &#39;bluemoon&#39;,
+  db_user =&gt; &#39;storm&#39;,
+  db_password =&gt; &#39;bluemoon&#39;,
   srm_pool_members =&gt; [
     {
       &#39;hostname&#39; =&gt; &#39;frontend.test.example&#39;,
@@ -169,49 +169,67 @@
   
     <li>
       
-        <span class='name'>install_mysql_and_create_database</span>
+        <span class='name'>mysql_server_install</span>
       
       
         <span class='type'>(<tt>Boolean</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$storm::backend::params::install_mysql_and_create_database</tt>)</em>
+        <em class="default">(defaults to: <tt>$storm::backend::params::mysql_server_install</tt>)</em>
       
       
         &mdash;
         <div class='inline'>
-<p>Set this to true if you need to install MySQL and create StoRM database. Default: false.</p>
+<p>Install MySQL server on the same host. Default: false.</p>
 </div>
       
     </li>
   
     <li>
       
-        <span class='name'>db_root_password</span>
+        <span class='name'>mysql_server_root_password</span>
       
       
         <span class='type'>(<tt>String</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$storm::backend::params::db_root_password</tt>)</em>
+        <em class="default">(defaults to: <tt>$storm::backend::params::mysql_server_root_password</tt>)</em>
       
       
         &mdash;
         <div class='inline'>
-<p>MySQL root user password</p>
+<p>Used to configure MySQL server in case mysql_server_install is true. Default: &#39;storm&#39;.</p>
 </div>
       
     </li>
   
     <li>
       
-        <span class='name'>db_storm_username</span>
+        <span class='name'>mysql_server_override_options</span>
+      
+      
+        <span class='type'>(<tt>Data</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::mysql_server_override_options</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Used to configure MySQL server in case mysql_server_install is true.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>db_username</span>
       
       
         <span class='type'>(<tt>String</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$storm::backend::params::db_storm_username</tt>)</em>
+        <em class="default">(defaults to: <tt>$storm::backend::params::db_username</tt>)</em>
       
       
         &mdash;
@@ -223,13 +241,13 @@
   
     <li>
       
-        <span class='name'>db_storm_password</span>
+        <span class='name'>db_password</span>
       
       
         <span class='type'>(<tt>String</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$storm::backend::params::db_storm_password</tt>)</em>
+        <em class="default">(defaults to: <tt>$storm::backend::params::db_password</tt>)</em>
       
       
         &mdash;
@@ -1595,9 +1613,6 @@
         <pre class="lines">
 
 
-298
-299
-300
 301
 302
 303
@@ -1750,10 +1765,17 @@
 450
 451
 452
-453</pre>
+453
+454
+455
+456
+457
+458
+459
+460</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/backend.pp', line 298</span>
+        <pre class="code"><span class="info file"># File 'manifests/backend.pp', line 301</span>
 
 class storm::backend (
 
@@ -1762,12 +1784,14 @@ class storm::backend (
   # Install native libs gpfs
   Boolean $install_native_libs_gpfs = $storm::backend::params::install_native_libs_gpfs,
 
-  # Install MySQL and/or create database
-  Boolean $install_mysql_and_create_database = $storm::backend::params::install_mysql_and_create_database,
-  String $db_root_password = $storm::backend::params::db_root_password,
   # Db connection
-  String $db_storm_username = $storm::backend::params::db_storm_username,
-  String $db_storm_password = $storm::backend::params::db_storm_password,
+  String $db_username = $storm::backend::params::db_username,
+  String $db_password = $storm::backend::params::db_password,
+
+  # MySQL Server options
+  Boolean $mysql_server_install = $storm::backend::params::mysql_server_install,
+  String $mysql_server_root_password = $storm::backend::params::mysql_server_root_password,
+  Data $mysql_server_override_options = $storm::backend::params::mysql_server_override_options,
 
   ### Default values for Storage Areas
   # 1. xroot
@@ -1904,10 +1928,12 @@ class storm::backend (
 ) inherits storm::backend::params {
 
   contain storm::backend::install
+  contain storm::backend::configdb
   contain storm::backend::config
   contain storm::backend::service
 
   Class[&#39;storm::backend::install&#39;]
+  -&gt; Class[&#39;storm::backend::configdb&#39;]
   -&gt; Class[&#39;storm::backend::config&#39;]
   -&gt; Class[&#39;storm::backend::service&#39;]
 }</pre>

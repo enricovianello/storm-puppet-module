@@ -122,7 +122,46 @@
 30
 31
 32
-33</pre>
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/backend/install.pp', line 3</span>
@@ -131,16 +170,54 @@ class storm::backend::install (
 
 ) {
 
+  ## StoRM Backend
   package { &#39;storm-backend-mp&#39;:
     ensure  =&gt; installed,
   }
 
+  ## MySQL
+  $basearch = &#39;x86_64&#39;
+  $el = $::operatingsystemmajrelease
+
+  ## MySQL Repo
+  yumrepo { &#39;repo.mysql.com&#39;:
+    ensure   =&gt; present,
+    descr    =&gt; &#39;repo.mysql.com&#39;,
+    baseurl  =&gt; &quot;http://repo.mysql.com/yum/mysql-5.6-community/el/${el}/${basearch}/&quot;,
+    enabled  =&gt; 1,
+    gpgcheck =&gt; true,
+    gpgkey   =&gt; &#39;http://repo.mysql.com/RPM-GPG-KEY-mysql&#39;,
+  }
+
+  ## MySQL Client
+  class { &#39;mysql::client&#39;:
+    package_name =&gt; &#39;mysql-community-client&#39;,
+    require      =&gt; Yumrepo[&#39;repo.mysql.com&#39;],
+  }
+
+  if $storm::backend::mysql_server_install {
+
+    ## MySQL Server (optional)
+    class { &#39;mysql::server&#39;:
+      package_name       =&gt; &#39;mysql-community-server&#39;,
+      root_password      =&gt; $storm::backend::mysql_server_root_password,
+      manage_config_file =&gt; true,
+      service_name       =&gt; &#39;mysqld&#39;,
+      require            =&gt; Yumrepo[&#39;repo.mysql.com&#39;],
+      override_options   =&gt; $storm::backend::mysql_server_override_options,
+    }
+  }
+
   if $storm::backend::install_native_libs_gpfs {
+
+    ## Native libs GPFS
     package { &#39;storm-native-libs-gpfs&#39; :
       ensure  =&gt; installed,
       require =&gt; [Package[&#39;storm-backend-mp&#39;]],
     }
+
   } else {
+
     # fail in case native libs gfps are needed
     if $storm::backend::fs_type == &#39;gpfs&#39; {
       fail(&quot;You have declared fs_type as &#39;gpfs&#39; but &#39;install_native_libs_gpfs&#39; is false. Check your configuration.&quot;)
@@ -153,6 +230,7 @@ class storm::backend::install (
     }
   }
 
+  ## StoRM Info Provider
   package { &#39;storm-dynamic-info-provider&#39;:
     ensure  =&gt; installed,
     require =&gt; [Package[&#39;storm-backend-mp&#39;]],

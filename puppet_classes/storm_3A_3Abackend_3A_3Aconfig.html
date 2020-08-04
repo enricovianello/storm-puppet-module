@@ -114,52 +114,65 @@
   
     <li>
       
-        <span class='name'>install_mysql_and_create_database</span>
+        <span class='name'>db_username</span>
       
       
         <span class='type'>(<tt>Any</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$storm::backend::install_mysql_and_create_database</tt>)</em>
+        <em class="default">(defaults to: <tt>$storm::backend::db_username</tt>)</em>
       
       
     </li>
   
     <li>
       
-        <span class='name'>db_root_password</span>
+        <span class='name'>db_password</span>
       
       
         <span class='type'>(<tt>Any</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$storm::backend::db_root_password</tt>)</em>
+        <em class="default">(defaults to: <tt>$storm::backend::db_password</tt>)</em>
       
       
     </li>
   
     <li>
       
-        <span class='name'>db_storm_username</span>
+        <span class='name'>mysql_server_install</span>
       
       
         <span class='type'>(<tt>Any</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$storm::backend::db_storm_username</tt>)</em>
+        <em class="default">(defaults to: <tt>$storm::backend::mysql_server_install</tt>)</em>
       
       
     </li>
   
     <li>
       
-        <span class='name'>db_storm_password</span>
+        <span class='name'>mysql_server_root_password</span>
       
       
         <span class='type'>(<tt>Any</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$storm::backend::db_storm_password</tt>)</em>
+        <em class="default">(defaults to: <tt>$storm::backend::mysql_server_root_password</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>mysql_server_override_options</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::mysql_server_override_options</tt>)</em>
       
       
     </li>
@@ -1361,16 +1374,7 @@
 199
 200
 201
-202
-203
-204
-205
-206
-207
-208
-209
-210
-211</pre>
+202</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/backend/config.pp', line 3</span>
@@ -1381,11 +1385,12 @@ class storm::backend::config (
 
   $install_native_libs_gpfs = $storm::backend::install_native_libs_gpfs,
 
-  $install_mysql_and_create_database = $storm::backend::install_mysql_and_create_database,
+  $db_username = $storm::backend::db_username,
+  $db_password = $storm::backend::db_password,
 
-  $db_root_password = $storm::backend::db_root_password,
-  $db_storm_username = $storm::backend::db_storm_username,
-  $db_storm_password = $storm::backend::db_storm_password,
+  $mysql_server_install = $storm::backend::mysql_server_install,
+  $mysql_server_root_password = $storm::backend::mysql_server_root_password,
+  $mysql_server_override_options = $storm::backend::mysql_server_override_options,
 
   $xroot_hostname = $storm::backend::xroot_hostname,
   $xroot_port = $storm::backend::xroot_port,
@@ -1521,17 +1526,6 @@ class storm::backend::config (
   $namespace_file=&#39;/etc/storm/backend-server/namespace.xml&#39;
   $properties_file=&#39;/etc/storm/backend-server/storm.properties&#39;
 
-  if $install_mysql_and_create_database {
-    class { &#39;storm::db&#39;:
-      fqdn_hostname  =&gt; $hostname,
-      storm_username =&gt; $db_storm_username,
-      storm_password =&gt; $db_storm_password,
-      root_password  =&gt; $db_root_password,
-      notify         =&gt; Service[&#39;storm-backend-server&#39;],
-      before         =&gt; [File[$namespace_file], File[$properties_file]],
-    }
-  }
-
   $namespace_template_file=&#39;storm/etc/storm/backend-server/namespace.xml.erb&#39;
 
   file { $namespace_file:
@@ -1583,6 +1577,7 @@ class storm::backend::config (
     group   =&gt; &#39;storm&#39;,
     notify  =&gt; [Exec[&#39;configure-info-provider&#39;]],
   }
+
 }</pre>
       </td>
     </tr>
