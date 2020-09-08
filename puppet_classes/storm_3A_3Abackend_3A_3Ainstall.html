@@ -6,15 +6,15 @@
 <title>
   Puppet Class: storm::backend::install
   
-    &mdash; Documentation by YARD 0.9.20
+    &mdash; Documentation by YARD 0.9.25
   
 </title>
 
-  <link rel="stylesheet" href="../css/style.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="../css/style.css" type="text/css" />
 
-  <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="../css/common.css" type="text/css" />
 
-<script type="text/javascript" charset="utf-8">
+<script type="text/javascript">
   pathId = "puppet_classes::storm::backend::install";
   relpath = '../';
 </script>
@@ -84,6 +84,7 @@
 
 <div class="tags">
   
+
 
 </div><div class="method_details_list">
   <table class="source_code">
@@ -161,7 +162,8 @@
 69
 70
 71
-72</pre>
+72
+73</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/backend/install.pp', line 3</span>
@@ -169,11 +171,6 @@
 class storm::backend::install (
 
 ) {
-
-  ## StoRM Backend
-  package { &#39;storm-backend-mp&#39;:
-    ensure  =&gt; installed,
-  }
 
   ## MySQL
   $basearch = &#39;x86_64&#39;
@@ -206,6 +203,12 @@ class storm::backend::install (
       require            =&gt; Yumrepo[&#39;repo.mysql.com&#39;],
       override_options   =&gt; $storm::backend::mysql_server_override_options,
     }
+  }
+
+  ## StoRM Backend
+  package { &#39;storm-backend-mp&#39;:
+    ensure  =&gt; installed,
+    require =&gt; Yumrepo[&#39;repo.mysql.com&#39;],
   }
 
   if $storm::backend::install_native_libs_gpfs {

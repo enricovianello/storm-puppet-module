@@ -6,15 +6,15 @@
 <title>
   Puppet Class: storm::frontend
   
-    &mdash; Documentation by YARD 0.9.20
+    &mdash; Documentation by YARD 0.9.25
   
 </title>
 
-  <link rel="stylesheet" href="../css/style.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="../css/style.css" type="text/css" />
 
-  <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="../css/common.css" type="text/css" />
 
-<script type="text/javascript" charset="utf-8">
+<script type="text/javascript">
   pathId = "puppet_classes::storm::frontend";
   relpath = '../';
 </script>
@@ -111,144 +111,16 @@
   
     <li>
       
-        <span class='name'>db_host</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>$storm::frontend::params::db_host</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>Host for database connection. Default is localhost.</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>db_user</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>$storm::frontend::params::db_user</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>User for database connection. Default is storm.</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>db_passwd</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>$storm::frontend::params::db_passwd</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>Password for database connection. Default is password.</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>port</span>
-      
-      
-        <span class='type'>(<tt>Integer</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>$storm::frontend::params::port</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>Frontend service port. Default is 8444.</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>threadpool_maxpending</span>
-      
-      
-        <span class='type'>(<tt>Integer</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>$storm::frontend::params::threadpool_maxpending</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>Size of the internal queue used to maintain SRM tasks in case there are no free worker threads. Default is 200</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>threadpool_threads_number</span>
-      
-      
-        <span class='type'>(<tt>Integer</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>$storm::frontend::params::threadpool_threads_number</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>Size of the worker thread pool. Default is 50.</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>gsoap_maxpending</span>
-      
-      
-        <span class='type'>(<tt>Integer</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>$storm::frontend::params::gsoap_maxpending</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>Size of the GSOAP queue used to maintain pending SRM requests. Default is 1000.</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
         <span class='name'>be_xmlrpc_host</span>
       
       
         <span class='type'>(<tt>String</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$storm::frontend::params::be_xmlrpc_host</tt>)</em>
-      
       
         &mdash;
         <div class='inline'>
-<p>Backend hostname. Default is localhost.</p>
+<p>Backend hostname. Required.</p>
 </div>
       
     </li>
@@ -321,6 +193,132 @@
         &mdash;
         <div class='inline'>
 <p>REST server port running on the Backend machine. Default is 9998.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>db_host</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>lookup(&#39;storm::frontend::db::host&#39;, String, undef, $be_xmlrpc_host)</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Host for database connection. Default is set to be_xmlrpc_host.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>db_user</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::frontend::params::db_user</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>User for database connection. Default is storm.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>db_passwd</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::frontend::params::db_passwd</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Password for database connection. Default is storm.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>port</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::frontend::params::port</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Frontend service port. Default is 8444.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>threadpool_maxpending</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::frontend::params::threadpool_maxpending</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Size of the internal queue used to maintain SRM tasks in case there are no free worker threads. Default is 200</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>threadpool_threads_number</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::frontend::params::threadpool_threads_number</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Size of the worker thread pool. Default is 50.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>gsoap_maxpending</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::frontend::params::gsoap_maxpending</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Size of the GSOAP queue used to maintain pending SRM requests. Default is 1000.</p>
 </div>
       
     </li>
@@ -508,6 +506,7 @@
 </ul>
 
 
+
 </div><div class="method_details_list">
   <table class="source_code">
     <tr>
@@ -556,15 +555,20 @@
 117
 118
 119
-120
-121</pre>
+120</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/frontend.pp', line 79</span>
 
 class storm::frontend (
 
-  String $db_host = $storm::frontend::params::db_host,
+  String $be_xmlrpc_host,
+  String $be_xmlrpc_token = $storm::frontend::params::be_xmlrpc_token,
+  Integer $be_xmlrpc_port = $storm::frontend::params::be_xmlrpc_port,
+  String $be_xmlrpc_path = $storm::frontend::params::be_xmlrpc_path,
+  Integer $be_recalltable_port = $storm::frontend::params::be_recalltable_port,
+
+  String $db_host = lookup(&#39;storm::frontend::db::host&#39;, String, undef, $be_xmlrpc_host),
   String $db_user = $storm::frontend::params::db_user,
   String $db_passwd = $storm::frontend::params::db_passwd,
 
@@ -572,13 +576,6 @@ class storm::frontend (
   Integer $threadpool_threads_number = $storm::frontend::params::threadpool_threads_number,
   Integer $threadpool_maxpending = $storm::frontend::params::threadpool_maxpending,
   Integer $gsoap_maxpending = $storm::frontend::params::gsoap_maxpending,
-
-  String $be_xmlrpc_host = $storm::frontend::params::be_xmlrpc_host,
-  String $be_xmlrpc_token = $storm::frontend::params::be_xmlrpc_token,
-  Integer $be_xmlrpc_port = $storm::frontend::params::be_xmlrpc_port,
-  String $be_xmlrpc_path = $storm::frontend::params::be_xmlrpc_path,
-
-  Integer $be_recalltable_port = $storm::frontend::params::be_recalltable_port,
 
   Boolean $check_user_blacklisting = $storm::frontend::params::check_user_blacklisting,
   String $argus_pepd_endpoint = $storm::frontend::params::argus_pepd_endpoint,

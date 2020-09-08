@@ -6,15 +6,15 @@
 <title>
   Puppet Class: storm::users
   
-    &mdash; Documentation by YARD 0.9.20
+    &mdash; Documentation by YARD 0.9.25
   
 </title>
 
-  <link rel="stylesheet" href="../css/style.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="../css/style.css" type="text/css" />
 
-  <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="../css/common.css" type="text/css" />
 
-<script type="text/javascript" charset="utf-8">
+<script type="text/javascript">
   pathId = "puppet_classes::storm::users";
   relpath = '../';
 </script>
@@ -130,7 +130,7 @@
         <span class='type'>(<tt>Accounts::Group::Hash</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>{}</tt>)</em>
+        <em class="default">(defaults to: <tt>{ }</tt>)</em>
       
       
     </li>
@@ -144,11 +144,18 @@
       
       
         <em class="default">(defaults to: <tt>{
+    &#39;edguser&#39; =&gt; {
+      &#39;comment&#39; =&gt; &#39;Edguser user&#39;,
+      &#39;groups&#39;  =&gt; [ edguser, storm, ],
+      &#39;uid&#39;     =&gt; &#39;1101&#39;,
+      &#39;gid&#39;     =&gt; &#39;1101&#39;,
+      &#39;home&#39;    =&gt; &#39;/home/edguser&#39;,
+    },
     &#39;storm&#39; =&gt; {
       &#39;comment&#39; =&gt; &#39;StoRM user&#39;,
-      &#39;groups&#39;  =&gt; [ storm, edguser ],
-      &#39;uid&#39;     =&gt; &#39;991&#39;,
-      &#39;gid&#39;     =&gt; &#39;991&#39;,
+      &#39;groups&#39;  =&gt; [ storm, edguser, ],
+      &#39;uid&#39;     =&gt; &#39;1100&#39;,
+      &#39;gid&#39;     =&gt; &#39;1100&#39;,
       &#39;home&#39;    =&gt; &#39;/home/storm&#39;,
     },
   }</tt>)</em>
@@ -157,6 +164,7 @@
     </li>
   
 </ul>
+
 
 
 </div><div class="method_details_list">
@@ -183,23 +191,37 @@
 51
 52
 53
-54</pre>
+54
+55
+56
+57
+58
+59
+60
+61</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/users.pp', line 37</span>
 
 class storm::users (
 
-  Accounts::Group::Hash $groups = {},
+  Accounts::Group::Hash $groups = { },
   Accounts::User::Hash $users = {
+    &#39;edguser&#39; =&gt; {
+      &#39;comment&#39; =&gt; &#39;Edguser user&#39;,
+      &#39;groups&#39;  =&gt; [ edguser, storm, ],
+      &#39;uid&#39;     =&gt; &#39;1101&#39;,
+      &#39;gid&#39;     =&gt; &#39;1101&#39;,
+      &#39;home&#39;    =&gt; &#39;/home/edguser&#39;,
+    },
     &#39;storm&#39; =&gt; {
       &#39;comment&#39; =&gt; &#39;StoRM user&#39;,
-      &#39;groups&#39;  =&gt; [ storm, edguser ],
-      &#39;uid&#39;     =&gt; &#39;991&#39;,
-      &#39;gid&#39;     =&gt; &#39;991&#39;,
+      &#39;groups&#39;  =&gt; [ storm, edguser, ],
+      &#39;uid&#39;     =&gt; &#39;1100&#39;,
+      &#39;gid&#39;     =&gt; &#39;1100&#39;,
       &#39;home&#39;    =&gt; &#39;/home/storm&#39;,
     },
-  }
+  },
 
 ) {
 

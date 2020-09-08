@@ -6,15 +6,15 @@
 <title>
   Puppet Class: storm::webdav
   
-    &mdash; Documentation by YARD 0.9.20
+    &mdash; Documentation by YARD 0.9.25
   
 </title>
 
-  <link rel="stylesheet" href="../css/style.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="../css/style.css" type="text/css" />
 
-  <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="../css/common.css" type="text/css" />
 
-<script type="text/javascript" charset="utf-8">
+<script type="text/javascript">
   pathId = "puppet_classes::storm::webdav";
   relpath = '../';
 </script>
@@ -147,17 +147,14 @@
       root_path                  =&gt; &#39;/storage/test.vo&#39;,
       access_points              =&gt; [&#39;/test.vo&#39;],
       vos                        =&gt; [&#39;test.vo&#39;, &#39;test.vo.2&#39;],
-      authenticated_read_enabled =&gt; false,
-      anonymous_read_enabled     =&gt; false,
-      vo_map_enabled             =&gt; false,
     },
     {
       name                       =&gt; &#39;test.vo.2&#39;,
       root_path                  =&gt; &#39;/storage/test.vo.2&#39;,
       access_points              =&gt; [&#39;/test.vo.2&#39;],
       vos                        =&gt; [&#39;test.vo.2&#39;],
-      authenticated_read_enabled =&gt; false,
-      anonymous_read_enabled     =&gt; false,
+      authenticated_read_enabled =&gt; true,
+      anonymous_read_enabled     =&gt; true,
       vo_map_enabled             =&gt; false,
     },
   ],
@@ -176,6 +173,42 @@
   
     <li>
       
+        <span class='name'>application_file</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::webdav::params::application_file</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>If defined, the application.yml file is copied from this path and oauth_issuers is ignored.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>storage_areas_directory</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::webdav::params::storage_areas_directory</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>If defined, the properties files of the storage areas are copied and storage_areas parameter is ignored.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>storage_areas</span>
       
       
@@ -187,7 +220,7 @@
       
         &mdash;
         <div class='inline'>
-<p>List of storage area&#39;s configuration.</p>
+<p>List of storage area&#39;s configuration. Ignored if storage_areas_directory is defined.</p>
 </div>
       
     </li>
@@ -202,6 +235,11 @@
       
         <em class="default">(defaults to: <tt>$storm::webdav::params::oauth_issuers</tt>)</em>
       
+      
+        &mdash;
+        <div class='inline'>
+<p>List of OAuth issuers stored into application.yml. Ignored if application_file is defined.</p>
+</div>
       
     </li>
   
@@ -533,6 +571,7 @@
 </ul>
 
 
+
 </div><div class="method_details_list">
   <table class="source_code">
     <tr>
@@ -540,10 +579,6 @@
         <pre class="lines">
 
 
-120
-121
-122
-123
 124
 125
 126
@@ -590,12 +625,22 @@
 167
 168
 169
-170</pre>
+170
+171
+172
+173
+174
+175
+176
+177</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/webdav.pp', line 120</span>
+        <pre class="code"><span class="info file"># File 'manifests/webdav.pp', line 124</span>
 
 class storm::webdav (
+
+  String $application_file = $storm::webdav::params::application_file,
+  String $storage_areas_directory = $storm::webdav::params::storage_areas_directory,
 
   Array[Storm::Webdav::StorageArea] $storage_areas = $storm::webdav::params::storage_areas,
 

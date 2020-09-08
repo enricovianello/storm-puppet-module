@@ -6,15 +6,15 @@
 <title>
   Puppet Class: storm::gridftp::config
   
-    &mdash; Documentation by YARD 0.9.20
+    &mdash; Documentation by YARD 0.9.25
   
 </title>
 
-  <link rel="stylesheet" href="../css/style.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="../css/style.css" type="text/css" />
 
-  <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="../css/common.css" type="text/css" />
 
-<script type="text/javascript" charset="utf-8">
+<script type="text/javascript">
   pathId = "puppet_classes::storm::gridftp::config";
   relpath = '../';
 </script>
@@ -219,6 +219,7 @@
 </ul>
 
 
+
 </div><div class="method_details_list">
   <table class="source_code">
     <tr>
@@ -264,7 +265,8 @@
 38
 39
 40
-41</pre>
+41
+42</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/gridftp/config.pp', line 3</span>
@@ -285,6 +287,7 @@ class storm::gridftp::config (
   $lcas_debug_level = $storm::gridftp::lcas_debug_level,
 
   $load_storm_dsi_module = $storm::gridftp::load_storm_dsi_module,
+
 ) {
 
   $conf_file=&#39;/etc/gridftp.conf&#39;

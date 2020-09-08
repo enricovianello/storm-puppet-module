@@ -6,15 +6,15 @@
 <title>
   File: README
   
-    &mdash; Documentation by YARD 0.9.20
+    &mdash; Documentation by YARD 0.9.25
   
 </title>
 
-  <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="css/style.css" type="text/css" />
 
-  <link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="css/common.css" type="text/css" />
 
-<script type="text/javascript" charset="utf-8">
+<script type="text/javascript">
   pathId = "";
   relpath = '';
 </script>
@@ -75,13 +75,13 @@
 
 <p>StoRM Puppet module allows administrators to easily configure StoRM services. Currently, the supported services are:</p>
 <ul><li>
-<p>StoRM WebDAV</p>
-</li><li>
-<p>StoRM Globus GridFTP server</p>
+<p>StoRM Backend</p>
 </li><li>
 <p>StoRM Frontend</p>
 </li><li>
-<p>StoRM Backend</p>
+<p>StoRM WebDAV</p>
+</li><li>
+<p>StoRM Globus GridFTP server</p>
 </li></ul>
 
 <h2 id="label-Setup">Setup</h2>
@@ -101,35 +101,368 @@ puppet module install ./pkg/cnafsd-storm-*.tar.gz
 
 <h2 id="label-Usage">Usage</h2>
 
-<p>With this Puppet module, administrators can configure StoRM services, users and storage directories if needed.</p>
-
-<h3 id="label-Customize+StoRM+users">Customize StoRM users</h3>
-
-<p>To create the default StoRM users and groups use <code>storm::users</code> class.</p>
-
-<p>Use:</p>
-
-<pre class="code ruby"><code class="ruby">class { &#39;storm::users&#39;: }
-</code></pre>
-
-<p>to create default scenario:</p>
+<p>With this Puppet module, administrators can configure StoRM services. Some utility classes are also provided to configure users, storage directories and pool accounts, if needed.</p>
 <ul><li>
-<p><code>storm</code> group with id 991</p>
+<p><a href="#label-Storm+backend+component">StoRM Backend component</a></p>
 </li><li>
-<p><code>edguser</code> group with id 995</p>
+<p><a href="#label-Storm+frontend+component">StoRM Frontend component</a></p>
 </li><li>
-<p><code>infosys</code> group with id 996</p>
+<p><a href="#label-Storm+webdav+component">StoRM WebDAV component</a></p>
 </li><li>
-<p><code>storm</code> user with id 991, member of <code>storm</code> and <code>edguser</code> groups</p>
+<p><a href="#label-Storm+gridftp+component">StoRM GridFTP component</a></p>
 </li><li>
-<p><code>edguser</code> user with id 995</p>
+<p><a href="#label-Storm+users+utility+class">StoRM users utility class</a></p>
+</li><li>
+<p><a href="#label-Storm+storage+utility+class">StoRM storage utility class</a></p>
 </li></ul>
 
-<p>Check <a href="https://italiangrid.github.io/storm-puppet-module/puppet_classes/storm_3A_3Ausers.html">here</a> for all the class options.</p>
+<h3 id="label-StoRM+Backend+component">StoRM Backend component</h3>
 
-<h3 id="label-Customize+StoRM+WebDAV+component">Customize StoRM WebDAV component</h3>
+<p>StoRM Backend class:</p>
+<ul><li>
+<p>installs:</p>
+<ul><li>
+<p><code>storm-backend-mp</code> and all the releated packages;</p>
+</li><li>
+<p><code>storm-dynamic-info-provider</code>;</p>
+</li><li>
+<p>MySQL community client;</p>
+</li><li>
+<p>MySQL community server (if enabled);</p>
+</li></ul>
+</li><li>
+<p>creates and initializes StoRM database;</p>
+</li><li>
+<p>configures <code>storm-backend-server</code> service;</p>
+</li><li>
+<p>configures <code>storm-info-provider</code>.</p>
+</li></ul>
 
-<p>Example of StoRM WebDAV configuration:</p>
+<p>The main StoRM Backend configuration parameters are:</p>
+<ul><li>
+<p><code>hostname</code>: StoRM Backend Fully Qualified Domain Name. <strong>Required</strong>.</p>
+</li><li>
+<p><code>db_username</code> and <code>db_password</code>: database credentials. Default values are username <strong>storm</strong> and password <strong>storm</strong>.</p>
+</li><li>
+<p><code>install_native_libs_gpfs</code>: Set this if you need to install storm-native-libs-gpfs. Default value: <strong>false</strong>.</p>
+</li><li>
+<p><code>mysql_server_install</code>: Set this if you need to install and configure a MySQL server. Default value: <strong>false</strong>.</p>
+</li><li>
+<p><code>mysql_server_root_password</code>: Set this if you have set <code>mysql_server_install</code> to true. Default value: <strong>storm</strong>.</p>
+</li><li>
+<p><code>synchcall_xmlrpc_security_token</code>: The token that the backend will require to be present for accepting XML-RPC requests. It must be equal to the one defined for StoRM Frontend. Default value: <strong>secret</strong>.</p>
+</li><li>
+<p><code>srm_pool_members</code>: the list of <code>Storm::Backend::SrmPoolMember</code> elements (more info below). Required even if Frontend and Backend are on the same host.</p>
+</li><li>
+<p><code>frontend_public_host</code>: StoRM Frontend hostname in case of a single Frontend StoRM deployment, StoRM Frontends DNS alias in case of a multiple Frontends StoRM deployment. Default value is the value of <code>hostname</code> parameter.</p>
+</li><li>
+<p><code>gsiftp_pool_members</code>: the list of <code>Storm::Backend::GsiftpPoolMember</code> elements (more info below). Required even if GridFTP and Backend are on the same host.</p>
+</li><li>
+<p><code>webdav_pool_members</code>: the list of <code>Storm::Backend::WebdavPoolMember</code> elements (more info below). Required even if WebDAV and Backend are on the same host.</p>
+</li><li>
+<p><code>storage_areas</code>: the list of <code>Storm::Backend::StorageArea</code> elements (more info below).</p>
+</li></ul>
+
+<p>The Info Provider related parameters are:</p>
+<ul><li>
+<p><code>info_sitename</code>: A string that stands for the name of the site. Default: <strong>StoRM site</strong>.</p>
+</li><li>
+<p><code>info_storage_default_root</code>: The default storage area root directory. Default: <strong>/storage</strong>.</p>
+</li><li>
+<p><code>info_endpoint_quality_level</code>: Endpoint maturity level to be published by the Info Provider. Optional variable. Default value: <strong>2</strong>.</p>
+</li></ul>
+
+<p>Other StoRM Backend configuration parameters:</p>
+<ul><li>
+<p><code>mysql_server_override_options</code>: Configure MySQL Server with your personal needs by overriding options. Read more on the related <a href="https://forge.puppet.com/puppetlabs/mysql#override_options">MySQL Puppet module documentation</a>.</p>
+</li><li>
+<p><code>xroot_hostname</code>: Root server (default value for all Storage Areas). Note: you may change the settings for each SA acting on its configuration. Default value is the value of <code>hostname</code> parameter.</p>
+</li><li>
+<p><code>xroot_port</code>: Root server port (default value for all Storage Areas). Default value: <strong>1094</strong>.</p>
+</li><li>
+<p><code>gsiftp_pool_balance_strategy</code>: Load balancing strategy for GridFTP server pool (default value for all Storage Areas). Note: you may change the settings for each SA acting on its configuration. Available values: round-robin, smart-rr, random, weight. Default value: round-robin.</p>
+</li><li>
+<p><code>transfer_protocols</code>: List of supported (and published) transfer protocols (default value for all Storage Areas). Note: you may change the settings for each SA acting on its configuration. Default value: <strong>[&#39;file&#39;, &#39;gsiftp&#39;]</strong>.</p>
+</li><li>
+<p><code>fs_type</code>: File System Type (default value for all Storage Areas). Note: you may change the settings for each SA acting on its configuration. Available values: posixfs, gpfs and test. Default value: <strong>posixfs</strong>.</p>
+</li><li>
+<p><code>frontend_port</code>: StoRM Frontend service port. Optional variable. Default value: <strong>8444</strong>.</p>
+</li><li>
+<p><code>synchcall_xmlrpc_unsecure_server_port</code>: Port to listen on for incoming XML-RPC connections from Frontends(s). Default: <strong>8080</strong>.</p>
+</li><li>
+<p><code>synchcall_xmlrpc_maxthread</code>: Number of threads managing XML-RPC connection from Frontends(s). A well sized value for this parameter have to be at least equal to the sum of the number of working threads in all Frontend(s). Default: <strong>256</strong>.</p>
+</li><li>
+<p><code>synchcall_xmlrpc_max_queue_size</code>: Number of queued threads managing XML-RPC connection from Frontends(s). Default: <strong>1000</strong>.</p>
+</li><li>
+<p><code>synchcall_xmlrpc_security_enabled</code>: Whether the backend will require a token to be present for accepting XML-RPC requests. Default: <strong>true</strong>.</p>
+</li><li>
+<p><code>ptg_skip_acl_setup</code>: Skip ACL setup for prepareToGet requests. Default: <strong>false</strong>.</p>
+</li><li>
+<p><code>sanity_check_enabled</code>: Enable|Disable sanity checks on bootstrap phase. Default: <strong>true</strong>.</p>
+</li><li>
+<p><code>synchcall_max_ls_entries</code>: Maximum number of entries returned by an srmLs call. Since in case of recursive srmLs results can be in order of million, this prevent a server overload. Default: <strong>2000</strong>.</p>
+</li><li>
+<p><code>rest_services_port</code>: StoRM backend server rest port. Optional variable. Default value: <strong>9998</strong>.</p>
+</li><li>
+<p><code>rest_services_max_threads</code>: Number of threads managing REST connections. Default: <strong>100</strong>.</p>
+</li><li>
+<p><code>rest_services_max_queue_size</code>: Number of queued threads managing REST connections. Default: <strong>1000</strong>.</p>
+</li><li>
+<p><code>service_du_enabled</code>: Flag to enable disk usage service. Default: <strong>false</strong>.</p>
+</li><li>
+<p><code>service_du_delay</code>: The initial delay before the service is started (seconds). Default: <strong>60</strong>.</p>
+</li><li>
+<p><code>service_du_interval</code> The interval in seconds between successive run. Default: <strong>360</strong>.</p>
+</li><li>
+<p><code>gc_pinnedfiles_cleaning_delay</code>: Initial delay before starting the reserved space, JIT ACLs and pinned files garbage collection process, in seconds. Default: <strong>10</strong>.</p>
+</li><li>
+<p><code>gc_pinnedfiles_cleaning_interval</code>: Time interval in seconds between successive purging run. Default: <strong>300</strong>.</p>
+</li><li>
+<p><code>gc_purge_enabled</code>: Enable the request garbage collector. Default: <strong>true</strong>.</p>
+</li><li>
+<p><code>gc_purge_interval</code>: Time interval in seconds between successive purging run. Default: <strong>600</strong>.</p>
+</li><li>
+<p><code>gc_purge_size</code>: Number of requests picked up for cleaning from the requests garbage collector at each run. This value is use also by Tape Recall Garbage Collector. Default: <strong>800</strong>.</p>
+</li><li>
+<p><code>gc_expired_request_time</code>: Time in seconds to consider a request expired after its submission. Default: <strong>604800</strong> seconds (1 week). From StoRM 1.11.13 it is used also to identify how much time is needed to consider a completed recall task as cleanable.</p>
+</li><li>
+<p><code>gc_expired_inprogress_time</code>: Time in seconds to consider an in-progress ptp request as expired. Default: <strong>2592000</strong> seconds (1 month).</p>
+</li><li>
+<p><code>gc_ptp_transit_interval</code>: Time interval in seconds between successive expired put requests agent run. Default: <strong>3000</strong>.</p>
+</li><li>
+<p><code>gc_ptp_transit_start_delay</code>: Initial delay before starting the expired put requests agent process, in seconds. Default: <strong>60</strong>.</p>
+</li><li>
+<p><code>extraslashes_file</code>: Add extra slashes after the “authority” part of a TURL for file protocol. Defaul: &#39;&#39;.</p>
+</li><li>
+<p><code>extraslashes_root</code>: Add extra slashes after the “authority” part of a TURL for xroot protocol. Default: <strong>/</strong>.</p>
+</li><li>
+<p><code>extraslashes_gsiftp</code>: Add extra slashes after the “authority” part of a TURL for gsiftp protocol. Default: <strong>/</strong>.</p>
+</li><li>
+<p><code>db_connection_pool_enabled</code>: Enable the database connection pool. Default: <strong>true</strong>.</p>
+</li><li>
+<p><code>db_connection_pool_max_active</code>: Database connection pool max active connections. Default: <strong>10</strong>.</p>
+</li><li>
+<p><code>db_connection_pool_max_wait</code>: Database connection pool max wait time to provide a connection. Default: <strong>50</strong></p>
+</li><li>
+<p><code>pinlifetime_default</code>: Default PinLifetime in seconds used for pinning files in case of srmPrepareToPut or srmPrepareToGet operation without any pinLifetime specified. Default: <strong>259200</strong>.</p>
+</li><li>
+<p><code>pinlifetime_maximum</code>: Maximum PinLifetime allowed in seconds. Default: <strong>1814400</strong>.</p>
+</li><li>
+<p><code>directory_automatic_creation</code>: Flag to enable automatic missing directory creation upon srmPrepareToPut requests. Default: <strong>false</strong>.</p>
+</li><li>
+<p><code>directory_writeperm</code>: Flag to enable directory write permission setting upon srmMkDir requests on created directories. Default: <strong>false</strong>.</p>
+</li><li>
+<p><code>asynch_db_reconnect_period</code>: Database connection refresh time intervall in seconds. Default: <strong>18000</strong>.</p>
+</li><li>
+<p><code>asynch_db_delay_period</code>: Database connection refresh initial delay in seconds. Default: <strong>30</strong>.</p>
+</li><li>
+<p><code>asynch_picking_initial_delay</code>: Initial delay before starting to pick requests from the DB, in seconds. Default: <strong>1</strong>.</p>
+</li><li>
+<p><code>asynch_picking_time_interval</code>: Polling interval in seconds to pick up new SRM requests. Default: <strong>2</strong>.</p>
+</li><li>
+<p><code>asynch_picking_max_batch_size</code>: Maximum number of requests picked up at each polling time. Default: <strong>100</strong>.</p>
+</li><li>
+<p><code>requests_scheduler_core_size</code>: Crusher Scheduler worker pool base size. Default: <strong>50</strong>.</p>
+</li><li>
+<p><code>requests_scheduler_max_size</code>: Crusher Schedule worker pool max size. Default: <strong>200</strong>.</p>
+</li><li>
+<p><code>requests_scheduler_queue_size</code>: Request queue maximum size. Default: <strong>2000</strong>.</p>
+</li><li>
+<p><code>ptp_requests_scheduler_core_size</code>: PrepareToPut worker pool base size. Default: <strong>50</strong>.</p>
+</li><li>
+<p><code>ptp_requests_scheduler_max_size</code>: PrepareToPut worker pool max size. Default: <strong>200</strong>.</p>
+</li><li>
+<p><code>ptp_requests_scheduler_queue_size</code>: PrepareToPut request queue maximum size. Default: <strong>1000</strong>.</p>
+</li><li>
+<p><code>ptg_requests_scheduler_core_size</code>: PrepareToGet worker pool base size. Default: <strong>50</strong>.</p>
+</li><li>
+<p><code>ptg_requests_scheduler_max_size</code>: PrepareToGet worker pool max size. Default: <strong>200</strong>.</p>
+</li><li>
+<p><code>ptg_requests_scheduler_queue_size</code>: PrepareToGet request queue maximum size. Default: <strong>2000</strong>.</p>
+</li><li>
+<p><code>bol_requests_scheduler_core_size</code>: BringOnline worker pool base size. Default: <strong>50</strong>.</p>
+</li><li>
+<p><code>bol_requests_scheduler_max_size</code>: BringOnline Worker pool max size. Default: <strong>200</strong>.</p>
+</li><li>
+<p><code>bol_requests_scheduler_queue_size</code>: BringOnline request queue maximum size. Default: <strong>2000</strong>.</p>
+</li><li>
+<p><code>jvm_options</code>: JVM options. Default: <strong>-Xms512m -Xmx512m</strong>.</p>
+</li><li>
+<p><code>jmx</code>: Flag to enable JMX options. Default: <strong>false</strong>.</p>
+</li><li>
+<p><code>jmx_options</code>: Default: <strong>-Dcom.sun.management.jmxremote.port=8501 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false</strong>.</p>
+</li><li>
+<p><code>lcmaps_db_file</code>: LCMPAS configuration file. Default: <strong>/etc/storm/backend-server/lcmaps.db</strong>.</p>
+</li><li>
+<p><code>lcmaps_policy_name</code>: LCMAPS policy name. Default: <strong>standard</strong>.</p>
+</li><li>
+<p><code>lcmaps_log_file</code>: LCMAPS logging file. Default: <strong>/var/log/storm/lcmaps.log</strong>.</p>
+</li><li>
+<p><code>lcmaps_debug_level</code>: LCMAPS debug level. Default: <strong>0</strong>.</p>
+</li></ul>
+
+<p>Example of StoRM Backend configuration:</p>
+
+<pre class="code ruby"><code class="ruby">
+class { &#39;storm::backend&#39;:
+  hostname              =&gt; backend.test.example,
+  mysql_server_install  =&gt; true,
+  frontend_public_host  =&gt; frontend.test.example,
+  transfer_protocols    =&gt; [&#39;file&#39;, &#39;gsiftp&#39;, &#39;webdav&#39;],
+  xmlrpc_security_token =&gt; &#39;NS4kYAZuR65XJCq&#39;,
+  service_du_enabled    =&gt; true,
+  srm_pool_members      =&gt; [
+    {
+      &#39;hostname&#39; =&gt; frontend.test.example,
+    }
+  ],
+  gsiftp_pool_members   =&gt; [
+    {
+      &#39;hostname&#39; =&gt; gridftp.test.example,
+    },
+  ],
+  webdav_pool_members   =&gt; [
+    {
+      &#39;hostname&#39; =&gt; wendav.test.example,
+    },
+  ],
+  storage_areas         =&gt; [
+    {
+      &#39;name&#39;          =&gt; &#39;dteam-disk&#39;,
+      &#39;root_path&#39;     =&gt; &#39;/storage/disk&#39;,
+      &#39;access_points&#39; =&gt; [&#39;/disk&#39;],
+      &#39;vos&#39;           =&gt; [&#39;dteam&#39;],
+      &#39;online_size&#39;   =&gt; 40,
+    },
+    {
+      &#39;name&#39;          =&gt; &#39;dteam-tape&#39;,
+      &#39;root_path&#39;     =&gt; &#39;/storage/tape&#39;,
+      &#39;access_points&#39; =&gt; [&#39;/tape&#39;],
+      &#39;vos&#39;           =&gt; [&#39;dteam&#39;],
+      &#39;online_size&#39;   =&gt; 40,
+      &#39;nearline_size&#39; =&gt; 80,
+      &#39;fs_type&#39;       =&gt; &#39;gpfs&#39;,
+      &#39;storage_class&#39; =&gt; &#39;T1D0&#39;,
+    },
+  ],
+}
+</code></pre>
+
+<h3 id="label-StoRM+Frontend+component">StoRM Frontend component</h3>
+
+<p>The main StoRM Frontend configuration parameters are:</p>
+<ul><li>
+<p><code>be_xmlrpc_host</code>: StoRM Backend Fully Qualified Domain Name. <strong>Required</strong>.</p>
+</li><li>
+<p><code>be_xmlrpc_token</code>: Token used for communicating with Backend service. Default: <strong>secret</strong>.</p>
+</li><li>
+<p><code>db_host</code>: Host for database connection. Default is set to <code>be_xmlrpc_host</code> value.</p>
+</li><li>
+<p><code>db_user</code>: User for database connection. Default is <strong>storm</strong>.</p>
+</li><li>
+<p><code>db_passwd</code>: Password for database connection. Default is <strong>storm</strong>.</p>
+</li></ul>
+
+<p>Other StoRM Frontend configuration parameters:</p>
+<ul><li>
+<p><code>port</code>: Frontend service port. Default is <strong>8444</strong>.</p>
+</li><li>
+<p><code>be_xmlrpc_port</code>: Backend XML-RPC server port. Default is <strong>8080</strong>.</p>
+</li><li>
+<p><code>be_xmlrpc_path</code>: XML-RPC server path. Default is <strong>/RPC2</strong>.</p>
+</li><li>
+<p><code>be_recalltable_port</code>: REST server port running on the Backend machine. Default is <strong>9998</strong>.</p>
+</li><li>
+<p><code>threadpool_maxpending</code>: Size of the internal queue used to maintain SRM tasks in case there are no free worker threads. Default is <strong>200</strong>.</p>
+</li><li>
+<p><code>threadpool_threads_number</code>: Size of the worker thread pool. Default is <strong>50</strong>.</p>
+</li><li>
+<p><code>gsoap_maxpending</code>: Size of the GSOAP queue used to maintain pending SRM requests. Default is <strong>1000</strong>.</p>
+</li><li>
+<p><code>check_user_blacklisting</code>: Enable/disable user blacklisting. Default is <strong>false</strong>.</p>
+</li><li>
+<p><code>argus_pepd_endpoint</code>: The complete service endpoint of Argus PEP server. Mandatory if <code>check_user_blacklisting</code> is true.</p>
+</li><li>
+<p><code>monitoring_enabled</code>: Enable/disable monitoring. Default is <strong>true</strong>.</p>
+</li><li>
+<p><code>monitoring_time_interval</code>: Time interval in seconds between each monitoring round. Default is <strong>60</strong>.</p>
+</li><li>
+<p><code>monitoring_detailed</code>: Enable/disable detailed monitoring. Default is <strong>false</strong>.</p>
+</li><li>
+<p><code>security_enable_mapping</code>: Flag to enable/disable DN-to-userid mapping via gridmap-file. Default is <strong>false</strong>.</p>
+</li><li>
+<p><code>security_enable_vomscheck</code>: Flag to enable/disable checking proxy VOMS credentials. Default is <strong>true</strong>.</p>
+</li><li>
+<p><code>log_debuglevel</code>: Logging level. Possible values are: ERROR, WARN, INFO, DEBUG, DEBUG2. Default is <strong>INFO</strong>.</p>
+</li><li>
+<p><code>gridmap_dir</code>: Gridmap directory path. Defailt value is: <strong>/etc/grid-security/gridmapdir</strong>.</p>
+</li><li>
+<p><code>gridmap_file</code>: Gridmap file path. Defailt value is: <strong>/etc/grid-security/grid-mapfile</strong>.</p>
+</li></ul>
+
+<p>Example of StoRM Frontend configuration:</p>
+
+<pre class="code ruby"><code class="ruby">class { &#39;storm::frontend&#39;:
+  be_xmlrpc_host  =&gt; &#39;backend.test.example&#39;,
+  be_xmlrpc_token =&gt; &#39;NS4kYAZuR65XJCq&#39;,
+  db_host         =&gt; &#39;backend.test.example&#39;,
+  db_user         =&gt; &#39;storm&#39;,
+  db_passwd       =&gt; &#39;storm&#39;,
+}
+</code></pre>
+
+<p>Check <a href="https://italiangrid.github.io/storm-puppet-module/puppet_classes/storm_3A_3Afrontend.html">here</a> for all Frontend class options.</p>
+
+<h3 id="label-StoRM+WebDAV+component">StoRM WebDAV component</h3>
+
+<p>The main StoRM WebDAV configuration parameters are:</p>
+<ul><li>
+<p><code>storage_areas</code>: the list of <code>Storm::Webdav::StorageArea</code> elements (more info below). Ignored if <code>storage_areas_directory</code> is defined;</p>
+</li><li>
+<p>`<code>storage_areas_directory</code>: the path of a directory that will be copied to <code>/etc/storm/webdav/sa.d</code>. If defined, the value of <code>storage_areas</code> is ignored;</p>
+</li><li>
+<p><code>oauth_issuers</code>: the list of <code>Storm::Webdav::OAuthIssuer</code> elements that means the supported OAuth providers (more info below). Ignored if <code>application_file</code> is defined;</p>
+</li><li>
+<p><code>application_file</code>: the path of a valid YAML file whose content will be copied into <code>/etc/storm/webdav/config/application.yml</code> file. If defined, the value of <code>oauth_issuers</code> is ignored;</p>
+</li><li>
+<p><code>hostnames</code>: the list of hostname and aliases supported for Third-Party-Copy;</p>
+</li><li>
+<p><code>http_port</code> and <code>https_port</code>: the service ports. Default: <strong>8085</strong>, <strong>8443</strong>.</p>
+</li></ul>
+
+<p>The <a href="https://italiangrid.github.io/storm-puppet-module/puppet_data_type_aliases/Storm_3A_3AWebdav_3A_3AStorageArea.html">Storm::Webdav::StorageArea</a> type :</p>
+<ul><li>
+<p><code>name</code>: The name of the storage area. <strong>Required</strong>.</p>
+</li><li>
+<p><code>root_path</code>: The path of the storage area root directory. <strong>Required</strong>.</p>
+</li><li>
+<p><code>access_points</code>: A list of logic path used to access storage area&#39;s root. <strong>Required</strong>.</p>
+</li><li>
+<p><code>vos</code>: A list of one or more Virtual Organization names of the users allowed to read/write into the storage area. <strong>Required</strong>.</p>
+</li><li>
+<p><code>orgs</code>: A list of one or more Organizations. Optional. Default: &#39;&#39;.</p>
+</li><li>
+<p><code>authenticated_read_enabled</code>: A boolean value used to enable the read of the storage area content to authenticated users. Optional. Default: <code>false</code>.</p>
+</li><li>
+<p><code>anonymous_read_enabled</code>: A boolean value used to enable anonymous read access to storage area content. Optional. Default: <code>false</code>.</p>
+</li><li>
+<p><code>vo_map_enabled</code>: A boolean value used to enable the use of the VO gridmap files. Optional. Default: <code>false</code>.</p>
+</li><li>
+<p><code>vo_map_grants_write_access</code>: A boolean value used to grant write access to the VO users read from gridmap file. Optional. Default: <code>false</code>.</p>
+</li><li>
+<p><code>orgs_grant_write_permission</code>: A boolean value used to grant write access to the members of the organizations defined with <code>orgs</code>. Optional. Default: <code>false</code>.</p>
+</li></ul>
+
+<p>The <a href="https://italiangrid.github.io/storm-puppet-module/puppet_data_type_aliases/Storm_3A_3AWebdav_3A_3AOAuthIssuer.html">Storm::Webdav::OAuthIssuer</a> type:</p>
+<ul><li>
+<p><code>name</code>: the organization name. <strong>Required</strong>.</p>
+</li><li>
+<p><code>issuer</code>: the issuer URL. <strong>Required</strong>.</p>
+</li></ul>
+
+<p>Administrators can provide a their own <code>application.yml</code> file by specifying its absolute path with <code>application_file</code> parameter. In this case, even if it&#39;s set, the value of <code>oauth_issuers</code> is ignored. They can provide the <code>.properties</code> files of each storage area by storing them into a personal directory and specifying that absolute path with <code>storage_areas_directory</code> parameter. Each files within this path will be copied into <code>/etc/storm/webdav/sa.d</code> directory.</p>
+
+<p>Examples of StoRM WebDAV configuration:</p>
 
 <pre class="code ruby"><code class="ruby">class { &#39;storm::webdav&#39;:
   storage_areas =&gt; [
@@ -138,9 +471,6 @@ puppet module install ./pkg/cnafsd-storm-*.tar.gz
       root_path                  =&gt; &#39;/storage/test.vo&#39;,
       access_points              =&gt; [&#39;/test.vo&#39;],
       vos                        =&gt; [&#39;test.vo&#39;],
-      authenticated_read_enabled =&gt; false,
-      anonymous_read_enabled     =&gt; false,
-      vo_map_enabled             =&gt; false,
     },
     {
       name                       =&gt; &#39;test.vo.2&#39;,
@@ -148,19 +478,61 @@ puppet module install ./pkg/cnafsd-storm-*.tar.gz
       access_points              =&gt; [&#39;/test.vo.2&#39;],
       vos                        =&gt; [&#39;test.vo.2&#39;],
       authenticated_read_enabled =&gt; true,
-      anonymous_read_enabled     =&gt; false,
-      vo_map_enabled             =&gt; false,
     },
   ],
   hostnames =&gt; [&#39;storm-webdav.example.org&#39;, &#39;alias-for-storm-webdav.example.org&#39;],
 }
 </code></pre>
 
+<pre class="code ruby"><code class="ruby">class { &#39;storm::webdav&#39;:
+  application_file        =&gt; &#39;/root/storm/webdav/application.yml&#39;,
+  storage_areas_directory =&gt; &#39;/root/storm/webdav/sa.d&#39;,
+  hostnames               =&gt; [&#39;storm-webdav.example.org&#39;],
+}
+</code></pre>
+
 <p>Check <a href="https://italiangrid.github.io/storm-puppet-module/puppet_classes/storm_3A_3Awebdav.html">here</a> for all WebDAV class options.</p>
 
-<h3 id="label-Customize+StoRM+GridFTP+component">Customize StoRM GridFTP component</h3>
+<h3 id="label-StoRM+GridFTP+component">StoRM GridFTP component</h3>
 
-<p>Example of StoRM Gridftp configuration:</p>
+<p>The StoRM GridFTP configuration parameters are:</p>
+<ul><li>
+<p><code>port</code>: the port used by GridFTP server service. Default: <strong>2811</strong>.</p>
+</li><li>
+<p><code>port_range</code>: the range of ports used by transfer sockets; format is &#39;MIN,MAX&#39;. Default: <strong>&#39;20000,25000&#39;</strong>.</p>
+</li><li>
+<p><code>connections_max</code>: the number of max allowed connections to server. Default: <strong>2000</strong>.</p>
+</li><li>
+<p><code>redirect_lcmaps_log</code>: If true, redirect the LCMAPS log to the file specified by <code>llgt_log_file</code>. Default: <strong>false</strong>.</p>
+</li><li>
+<p><code>llgt_log_file</code>: The LCMAPS log file used if <code>redirect_lcmaps_log</code> is true. Default: <strong>&#39;/var/log/storm/storm-gridftp-lcmaps.log&#39;</strong>.</p>
+</li></ul>
+
+<p>Other StoRM GridFTP configuration parameters:</p>
+<ul><li>
+<p><code>log_single</code>: Session log file path. Default is: <strong>/var/log/storm/storm-gridftp-session.log</strong>.</p>
+</li><li>
+<p><code>log_transfer</code>: Transfer log file path. Default is: <strong>/var/log/storm/storm-globus-gridftp.log</strong>.</p>
+</li><li>
+<p><code>lcmaps_debug_level</code>: The LCMAPS logging level. Values from 0 (ERROR) to 5 (DEBUG). Default: <strong>3</strong> (INFO).</p>
+</li><li>
+<p><code>lcas_debug_level</code>: The LCAS logging level. Values from 0 (ERROR) to 5 (DEBUG). Default: <strong>3</strong> (INFO).</p>
+</li><li>
+<p><code>load_storm_dsi_module</code>: Enable/Disable StoRM DSI module. Default: <strong>true</strong> (enabled).</p>
+</li></ul>
+
+<p>Administrators can provide a their own <code>lcamps.db</code>, <code>lcas.db</code>, <code>ban_users.db</code> and <code>gsi-authz.conf</code> files by specifying their absolute paths with the proper parameter:</p>
+<ul><li>
+<p><code>lcmaps_db_file</code></p>
+</li><li>
+<p><code>lcas_db_file</code></p>
+</li><li>
+<p><code>lcas_ban_users_file</code></p>
+</li><li>
+<p><code>gsi_authz_file</code></p>
+</li></ul>
+
+<p>Examples of StoRM Gridftp configuration:</p>
 
 <pre class="code ruby"><code class="ruby">class { &#39;storm::gridftp&#39;:
   redirect_lcmaps_log =&gt; true,
@@ -168,70 +540,83 @@ puppet module install ./pkg/cnafsd-storm-*.tar.gz
 }
 </code></pre>
 
+<pre class="code ruby"><code class="ruby">class { &#39;storm::gridftp&#39;:
+  lcmaps_db_file =&gt; &#39;/root/storm/gridftp/lcamps.db&#39;,
+}
+</code></pre>
+
 <p>Check <a href="https://italiangrid.github.io/storm-puppet-module/puppet_classes/storm_3A_3Agridftp.html">here</a> for all GridFTP class options.</p>
 
-<h3 id="label-Customize+StoRM+Frontend+component">Customize StoRM Frontend component</h3>
+<h3 id="label-StoRM+users+utility+class">StoRM users utility class</h3>
 
-<p>Example of StoRM Frontend configuration:</p>
+<p>To create the default StoRM users and groups you can use the <code>storm::users</code> utility class.</p>
 
-<pre class="code ruby"><code class="ruby">class { &#39;storm::frontend&#39;:
-  be_xmlrpc_host  =&gt; &#39;storm-backend.example&#39;,
-  be_xmlrpc_token =&gt; &#39;secret&#39;,
-  db_host         =&gt; &#39;storm-backend.example&#39;,
-  db_user         =&gt; &#39;storm&#39;,
-  db_passwd       =&gt; &#39;secret&#39;,
-}
+<p>Use:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_include'>include</span> <span class='id identifier rubyid_storm'>storm</span><span class='op'>::</span><span class='id identifier rubyid_users'>users</span>
 </code></pre>
 
-<p>Check <a href="https://italiangrid.github.io/storm-puppet-module/puppet_classes/storm_3A_3Afrontend.html">here</a> for all Frontend class options.</p>
-
-<h3 id="label-Customize+StoRM+Backend+component">Customize StoRM Backend component</h3>
-
-<p>StoRM Backend class:</p>
+<p>to create default scenario:</p>
 <ul><li>
-<p>installs MySQL community client/server;</p>
+<p><code>storm</code> group with id 1100</p>
 </li><li>
-<p>creates and initializes StoRM database;</p>
+<p><code>edguser</code> group with id 1101</p>
 </li><li>
-<p>installs and configures storm-backend-server service;</p>
+<p><code>storm</code> user with id 1100, member of <code>storm</code> and <code>edguser</code> groups</p>
 </li><li>
-<p>installs and configures storm-info-provider and bdii.</p>
+<p><code>edguser</code> user with id 1101, member of <code>edguser</code> and <code>storm</code> groups</p>
 </li></ul>
 
-<p>| Property Name | Description | |:——————————–|:——————| | <code>hostname</code> &lt;span style=“color:red”&gt;*&lt;/span&gt; | StoRM Backend Fully Qualified Domain Name. <strong>Mandatory</strong>. | | <code>install_native_libs_gpfs</code> | Set this if you need to install storm-native-libs-gpfs. Default value: <strong>false</strong>. | | <code>db_username</code> | The name of user used to connect to local database. Default value: <strong>storm</strong>. | | <code>db_password</code> | Password for the user in <code>db_storm_username</code>. Default value: <strong>bluemoon</strong>. | | <code>mysql_server_install</code> | | <code>mysql_server_root_password</code> | | <code>mysql_server_override_options</code> | | <code>xroot_hostname</code> | Root server (default value for all Storage Areas). Note: you may change the settings for each SA acting on its configuration. Default value: <code>hostname</code>| | <code>xroot_port</code> | Root server port (default value for all Storage Areas). Default value: <strong>1094</strong>| | <code>gsiftp_pool_balance_strategy</code> | | | <code>gsiftp_pool_members</code> | | | <code>webdav_pool_members</code> | | | <code>srm_pool_members</code> | | | <code>transfer_protocols</code> | | | <code>fs_type</code> | | | <code>storage_areas</code> | | | <code>frontend_public_host</code> | | | <code>frontend_port</code> | | | <code>directory_automatic_creation</code> | | | <code>directory_writeperm</code> | | | <code>rest_services_port</code> | | | <code>rest_services_max_threads</code> | | | <code>rest_services_max_queue_size</code> | | | <code>synchcall_xmlrpc_unsecure_server_port</code> | | | <code>synchcall_xmlrpc_maxthread</code> | | | <code>synchcall_xmlrpc_max_queue_size</code> | | | <code>synchcall_xmlrpc_security_enabled</code> | | | <code>synchcall_xmlrpc_security_token</code> | | | <code>ptg_skip_acl_setup</code> | | | <code>pinlifetime_default</code> | | | <code>pinlifetime_maximum</code> | | | <code>sanity_check_enabled</code> | | | <code>service_du_enabled</code> | | | <code>service_du_delay</code> | | | <code>service_du_interval</code> | | | <code>synchcall_max_ls_entries</code> | | | <code>gc_pinnedfiles_cleaning_delay</code> | | | <code>gc_pinnedfiles_cleaning_interval</code> | | | <code>gc_purge_enabled</code> | | | <code>gc_purge_interval</code> | | | <code>gc_purge_size</code> | | | <code>gc_expired_request_time</code> | | | <code>gc_expired_inprogress_time</code> | | | <code>gc_ptp_transit_interval</code> | | | <code>gc_ptp_transit_start_delay</code> | | | <code>extraslashes_file</code> | | | <code>extraslashes_root</code> | | | <code>extraslashes_gsiftp</code> | | | <code>db_connection_pool_enabled</code> | | | <code>db_connection_pool_max_active</code> | | | <code>db_connection_pool_max_wait</code> | | | <code>asynch_db_reconnect_period</code> | | | <code>asynch_db_delay_period</code> | | | <code>asynch_picking_initial_delay</code> | | | <code>asynch_picking_time_interval</code> | | | <code>asynch_picking_max_batch_size</code> | | | <code>requests_scheduler_core_size</code> | | | <code>requests_scheduler_max_size</code> | | | <code>requests_scheduler_queue_size</code> | | | <code>ptp_requests_scheduler_core_size</code> | | | <code>ptp_requests_scheduler_max_size</code> | | | <code>ptp_requests_scheduler_queue_size</code> | | | <code>ptg_requests_scheduler_core_size</code> | | | <code>ptg_requests_scheduler_max_size</code> | | | <code>ptg_requests_scheduler_queue_size</code> | | | <code>bol_requests_scheduler_core_size</code> | | | <code>bol_requests_scheduler_max_size</code> | | | <code>bol_requests_scheduler_queue_size</code> | | | <code>info_sitename</code> | | | <code>info_storage_default_root</code> | | | <code>info_endpoint_quality_level</code> | | | <code>info_webdav_pool_list</code> | | | <code>info_frontend_host_list</code> | |</p>
+<p>You can also customize and create your own users and groups as follow:</p>
 
-<p>Example of StoRM Backend configuration:</p>
+<pre class="code ruby"><code class="ruby">class { &#39;storm::users&#39;:
+  groups =&gt; {
+    infosys =&gt; {
+      gid =&gt; &#39;996&#39;,
+    },
+  },
+  users  =&gt; {
+    edguser =&gt; {
+      comment =&gt; &#39;Edguser user&#39;,
+      groups  =&gt; [ edguser, infosys, storm, ],
+      uid     =&gt; &#39;995&#39;,
+      gid     =&gt; &#39;995&#39;,
+      home    =&gt; &#39;/home/edguser&#39;,
+    },
+    storm   =&gt; {
+      comment =&gt; &#39;StoRM user&#39;,
+      groups  =&gt; [ storm, edguser, ],
+      uid     =&gt; &#39;991&#39;,
+      gid     =&gt; &#39;991&#39;,
+      home    =&gt; &#39;/home/storm&#39;,
+    },
+  },
+}
+</code></pre>
 
-<pre class="code ruby"><code class="ruby">class { &#39;storm::backend&#39;:
-  hostname =&gt; &#39;backend.test.example&#39;,
-  srm_pool_members =&gt; [
-    {
-      &#39;hostname&#39; =&gt; &#39;frontend.test.example&#39;,
-    }
-  ],
-  gsiftp_pool_members =&gt; [
-    {
-      &#39;hostname&#39; =&gt; &#39;gridftp.test.example&#39;,
-    },
-  ],
-  webdav_pool_members =&gt; [
-    {
-      &#39;hostname&#39; =&gt; &#39;webdav.test.example&#39;,
-    },
-  ],
-  storage_areas =&gt; [
-    {
-      &#39;name&#39;               =&gt; &#39;test.vo&#39;,
-      &#39;root_path&#39;          =&gt; &#39;/storage/test.vo&#39;,
-      &#39;access_points&#39;      =&gt; [&#39;/test.vo&#39;],
-      &#39;vos&#39;                =&gt; [&#39;test.vo&#39;],
-      &#39;storage_class&#39;      =&gt; &#39;T0D1&#39;,
-      &#39;online_size&#39;        =&gt; 4,
-      &#39;transfer_protocols&#39; =&gt; [&#39;file&#39;, &#39;gsiftp&#39;, &#39;https&#39;],
-    },
+<p>Check <a href="https://italiangrid.github.io/storm-puppet-module/puppet_classes/storm_3A_3Ausers.html">here</a> for all the class options.</p>
+
+<h3 id="label-StoRM+storage+utility+class">StoRM storage utility class</h3>
+
+<p>To create the root directories of your storage areas, you can use the <code>storm::storage</code> utility class. It&#39;s mainly used for test purposes. We expected not to use this class on production.</p>
+
+<p>Use:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_include'>include</span> <span class='id identifier rubyid_storm'>storm</span><span class='op'>::</span><span class='id identifier rubyid_storage'>storage</span>
+</code></pre>
+
+<p>to create <code>/storage</code> directory owned by &#39;storm&#39; user and &#39;755&#39; as permissions. You can specify a different list of directories as follow:</p>
+
+<pre class="code ruby"><code class="ruby">class { &#39;storm::storage&#39;:
+  root_directories =&gt; [
+    &#39;/storage&#39;,
+    &#39;/storage/test.vo&#39;,
+    &#39;/storage/dteam&#39;,
   ],
 }
 </code></pre>
+
+<p>Check <a href="https://italiangrid.github.io/storm-puppet-module/puppet_classes/storm_3A_3Astorage.html">here</a> for all the class options.</p>
 
 <h2 id="label-Documentation">Documentation</h2>
 

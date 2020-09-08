@@ -6,15 +6,15 @@
 <title>
   Puppet Class: storm::frontend::params
   
-    &mdash; Documentation by YARD 0.9.20
+    &mdash; Documentation by YARD 0.9.25
   
 </title>
 
-  <link rel="stylesheet" href="../css/style.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="../css/style.css" type="text/css" />
 
-  <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="../css/common.css" type="text/css" />
 
-<script type="text/javascript" charset="utf-8">
+<script type="text/javascript">
   pathId = "puppet_classes::storm::frontend::params";
   relpath = '../';
 </script>
@@ -99,6 +99,7 @@
 <div class="tags">
   
 
+
 </div><div class="method_details_list">
   <table class="source_code">
     <tr>
@@ -138,9 +139,7 @@
 32
 33
 34
-35
-36
-37</pre>
+35</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/frontend/params.pp', line 3</span>
@@ -148,7 +147,6 @@
 class storm::frontend::params (
 ) inherits storm::params {
 
-  $db_host = lookup(&#39;storm::frontend::db::host&#39;, String, undef, &#39;localhost&#39;)
   $db_user = lookup(&#39;storm::frontend::db::user&#39;, String, undef, &#39;storm&#39;)
   $db_passwd = lookup(&#39;storm::frontend::db::passwd&#39;, String, undef, &#39;storm&#39;)
 
@@ -157,8 +155,7 @@ class storm::frontend::params (
   $threadpool_maxpending = lookup(&#39;storm::frontend::threadpool.maxpending&#39;, Integer, undef, 200)
   $gsoap_maxpending = lookup(&#39;storm::frontend::gsoap_maxpending&#39;, Integer, undef, 1000)
 
-  $be_xmlrpc_host = lookup(&#39;storm::frontend::be_xmlrpc_host&#39;, String, undef, &#39;localhost&#39;)
-  $be_xmlrpc_token = lookup(&#39;storm::frontend::be_xmlrpc_token&#39;, String, undef, &#39;token&#39;)
+  $be_xmlrpc_token = lookup(&#39;storm::frontend::be_xmlrpc_token&#39;, String, undef, &#39;secret&#39;)
   $be_xmlrpc_port = lookup(&#39;storm::frontend::be_xmlrpc_port&#39;, Integer, undef, 8080)
   $be_xmlrpc_path = lookup(&#39;storm::frontend::be_xmlrpc_path&#39;, String, undef, &#39;/RPC2&#39;)
 

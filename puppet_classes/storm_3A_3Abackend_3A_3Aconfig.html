@@ -6,15 +6,15 @@
 <title>
   Puppet Class: storm::backend::config
   
-    &mdash; Documentation by YARD 0.9.20
+    &mdash; Documentation by YARD 0.9.25
   
 </title>
 
-  <link rel="stylesheet" href="../css/style.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="../css/style.css" type="text/css" />
 
-  <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="../css/common.css" type="text/css" />
 
-<script type="text/javascript" charset="utf-8">
+<script type="text/javascript">
   pathId = "puppet_classes::storm::backend::config";
   relpath = '../';
 </script>
@@ -1168,6 +1168,7 @@
 </ul>
 
 
+
 </div><div class="method_details_list">
   <table class="source_code">
     <tr>
@@ -1374,7 +1375,18 @@
 199
 200
 201
-202</pre>
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/backend/config.pp', line 3</span>
@@ -1520,6 +1532,17 @@ class storm::backend::config (
       group   =&gt; &#39;storm&#39;,
       source  =&gt; &#39;/etc/grid-security/hostkey.pem&#39;,
       require =&gt; File[&#39;/etc/grid-security/storm&#39;],
+    }
+  }
+
+  # Service&#39;s log directory
+  if !defined(File[&#39;/var/log/storm&#39;]) {
+    file { &#39;/var/log/storm&#39;:
+      ensure  =&gt; directory,
+      owner   =&gt; &#39;storm&#39;,
+      group   =&gt; &#39;storm&#39;,
+      mode    =&gt; &#39;0750&#39;,
+      recurse =&gt; false,
     }
   }
 

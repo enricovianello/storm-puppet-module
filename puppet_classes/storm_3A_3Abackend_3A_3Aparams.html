@@ -6,15 +6,15 @@
 <title>
   Puppet Class: storm::backend::params
   
-    &mdash; Documentation by YARD 0.9.20
+    &mdash; Documentation by YARD 0.9.25
   
 </title>
 
-  <link rel="stylesheet" href="../css/style.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="../css/style.css" type="text/css" />
 
-  <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="../css/common.css" type="text/css" />
 
-<script type="text/javascript" charset="utf-8">
+<script type="text/javascript">
   pathId = "puppet_classes::storm::backend::params";
   relpath = '../';
 </script>
@@ -98,6 +98,7 @@
 
 <div class="tags">
   
+
 
 </div><div class="method_details_list">
   <table class="source_code">
@@ -274,7 +275,7 @@ class storm::backend::params (
 
   # Db connection
   $db_username = lookup(&#39;storm::backend::db_username&#39;, String, undef, &#39;storm&#39;)
-  $db_password = lookup(&#39;storm::backend::db_password&#39;, String, undef, &#39;bluemoon&#39;)
+  $db_password = lookup(&#39;storm::backend::db_password&#39;, String, undef, &#39;storm&#39;)
 
   # Db MySQL server
   $mysql_server_install = lookup(&#39;storm::backend::mysql_server_install&#39;, Boolean, undef, false)
@@ -365,7 +366,7 @@ class storm::backend::params (
 
   # extraslashes
   $extraslashes_file = lookup(&#39;storm::backend::extraslashes_file&#39;, String, undef, &#39;&#39;)
-  $extraslashes_root = lookup(&#39;storm::backend::extraslashes_root&#39;, String, undef, &#39;&#39;)
+  $extraslashes_root = lookup(&#39;storm::backend::extraslashes_root&#39;, String, undef, &#39;/&#39;)
   $extraslashes_gsiftp = lookup(&#39;storm::backend::extraslashes_gsiftp&#39;, String, undef, &#39;/&#39;)
 
   # Db Connection Pool

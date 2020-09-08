@@ -6,15 +6,15 @@
 <title>
   Puppet Class: storm::backend
   
-    &mdash; Documentation by YARD 0.9.20
+    &mdash; Documentation by YARD 0.9.25
   
 </title>
 
-  <link rel="stylesheet" href="../css/style.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="../css/style.css" type="text/css" />
 
-  <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="../css/common.css" type="text/css" />
 
-<script type="text/javascript" charset="utf-8">
+<script type="text/javascript">
   pathId = "puppet_classes::storm::backend";
   relpath = '../';
 </script>
@@ -99,7 +99,7 @@
       
       <pre class="example code"><code>class { &#39;storm::backend&#39;:
   hostname =&gt; &#39;backend.test.example&#39;,
-  db_user =&gt; &#39;storm&#39;,
+  db_username =&gt; &#39;storm&#39;,
   db_password =&gt; &#39;bluemoon&#39;,
   srm_pool_members =&gt; [
     {
@@ -972,7 +972,7 @@
       
         &mdash;
         <div class='inline'>
-<p>Add extra slashes after the “authority” part of a TURL for xroot protocol. Default: &#39;&#39;</p>
+<p>Add extra slashes after the “authority” part of a TURL for xroot protocol. Default: &#39;/&#39;</p>
 </div>
       
     </li>
@@ -1604,6 +1604,7 @@
     </li>
   
 </ul>
+
 
 
 </div><div class="method_details_list">
