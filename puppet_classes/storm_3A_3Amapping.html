@@ -78,30 +78,6 @@
 <div class="docstring">
   <div class="discussion">
     
-<p>The owner of /etc/grid-security/gridmapdir</p>
-
-<p>The group of /etc/grid-security/gridmapdir</p>
-
-<p>The permissions on /etc/grid-security/gridmapdir</p>
-
-<p>The Array of pool accounts.</p>
-
-<p>If true (default) use as /etc/lcmaps/lcmaps.db the file specified with lcmaps_db_file. If false, file is not managed by this class.</p>
-
-<p>The path of the lcmaps.db to copy into /etc/lcmaps/lcmaps.db. Default: puppet:///modules/storm/etc/lcmaps/lcmaps.db</p>
-
-<p>If true (default) use as /etc/lcas/lcas.db the file specified with lcas_db_file. If false, file is not managed by this class.</p>
-
-<p>The path of the lcas.db to copy into /etc/lcas/lcas.db. Default: puppet:///modules/storm/etc/lcas/lcas.db</p>
-
-<p>If true (default) use as /etc/lcas/ban_users.db the file specified with lcas_ban_users_file. If false, file is not managed by this class.</p>
-
-<p>The path of the ban_users.db to copy into /etc/lcas/ban_users.db. Default: puppet:///modules/storm/etc/lcas/ban_users.db</p>
-
-<p>If true (default) use as /etc/grid-security/gsi-authz.conf the file specified with gsi_authz_file. If false, file is not managed by this class.</p>
-
-<p>The path of the gsi-authz.conf to copy into /etc/grid-security/gsi-authz.conf. Default: puppet:///modules/storm/etc/grid-security/gsi-authz.conf</p>
-
   </div>
 </div>
 
@@ -143,6 +119,11 @@
         <em class="default">(defaults to: <tt>&#39;storm&#39;</tt>)</em>
       
       
+        &mdash;
+        <div class='inline'>
+<p>The owner of /etc/grid-security/gridmapdir</p>
+</div>
+      
     </li>
   
     <li>
@@ -156,6 +137,11 @@
         <em class="default">(defaults to: <tt>&#39;storm&#39;</tt>)</em>
       
       
+        &mdash;
+        <div class='inline'>
+<p>The group of /etc/grid-security/gridmapdir</p>
+</div>
+      
     </li>
   
     <li>
@@ -168,6 +154,11 @@
       
         <em class="default">(defaults to: <tt>&#39;0770&#39;</tt>)</em>
       
+      
+        &mdash;
+        <div class='inline'>
+<p>The permissions on /etc/grid-security/gridmapdir</p>
+</div>
       
     </li>
   
@@ -184,17 +175,26 @@
     &#39;size&#39; =&gt; 20,
     &#39;base_uid&#39; =&gt; 7100,
     &#39;group&#39; =&gt; &#39;testvo&#39;,
+    &#39;groups&#39; =&gt; [],
     &#39;gid&#39; =&gt; 7100,
     &#39;vo&#39; =&gt; &#39;test.vo&#39;,
+    &#39;role&#39; =&gt; &#39;NULL&#39;,
   },{
     &#39;name&#39; =&gt; &#39;testdue&#39;,
     &#39;size&#39; =&gt; 20,
     &#39;base_uid&#39; =&gt; 8100,
     &#39;group&#39; =&gt; &#39;testvodue&#39;,
+    &#39;groups&#39; =&gt; [],
     &#39;gid&#39; =&gt; 8100,
     &#39;vo&#39; =&gt; &#39;test.vo.2&#39;,
+    &#39;role&#39; =&gt; &#39;NULL&#39;,
   }]</tt>)</em>
       
+      
+        &mdash;
+        <div class='inline'>
+<p>The Array of pool accounts.</p>
+</div>
       
     </li>
   
@@ -209,6 +209,11 @@
         <em class="default">(defaults to: <tt>true</tt>)</em>
       
       
+        &mdash;
+        <div class='inline'>
+<p>If true (default) use as /etc/lcmaps/lcmaps.db the file specified with lcmaps_db_file. If false, file is not managed by this class.</p>
+</div>
+      
     </li>
   
     <li>
@@ -221,6 +226,11 @@
       
         <em class="default">(defaults to: <tt>&#39;puppet:///modules/storm/etc/lcmaps/lcmaps.db&#39;</tt>)</em>
       
+      
+        &mdash;
+        <div class='inline'>
+<p>The path of the lcmaps.db to copy into /etc/lcmaps/lcmaps.db. Default: puppet:///modules/storm/etc/lcmaps/lcmaps.db</p>
+</div>
       
     </li>
   
@@ -235,6 +245,11 @@
         <em class="default">(defaults to: <tt>true</tt>)</em>
       
       
+        &mdash;
+        <div class='inline'>
+<p>If true (default) use as /etc/lcas/lcas.db the file specified with lcas_db_file. If false, file is not managed by this class.</p>
+</div>
+      
     </li>
   
     <li>
@@ -247,6 +262,11 @@
       
         <em class="default">(defaults to: <tt>&#39;puppet:///modules/storm/etc/lcas/lcas.db&#39;</tt>)</em>
       
+      
+        &mdash;
+        <div class='inline'>
+<p>The path of the lcas.db to copy into /etc/lcas/lcas.db. Default: puppet:///modules/storm/etc/lcas/lcas.db</p>
+</div>
       
     </li>
   
@@ -261,6 +281,11 @@
         <em class="default">(defaults to: <tt>true</tt>)</em>
       
       
+        &mdash;
+        <div class='inline'>
+<p>If true (default) use as /etc/lcas/ban_users.db the file specified with lcas_ban_users_file. If false, file is not managed by this class.</p>
+</div>
+      
     </li>
   
     <li>
@@ -273,6 +298,11 @@
       
         <em class="default">(defaults to: <tt>&#39;puppet:///modules/storm/etc/lcas/ban_users.db&#39;</tt>)</em>
       
+      
+        &mdash;
+        <div class='inline'>
+<p>The path of the ban_users.db to copy into /etc/lcas/ban_users.db. Default: puppet:///modules/storm/etc/lcas/ban_users.db</p>
+</div>
       
     </li>
   
@@ -287,6 +317,11 @@
         <em class="default">(defaults to: <tt>true</tt>)</em>
       
       
+        &mdash;
+        <div class='inline'>
+<p>If true (default) use as /etc/grid-security/gsi-authz.conf the file specified with gsi_authz_file. If false, file is not managed by this class.</p>
+</div>
+      
     </li>
   
     <li>
@@ -299,6 +334,11 @@
       
         <em class="default">(defaults to: <tt>&#39;puppet:///modules/storm/etc/grid-security/gsi-authz.conf&#39;</tt>)</em>
       
+      
+        &mdash;
+        <div class='inline'>
+<p>The path of the gsi-authz.conf to copy into /etc/grid-security/gsi-authz.conf. Default: puppet:///modules/storm/etc/grid-security/gsi-authz.conf</p>
+</div>
       
     </li>
   
@@ -466,7 +506,18 @@
 206
 207
 208
-209</pre>
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/mapping.pp', line 56</span>
@@ -482,15 +533,19 @@ class storm::mapping (
     &#39;size&#39; =&gt; 20,
     &#39;base_uid&#39; =&gt; 7100,
     &#39;group&#39; =&gt; &#39;testvo&#39;,
+    &#39;groups&#39; =&gt; [],
     &#39;gid&#39; =&gt; 7100,
     &#39;vo&#39; =&gt; &#39;test.vo&#39;,
+    &#39;role&#39; =&gt; &#39;NULL&#39;,
   },{
     &#39;name&#39; =&gt; &#39;testdue&#39;,
     &#39;size&#39; =&gt; 20,
     &#39;base_uid&#39; =&gt; 8100,
     &#39;group&#39; =&gt; &#39;testvodue&#39;,
+    &#39;groups&#39; =&gt; [],
     &#39;gid&#39; =&gt; 8100,
     &#39;vo&#39; =&gt; &#39;test.vo.2&#39;,
+    &#39;role&#39; =&gt; &#39;NULL&#39;,
   }],
 
   Boolean $manage_lcmaps_db_file = true,
@@ -536,6 +591,13 @@ class storm::mapping (
       ensure =&gt; present,
       gid    =&gt; $pool[&#39;gid&#39;],
     }
+    $pool[&#39;groups&#39;].each | $g | {
+      if !defined(Group[$g]) {
+        group { $g:
+          ensure =&gt; present,
+        }
+      }
+    }
 
     range(&#39;1&#39;, $pool[&#39;size&#39;]).each | $id | {
 
@@ -546,7 +608,7 @@ class storm::mapping (
         ensure     =&gt; present,
         uid        =&gt; $pool[&#39;base_uid&#39;] + $id,
         gid        =&gt; $pool[&#39;gid&#39;],
-        groups     =&gt; [$pool[&#39;group&#39;]],
+        groups     =&gt; [$pool[&#39;groups&#39;]],
         comment    =&gt; &quot;Mapped user for ${pool[&#39;vo&#39;]}&quot;,
         managehome =&gt; true,
         require    =&gt; [Group[$pool[&#39;group&#39;]]],

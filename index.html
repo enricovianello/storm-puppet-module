@@ -73,7 +73,7 @@
 
 <h2 id="label-Description">Description</h2>
 
-<p>StoRM Puppet module allows administrators to easily configure StoRM services. Currently, the supported services are:</p>
+<p>StoRM Puppet module allows administrators to easily configure StoRM services:</p>
 <ul><li>
 <p>StoRM Backend</p>
 </li><li>
@@ -521,27 +521,11 @@ class { &#39;storm::backend&#39;:
 <p><code>load_storm_dsi_module</code>: Enable/Disable StoRM DSI module. Default: <strong>true</strong> (enabled).</p>
 </li></ul>
 
-<p>Administrators can provide a their own <code>lcamps.db</code>, <code>lcas.db</code>, <code>ban_users.db</code> and <code>gsi-authz.conf</code> files by specifying their absolute paths with the proper parameter:</p>
-<ul><li>
-<p><code>lcmaps_db_file</code></p>
-</li><li>
-<p><code>lcas_db_file</code></p>
-</li><li>
-<p><code>lcas_ban_users_file</code></p>
-</li><li>
-<p><code>gsi_authz_file</code></p>
-</li></ul>
-
 <p>Examples of StoRM Gridftp configuration:</p>
 
 <pre class="code ruby"><code class="ruby">class { &#39;storm::gridftp&#39;:
   redirect_lcmaps_log =&gt; true,
   llgt_log_file       =&gt; &#39;/var/log/storm/storm-gridftp-lcmaps.log&#39;,
-}
-</code></pre>
-
-<pre class="code ruby"><code class="ruby">class { &#39;storm::gridftp&#39;:
-  lcmaps_db_file =&gt; &#39;/root/storm/gridftp/lcamps.db&#39;,
 }
 </code></pre>
 
