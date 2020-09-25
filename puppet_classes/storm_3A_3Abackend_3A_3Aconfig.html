@@ -114,6 +114,19 @@
   
     <li>
       
+        <span class='name'>db_hostname</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::db_hostname</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>db_username</span>
       
       
@@ -134,45 +147,6 @@
       
       
         <em class="default">(defaults to: <tt>$storm::backend::db_password</tt>)</em>
-      
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>mysql_server_install</span>
-      
-      
-        <span class='type'>(<tt>Any</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>$storm::backend::mysql_server_install</tt>)</em>
-      
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>mysql_server_root_password</span>
-      
-      
-        <span class='type'>(<tt>Any</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>$storm::backend::mysql_server_root_password</tt>)</em>
-      
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>mysql_server_override_options</span>
-      
-      
-        <span class='type'>(<tt>Any</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>$storm::backend::mysql_server_override_options</tt>)</em>
       
       
     </li>
@@ -1165,6 +1139,19 @@
       
     </li>
   
+    <li>
+      
+        <span class='name'>storm_limit_nofile</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::storm_limit_nofile</tt>)</em>
+      
+      
+    </li>
+  
 </ul>
 
 
@@ -1386,7 +1373,19 @@
 210
 211
 212
-213</pre>
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/backend/config.pp', line 3</span>
@@ -1397,12 +1396,9 @@ class storm::backend::config (
 
   $install_native_libs_gpfs = $storm::backend::install_native_libs_gpfs,
 
+  $db_hostname = $storm::backend::db_hostname,
   $db_username = $storm::backend::db_username,
   $db_password = $storm::backend::db_password,
-
-  $mysql_server_install = $storm::backend::mysql_server_install,
-  $mysql_server_root_password = $storm::backend::mysql_server_root_password,
-  $mysql_server_override_options = $storm::backend::mysql_server_override_options,
 
   $xroot_hostname = $storm::backend::xroot_hostname,
   $xroot_port = $storm::backend::xroot_port,
@@ -1504,6 +1500,8 @@ class storm::backend::config (
 
   $http_turl_prefix = $storm::backend::http_turl_prefix,
 
+  $storm_limit_nofile = $storm::backend::storm_limit_nofile,
+
 ) {
 
   # Service&#39;s host credentials directory
@@ -1584,6 +1582,19 @@ class storm::backend::config (
   file { $service_file:
     ensure  =&gt; present,
     content =&gt; template($service_template_file),
+    mode    =&gt; &#39;0644&#39;,
+    owner   =&gt; &#39;root&#39;,
+    group   =&gt; &#39;root&#39;,
+    notify  =&gt; [Exec[&#39;backend-daemon-reload&#39;], Service[&#39;storm-backend-server&#39;]],
+    require =&gt; [File[$service_dir]],
+  }
+
+  $limit_file=&#39;/etc/systemd/system/storm-backend-server.service.d/filelimit.conf&#39;
+  $limit_template_file=&#39;storm/etc/systemd/system/storm-backend-server.service.d/filelimit.conf.erb&#39;
+
+  file { $limit_file:
+    ensure  =&gt; present,
+    content =&gt; template($limit_template_file),
     mode    =&gt; &#39;0644&#39;,
     owner   =&gt; &#39;root&#39;,
     group   =&gt; &#39;root&#39;,

@@ -83,49 +83,6 @@
 <div class="docstring">
   <div class="discussion">
     
-<h2 id="label-Parameters">Parameters</h2>
-
-<p>The main StoRM WebDAV configuration parameters are:</p>
-<ul><li>
-<p><code>user_name</code>: the Unix user that runs storm-webdav service;</p>
-</li><li>
-<p><code>storage_areas</code>: the list of Storm::Webdav::StorageArea elements (more info below);</p>
-</li><li>
-<p><code>oauth_issuers</code>: the list of Storm::Webdav::OAuthIssuer elements that means the supported OAuth providers;</p>
-</li><li>
-<p><code>hostnames</code>: the list of hostname and aliases supported for Third-Party-Copy;</p>
-</li><li>
-<p><code>http_port</code> and <code>https_port</code>: the service ports;</p>
-</li></ul>
-
-<h2 id="label-The+Storm-3A-3AWebdav-3A-3AStorageArea+type">The Storm::Webdav::StorageArea type</h2>
-<ul><li>
-<p><code>name</code>: The name of the storage area. Required.</p>
-</li><li>
-<p><code>root_path</code>: The path of the storage area root directory. Required.</p>
-</li><li>
-<p><code>access_points</code>: A list of logic path used to access storage area&#39;s root. Required.</p>
-</li><li>
-<p><code>vos</code>: A list of one or more Virtual Organization names of the users allowed to read/write into the storage area. Required.</p>
-</li><li>
-<p><code>orgs</code>: A list of one or more Organizations. Optional.</p>
-</li><li>
-<p><code>authenticated_read_enabled</code>: A boolean value used to enable the read of the storage area content to authenticated users. Required.</p>
-</li><li>
-<p><code>anonymous_read_enabled</code>: A boolean value used to enable anonymous read access to storage area content. Required.</p>
-</li><li>
-<p><code>vo_map_enabled</code>: A boolean value used to enable the use of the VO gridmap files. Required.</p>
-</li><li>
-<p><code>vo_map_grants_write_access</code>: A boolean value used to grant write access to the VO users read from grifmap file. Optional,</p>
-</li></ul>
-
-<h2 id="label-The+Storm-3A-3AWebdav-3A-3AOAuthIssuer+type">The Storm::Webdav::OAuthIssuer type</h2>
-<ul><li>
-<p><code>name</code>: the organization name. Rerquired.</p>
-</li><li>
-<p><code>issuer</code>: the issuer URL. Required.</p>
-</li></ul>
-
   </div>
 </div>
 
@@ -137,10 +94,11 @@
     
       
         <p class="example_title"><div class='inline'>
-<p>Example of usage</p>
+<p>Basic usage</p>
 </div></p>
       
-      <pre class="example code"><code>class { &#39;storm::webdav&#39;:
+      <pre class="example code"><code>
+class { &#39;storm::webdav&#39;:
   storage_areas =&gt; [
     {
       name                       =&gt; &#39;test.vo&#39;,
@@ -158,18 +116,44 @@
       vo_map_enabled             =&gt; false,
     },
   ],
+  manage_application_file =&gt; true,
   oauth_issuers =&gt; [
     {
       name   =&gt; &#39;indigo-dc&#39;,
       issuer =&gt; &#39;https://iam-test.indigo-datacloud.eu/&#39;,
     },
   ],
-  hostnames =&gt; [&#39;localhost&#39;, &#39;alias.for.localhost&#39;],
+  hostnames =&gt; [&#39;webdav.example.org&#39;, &#39;storm-webdav.example.org&#39;],
+}
+
+class { &#39;storm::webdav&#39;:
+  manage_application_file =&gt; true,
+  application_file        =&gt; &#39;/root/storm/webdav/application.yml&#39;,
+  storage_areas_directory =&gt; &#39;/root/storm/webdav/sa.d&#39;,
+  hostnames               =&gt; [&#39;storm-webdav.example.org&#39;],
 }</code></pre>
     
   </div>
 <p class="tag_title">Parameters:</p>
 <ul class="param">
+  
+    <li>
+      
+        <span class='name'>manage_application_file</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::webdav::params::manage_application_file</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Set to True if you want to manage application.yml configuration. Default: false (application.yml file configuration is ignored).</p>
+</div>
+      
+    </li>
   
     <li>
       
@@ -184,7 +168,25 @@
       
         &mdash;
         <div class='inline'>
-<p>If defined, the application.yml file is copied from this path and oauth_issuers is ignored.</p>
+<p>If defined, the application.yml file is copied from this path and oauth_issuers is ignored. Ignored if manage_application_file is false.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>manage_storage_areas</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::webdav::params::manage_storage_areas</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Set to True if you want to manage storage areas configuration. Default: true.</p>
 </div>
       
     </li>
@@ -202,7 +204,7 @@
       
         &mdash;
         <div class='inline'>
-<p>If defined, the properties files of the storage areas are copied and storage_areas parameter is ignored.</p>
+<p>If defined, the properties files of the storage areas are copied and storage_areas parameter is ignored. Ignored if manage_storage_areas is false.</p>
 </div>
       
     </li>
@@ -220,7 +222,7 @@
       
         &mdash;
         <div class='inline'>
-<p>List of storage area&#39;s configuration. Ignored if storage_areas_directory is defined.</p>
+<p>List of storage area&#39;s configuration. Ignored if storage_areas_directory is defined. Ignored if manage_storage_areas is false.</p>
 </div>
       
     </li>
@@ -254,6 +256,11 @@
         <em class="default">(defaults to: <tt>$storm::webdav::params::hostnames</tt>)</em>
       
       
+        &mdash;
+        <div class='inline'>
+<p>Sets STORM_WEBDAV_HOSTNAME_n environment variables.</p>
+</div>
+      
     </li>
   
     <li>
@@ -266,6 +273,11 @@
       
         <em class="default">(defaults to: <tt>$storm::webdav::params::http_port</tt>)</em>
       
+      
+        &mdash;
+        <div class='inline'>
+<p>Sets STORM_WEBDAV_HTTP_PORT environment variable.</p>
+</div>
       
     </li>
   
@@ -280,6 +292,11 @@
         <em class="default">(defaults to: <tt>$storm::webdav::params::https_port</tt>)</em>
       
       
+        &mdash;
+        <div class='inline'>
+<p>Sets STORM_WEBDAV_HTTPS_PORT environment variable.</p>
+</div>
+      
     </li>
   
     <li>
@@ -292,6 +309,11 @@
       
         <em class="default">(defaults to: <tt>$storm::webdav::params::trust_anchors_refresh_interval</tt>)</em>
       
+      
+        &mdash;
+        <div class='inline'>
+<p>Sets STORM_WEBDAV_TRUST_ANCHORS_REFRESH_INTERVAL environment variable.</p>
+</div>
       
     </li>
   
@@ -306,6 +328,11 @@
         <em class="default">(defaults to: <tt>$storm::webdav::params::max_concurrent_connections</tt>)</em>
       
       
+        &mdash;
+        <div class='inline'>
+<p>Sets STORM_WEBDAV_MAX_CONNECTIONS environment variable.</p>
+</div>
+      
     </li>
   
     <li>
@@ -318,6 +345,11 @@
       
         <em class="default">(defaults to: <tt>$storm::webdav::params::max_queue_size</tt>)</em>
       
+      
+        &mdash;
+        <div class='inline'>
+<p>Sets STORM_WEBDAV_MAX_QUEUE_SIZE environment variable.</p>
+</div>
       
     </li>
   
@@ -332,6 +364,11 @@
         <em class="default">(defaults to: <tt>$storm::webdav::params::connector_max_idle_time</tt>)</em>
       
       
+        &mdash;
+        <div class='inline'>
+<p>Sets STORM_WEBDAV_CONNECTOR_MAX_IDLE_TIME environment variable.</p>
+</div>
+      
     </li>
   
     <li>
@@ -344,6 +381,11 @@
       
         <em class="default">(defaults to: <tt>$storm::webdav::params::vo_map_files_enable</tt>)</em>
       
+      
+        &mdash;
+        <div class='inline'>
+<p>Sets STORM_WEBDAV_VO_MAP_FILES_ENABLE environment variable.</p>
+</div>
       
     </li>
   
@@ -358,6 +400,11 @@
         <em class="default">(defaults to: <tt>$storm::webdav::params::vo_map_files_config_dir</tt>)</em>
       
       
+        &mdash;
+        <div class='inline'>
+<p>Sets STORM_WEBDAV_VO_MAP_FILES_CONFIG_DIR environment variable.</p>
+</div>
+      
     </li>
   
     <li>
@@ -370,6 +417,11 @@
       
         <em class="default">(defaults to: <tt>$storm::webdav::params::vo_map_files_refresh_interval</tt>)</em>
       
+      
+        &mdash;
+        <div class='inline'>
+<p>Sets STORM_WEBDAV_VO_MAP_FILES_REFRESH_INTERVAL environment variable.</p>
+</div>
       
     </li>
   
@@ -384,6 +436,11 @@
         <em class="default">(defaults to: <tt>$storm::webdav::params::tpc_max_connections</tt>)</em>
       
       
+        &mdash;
+        <div class='inline'>
+<p>Sets STORM_WEBDAV_TPC_MAX_CONNECTIONS environment variable.</p>
+</div>
+      
     </li>
   
     <li>
@@ -396,6 +453,11 @@
       
         <em class="default">(defaults to: <tt>$storm::webdav::params::tpc_verify_checksum</tt>)</em>
       
+      
+        &mdash;
+        <div class='inline'>
+<p>Sets STORM_WEBDAV_TPC_VERIFY_CHECKSUM environment variable.</p>
+</div>
       
     </li>
   
@@ -410,6 +472,11 @@
         <em class="default">(defaults to: <tt>$storm::webdav::params::jvm_opts</tt>)</em>
       
       
+        &mdash;
+        <div class='inline'>
+<p>Sets part of STORM_WEBDAV_JVM_OPTS environment variable.</p>
+</div>
+      
     </li>
   
     <li>
@@ -422,6 +489,11 @@
       
         <em class="default">(defaults to: <tt>$storm::webdav::params::authz_server_enable</tt>)</em>
       
+      
+        &mdash;
+        <div class='inline'>
+<p>Sets STORM_WEBDAV_AUTHZ_SERVER_ENABLE environment variable.</p>
+</div>
       
     </li>
   
@@ -436,6 +508,11 @@
         <em class="default">(defaults to: <tt>$storm::webdav::params::authz_server_issuer</tt>)</em>
       
       
+        &mdash;
+        <div class='inline'>
+<p>Sets STORM_WEBDAV_AUTHZ_SERVER_ISSUER environment variable.</p>
+</div>
+      
     </li>
   
     <li>
@@ -448,6 +525,11 @@
       
         <em class="default">(defaults to: <tt>$storm::webdav::params::authz_server_max_token_lifetime_sec</tt>)</em>
       
+      
+        &mdash;
+        <div class='inline'>
+<p>Sets STORM_WEBDAV_AUTHZ_SERVER_MAX_TOKEN_LIFETIME_SEC environment variable.</p>
+</div>
       
     </li>
   
@@ -462,6 +544,11 @@
         <em class="default">(defaults to: <tt>$storm::webdav::params::authz_server_secret</tt>)</em>
       
       
+        &mdash;
+        <div class='inline'>
+<p>Sets STORM_WEBDAV_AUTHZ_SERVER_SECRET environment variable.</p>
+</div>
+      
     </li>
   
     <li>
@@ -474,6 +561,11 @@
       
         <em class="default">(defaults to: <tt>$storm::webdav::params::require_client_cert</tt>)</em>
       
+      
+        &mdash;
+        <div class='inline'>
+<p>Sets STORM_WEBDAV_REQUIRE_CLIENT_CERT environment variable.</p>
+</div>
       
     </li>
   
@@ -488,6 +580,11 @@
         <em class="default">(defaults to: <tt>$storm::webdav::params::use_conscrypt</tt>)</em>
       
       
+        &mdash;
+        <div class='inline'>
+<p>Sets STORM_WEBDAV_USE_CONSCRYPT environment variable.</p>
+</div>
+      
     </li>
   
     <li>
@@ -500,6 +597,11 @@
       
         <em class="default">(defaults to: <tt>$storm::webdav::params::tpc_use_conscrypt</tt>)</em>
       
+      
+        &mdash;
+        <div class='inline'>
+<p>Sets STORM_WEBDAV_TPC_USE_CONSCRYPT environment variable.</p>
+</div>
       
     </li>
   
@@ -514,6 +616,11 @@
         <em class="default">(defaults to: <tt>$storm::webdav::params::enable_http2</tt>)</em>
       
       
+        &mdash;
+        <div class='inline'>
+<p>Sets STORM_WEBDAV_ENABLE_HTTP2 environment variable.</p>
+</div>
+      
     </li>
   
     <li>
@@ -526,6 +633,11 @@
       
         <em class="default">(defaults to: <tt>$storm::webdav::params::debug</tt>)</em>
       
+      
+        &mdash;
+        <div class='inline'>
+<p>Sets part of STORM_WEBDAV_JVM_OPTS environment variable. It enables remote debug.</p>
+</div>
       
     </li>
   
@@ -540,6 +652,11 @@
         <em class="default">(defaults to: <tt>$storm::webdav::params::debug_port</tt>)</em>
       
       
+        &mdash;
+        <div class='inline'>
+<p>Sets part of STORM_WEBDAV_JVM_OPTS environment variable. It sets the remote debug port if remote debug is enabled.</p>
+</div>
+      
     </li>
   
     <li>
@@ -552,6 +669,11 @@
       
         <em class="default">(defaults to: <tt>$storm::webdav::params::debug_suspend</tt>)</em>
       
+      
+        &mdash;
+        <div class='inline'>
+<p>Sets part of STORM_WEBDAV_JVM_OPTS environment variable. It sets debug suspend value in case remote debug is enabled.</p>
+</div>
       
     </li>
   
@@ -566,6 +688,11 @@
         <em class="default">(defaults to: <tt>$storm::webdav::params::storm_limit_nofile</tt>)</em>
       
       
+        &mdash;
+        <div class='inline'>
+<p>Sets LimitNOFILE value.</p>
+</div>
+      
     </li>
   
 </ul>
@@ -579,18 +706,6 @@
         <pre class="lines">
 
 
-124
-125
-126
-127
-128
-129
-130
-131
-132
-133
-134
-135
 136
 137
 138
@@ -632,49 +747,47 @@
 174
 175
 176
-177</pre>
+177
+178
+179
+180
+181
+182</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/webdav.pp', line 124</span>
+        <pre class="code"><span class="info file"># File 'manifests/webdav.pp', line 136</span>
 
 class storm::webdav (
 
+  Boolean $manage_application_file = $storm::webdav::params::manage_application_file,
   String $application_file = $storm::webdav::params::application_file,
-  String $storage_areas_directory = $storm::webdav::params::storage_areas_directory,
+  Array[Storm::Webdav::OAuthIssuer] $oauth_issuers = $storm::webdav::params::oauth_issuers,
 
+  Boolean $manage_storage_areas = $storm::webdav::params::manage_storage_areas,
+  String $storage_areas_directory = $storm::webdav::params::storage_areas_directory,
   Array[Storm::Webdav::StorageArea] $storage_areas = $storm::webdav::params::storage_areas,
 
-  Array[Storm::Webdav::OAuthIssuer] $oauth_issuers = $storm::webdav::params::oauth_issuers,
   Array[String] $hostnames = $storm::webdav::params::hostnames,
-
   Integer $http_port = $storm::webdav::params::http_port,
   Integer $https_port = $storm::webdav::params::https_port,
-
   Integer $trust_anchors_refresh_interval = $storm::webdav::params::trust_anchors_refresh_interval,
-
   Integer $max_concurrent_connections = $storm::webdav::params::max_concurrent_connections,
   Integer $max_queue_size = $storm::webdav::params::max_queue_size,
   Integer $connector_max_idle_time = $storm::webdav::params::connector_max_idle_time,
-
   Boolean $vo_map_files_enable = $storm::webdav::params::vo_map_files_enable,
   String $vo_map_files_config_dir = $storm::webdav::params::vo_map_files_config_dir,
   Integer $vo_map_files_refresh_interval = $storm::webdav::params::vo_map_files_refresh_interval,
-
   Integer $tpc_max_connections = $storm::webdav::params::tpc_max_connections,
   Boolean $tpc_verify_checksum = $storm::webdav::params::tpc_verify_checksum,
-
   String $jvm_opts = $storm::webdav::params::jvm_opts,
-
   Boolean $authz_server_enable = $storm::webdav::params::authz_server_enable,
   String $authz_server_issuer = $storm::webdav::params::authz_server_issuer,
   Integer $authz_server_max_token_lifetime_sec = $storm::webdav::params::authz_server_max_token_lifetime_sec,
   String $authz_server_secret = $storm::webdav::params::authz_server_secret,
   Boolean $require_client_cert = $storm::webdav::params::require_client_cert,
-
   Boolean $use_conscrypt = $storm::webdav::params::use_conscrypt,
   Boolean $tpc_use_conscrypt = $storm::webdav::params::tpc_use_conscrypt,
   Boolean $enable_http2 = $storm::webdav::params::enable_http2,
-
   Boolean $debug = $storm::webdav::params::debug,
   Integer $debug_port = $storm::webdav::params::debug_port,
   Boolean $debug_suspend = $storm::webdav::params::debug_suspend,

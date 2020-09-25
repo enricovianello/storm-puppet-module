@@ -141,6 +141,8 @@
         <span class='type'>(<tt>String</tt>)</span>
       
       
+        <em class="default">(defaults to: <tt>lookup(&#39;storm::backend::hostname&#39;, String, undef, $::fqdn)</tt>)</em>
+      
       
         &mdash;
         <div class='inline'>
@@ -169,54 +171,18 @@
   
     <li>
       
-        <span class='name'>mysql_server_install</span>
-      
-      
-        <span class='type'>(<tt>Boolean</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>$storm::backend::params::mysql_server_install</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>Install MySQL server on the same host. Default: false.</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>mysql_server_root_password</span>
+        <span class='name'>db_hostname</span>
       
       
         <span class='type'>(<tt>String</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$storm::backend::params::mysql_server_root_password</tt>)</em>
+        <em class="default">(defaults to: <tt>lookup(&#39;storm::backend::db_hostname&#39;, String, undef, $hostname)</tt>)</em>
       
       
         &mdash;
         <div class='inline'>
-<p>Used to configure MySQL server in case mysql_server_install is true. Default: &#39;storm&#39;.</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>mysql_server_override_options</span>
-      
-      
-        <span class='type'>(<tt>Data</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>$storm::backend::params::mysql_server_override_options</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>Used to configure MySQL server in case mysql_server_install is true.</p>
+<p>Fully Qualified Domain Name of database hostname. Default value: <code>hostname</code>.</p>
 </div>
       
     </li>
@@ -1592,6 +1558,24 @@
   
     <li>
       
+        <span class='name'>storm_limit_nofile</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::storm_limit_nofile</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Sets LimitNOFILE value.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>info_config_file</span>
       
       
@@ -1614,6 +1598,9 @@
         <pre class="lines">
 
 
+298
+299
+300
 301
 302
 303
@@ -1769,30 +1756,22 @@
 453
 454
 455
-456
-457
-458
-459
-460</pre>
+456</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/backend.pp', line 301</span>
+        <pre class="code"><span class="info file"># File 'manifests/backend.pp', line 298</span>
 
 class storm::backend (
 
-  String $hostname,
+  String $hostname = lookup(&#39;storm::backend::hostname&#39;, String, undef, $::fqdn),
 
   # Install native libs gpfs
   Boolean $install_native_libs_gpfs = $storm::backend::params::install_native_libs_gpfs,
 
   # Db connection
+  String $db_hostname = lookup(&#39;storm::backend::db_hostname&#39;, String, undef, $hostname),
   String $db_username = $storm::backend::params::db_username,
   String $db_password = $storm::backend::params::db_password,
-
-  # MySQL Server options
-  Boolean $mysql_server_install = $storm::backend::params::mysql_server_install,
-  String $mysql_server_root_password = $storm::backend::params::mysql_server_root_password,
-  Data $mysql_server_override_options = $storm::backend::params::mysql_server_override_options,
 
   ### Default values for Storage Areas
   # 1. xroot
@@ -1925,6 +1904,9 @@ class storm::backend (
 
   # HTTP TURL prefix
   String $http_turl_prefix = $storm::backend::params::http_turl_prefix,
+
+  # LimitNOFILE
+  Integer $storm_limit_nofile = $storm::backend::params::storm_limit_nofile,
 
 ) inherits storm::backend::params {
 

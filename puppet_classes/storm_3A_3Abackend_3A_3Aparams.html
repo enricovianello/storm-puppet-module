@@ -252,17 +252,7 @@
 145
 146
 147
-148
-149
-150
-151
-152
-153
-154
-155
-156
-157
-158</pre>
+148</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/backend/params.pp', line 3</span>
@@ -276,20 +266,6 @@ class storm::backend::params (
   # Db connection
   $db_username = lookup(&#39;storm::backend::db_username&#39;, String, undef, &#39;storm&#39;)
   $db_password = lookup(&#39;storm::backend::db_password&#39;, String, undef, &#39;storm&#39;)
-
-  # Db MySQL server
-  $mysql_server_install = lookup(&#39;storm::backend::mysql_server_install&#39;, Boolean, undef, false)
-  $mysql_server_root_password = lookup(&#39;storm::backend::mysql_server_root_password&#39;, String, undef, &#39;storm&#39;)
-  $mysql_server_override_options = lookup(&#39;storm::backend::mysql_server_override_options&#39;, Data, undef, {
-    &#39;mysqld&#39;      =&gt; {
-      &#39;bind-address&#39;    =&gt; &#39;127.0.0.1&#39;,
-      &#39;log-error&#39;       =&gt; &#39;/var/log/mysqld.log&#39;,
-      &#39;max_connections&#39; =&gt; 2048,
-    },
-    &#39;mysqld_safe&#39; =&gt; {
-      &#39;log-error&#39; =&gt; &#39;/var/log/mysqld.log&#39;,
-    },
-  })
 
   ### Default values for Storage Areas
   # 1. xroot
@@ -421,6 +397,10 @@ class storm::backend::params (
 
   # HTTP TURL prefix
   $http_turl_prefix = lookup(&#39;storm::backend::http_turl_prefix&#39;, String, undef, &#39;&#39;)
+
+  # /etc/systemd/system/storm-backend-server.service.d/filelimit.conf
+  # Set LimitNOFILE
+  $storm_limit_nofile = lookup(&#39;storm::backend::storm_limit_nofile&#39;, Integer, undef, 65535)
 
 }</pre>
       </td>

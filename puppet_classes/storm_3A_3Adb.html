@@ -6,15 +6,15 @@
 <title>
   Puppet Class: storm::db
   
-    &mdash; Documentation by YARD 0.9.20
+    &mdash; Documentation by YARD 0.9.25
   
 </title>
 
-  <link rel="stylesheet" href="../css/style.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="../css/style.css" type="text/css" />
 
-  <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="../css/common.css" type="text/css" />
 
-<script type="text/javascript" charset="utf-8">
+<script type="text/javascript">
   pathId = "puppet_classes::storm::db";
   relpath = '../';
 </script>
@@ -62,20 +62,6 @@
       <div id="content"><h1>Puppet Class: storm::db</h1>
 <div class="box_info">
   
-  <dl>
-    <dt>Inherits:</dt>
-    <dd><span class='object_link'><a href="storm_3A_3Adb_3A_3Aparams.html" title="puppet_classes::storm::db::params (puppet_class)">storm::db::params</a></span></dd>
-  </dl>
-  
-  
-  <dl>
-    <dt>Inherited by:</dt>
-    <dd>
-      
-      <span class='object_link'><a href="storm_3A_3Adb_3A_3Ainstall.html" title="puppet_classes::storm::db::install (puppet_class)">storm::db::install</a></span><br/>
-      
-    </dd>
-  </dl>
   
   <dl>
     <dt>Defined in:</dt>
@@ -86,7 +72,8 @@
 </div>
 
   <h2>Summary</h2>
-  StoRM Database class
+  Install MariaDB server and client, create empty databases 'storm_db' and 'storm_be_ISAM',
+add storm user and all the necessary grants.
 
 <h2>Overview</h2>
 <div class="docstring">
@@ -103,14 +90,10 @@
     
       
         <p class="example_title"><div class='inline'>
-<p>Install and configure database as follow:</p>
+<p>Basic usage:</p>
 </div></p>
       
-      <pre class="example code"><code>class { &#39;storm::db&#39;:
-  fqdn_hostname  =&gt; &#39;be.test.example&#39;,
-  root_password  =&gt; &#39;secret&#39;,
-  storm_password =&gt; &#39;secret&#39;,
-}</code></pre>
+      <pre class="example code"><code><span class='id identifier rubyid_include'>include</span> <span class='id identifier rubyid_storm'>storm</span><span class='op'>::</span><span class='id identifier rubyid_db'>db</span></code></pre>
     
   </div>
 <p class="tag_title">Parameters:</p>
@@ -124,12 +107,12 @@
         <span class='type'>(<tt>String</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$storm::db::params::fqdn_hostname</tt>)</em>
+        <em class="default">(defaults to: <tt>$::fqdn</tt>)</em>
       
       
         &mdash;
         <div class='inline'>
-<p>The Fully Qualyfied Domain Name of the host where database is installed. Required.</p>
+<p>The Fully Qualified Domain Name of the host. Default value got from Puppet fact <code>fqdn</code>.</p>
 </div>
       
     </li>
@@ -142,12 +125,12 @@
         <span class='type'>(<tt>String</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$storm::db::params::root_password</tt>)</em>
+        <em class="default">(defaults to: <tt>&#39;storm&#39;</tt>)</em>
       
       
         &mdash;
         <div class='inline'>
-<p>The MySQL root user password. Optional.</p>
+<p>MySQL root password. Default: &#39;storm&#39;.</p>
 </div>
       
     </li>
@@ -160,12 +143,12 @@
         <span class='type'>(<tt>String</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$storm::db::params::storm_username</tt>)</em>
+        <em class="default">(defaults to: <tt>&#39;storm&#39;</tt>)</em>
       
       
         &mdash;
         <div class='inline'>
-<p>The database user used by StoRM services. Default: &#39;storm&#39;. Optional.</p>
+<p>The username of the user used by storm services to query the databases. Default &#39;storm&#39;.</p>
 </div>
       
     </li>
@@ -178,35 +161,41 @@
         <span class='type'>(<tt>String</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$storm::db::params::storm_password</tt>)</em>
+        <em class="default">(defaults to: <tt>&#39;storm&#39;</tt>)</em>
       
       
         &mdash;
         <div class='inline'>
-<p>The password of database user used by StoRM services. Default: &#39;bluemoon&#39;. Optional.</p>
+<p>The password of &#39;storm&#39; username used by storm services to access the databases. Default: &#39;storm&#39;.</p>
 </div>
       
     </li>
   
     <li>
       
-        <span class='name'>max_connections</span>
+        <span class='name'>override_options</span>
       
       
-        <span class='type'>(<tt>Integer</tt>)</span>
+        <span class='type'>(<tt>Data</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$storm::db::params::max_connections</tt>)</em>
+        <em class="default">(defaults to: <tt>{
+    &#39;mysqld&#39; =&gt; {
+      &#39;bind-address&#39;    =&gt; &#39;0.0.0.0&#39;,
+      &#39;max_connections&#39; =&gt; 2048,
+    },
+  }</tt>)</em>
       
       
         &mdash;
         <div class='inline'>
-<p>Sets max_connections option&#39;s value into /etc/my.cnf</p>
+<p>MySQL server override options. Read more about this at <a href="https://forge.puppet.com/puppetlabs/mysql/reference#override_options">forge.puppet.com/puppetlabs/mysql/reference#override_options</a>.</p>
 </div>
       
     </li>
   
 </ul>
+
 
 
 </div><div class="method_details_list">
@@ -216,6 +205,8 @@
         <pre class="lines">
 
 
+22
+23
 24
 25
 26
@@ -232,26 +223,264 @@
 37
 38
 39
-40</pre>
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/db.pp', line 24</span>
+        <pre class="code"><span class="info file"># File 'manifests/db.pp', line 22</span>
 
 class storm::db (
 
-  String $fqdn_hostname = $storm::db::params::fqdn_hostname,
-  String $root_password = $storm::db::params::root_password,
-  String $storm_username = $storm::db::params::storm_username,
-  String $storm_password = $storm::db::params::storm_password,
-  Integer $max_connections = $storm::db::params::max_connections,
+  String $fqdn_hostname = $::fqdn,
+  String $root_password = &#39;storm&#39;,
+  String $storm_username = &#39;storm&#39;,
+  String $storm_password = &#39;storm&#39;,
+  Data $override_options = {
+    &#39;mysqld&#39; =&gt; {
+      &#39;bind-address&#39;    =&gt; &#39;0.0.0.0&#39;,
+      &#39;max_connections&#39; =&gt; 2048,
+    },
+  },
 
-) inherits storm::db::params {
+) {
 
-  contain storm::db::install
-  contain storm::db::config
+  ## MySQL Client
+  include &#39;mysql::client&#39;
 
-  Class[&#39;storm::db::install&#39;]
-  -&gt; Class[&#39;storm::db::config&#39;]
+  $service_dir=&#39;/etc/systemd/system/mysqld.service.d&#39;
+
+  file { $service_dir:
+    ensure =&gt; directory,
+    owner  =&gt; &#39;root&#39;,
+    group  =&gt; &#39;root&#39;,
+    mode   =&gt; &#39;0644&#39;,
+  }
+
+  $service_file=&#39;/etc/systemd/system/mysqld.service.d/override.conf&#39;
+  $service_template_file=&#39;storm/etc/systemd/system/mysqld.service.d/override.conf.erb&#39;
+
+  file { $service_file:
+    ensure  =&gt; present,
+    content =&gt; template($service_template_file),
+    mode    =&gt; &#39;0644&#39;,
+    owner   =&gt; &#39;root&#39;,
+    group   =&gt; &#39;root&#39;,
+    require =&gt; [File[$service_dir]],
+  }
+
+  ## MySQL Server
+  class { &#39;mysql::server&#39;:
+    root_password      =&gt; $root_password,
+    manage_config_file =&gt; true,
+    restart            =&gt; true,
+    override_options   =&gt; $override_options,
+    databases          =&gt; {
+      &#39;storm_db&#39;      =&gt; {
+        ensure  =&gt; &#39;present&#39;,
+        charset =&gt; &#39;utf8&#39;,
+        collate =&gt; &#39;utf8_general_ci&#39;,
+      },
+      &#39;storm_be_ISAM&#39; =&gt; {
+        ensure  =&gt; &#39;present&#39;,
+        charset =&gt; &#39;utf8&#39;,
+        collate =&gt; &#39;utf8_general_ci&#39;,
+      },
+    },
+    require            =&gt; [File[$service_file]],
+  }
+
+  $short_hostname = regsubst($fqdn_hostname, &#39;^([^.]*).*$&#39;, &#39;\1&#39;)
+  notice(&quot;Computed short hostname for ${fqdn_hostname} =&gt; ${short_hostname}&quot;)
+
+  mysql_user { &quot;${storm_username}@${fqdn_hostname}&quot;:
+    ensure        =&gt; &#39;present&#39;,
+    password_hash =&gt; mysql::password($storm_password),
+    require       =&gt; [Class[&#39;mysql::server&#39;]],
+  }
+  mysql_grant { &quot;${storm_username}@${fqdn_hostname}/storm_db.*&quot;:
+    user       =&gt; &quot;${storm_username}@${fqdn_hostname}&quot;,
+    table      =&gt; &#39;storm_db.*&#39;,
+    privileges =&gt; &#39;ALL&#39;,
+    require    =&gt; [Mysql_user[&quot;${storm_username}@${fqdn_hostname}&quot;]],
+  }
+  mysql_grant { &quot;${storm_username}@${fqdn_hostname}/storm_be_ISAM.*&quot;:
+    user       =&gt; &quot;${storm_username}@${fqdn_hostname}&quot;,
+    table      =&gt; &#39;storm_be_ISAM.*&#39;,
+    privileges =&gt; &#39;ALL&#39;,
+    require    =&gt; [Mysql_user[&quot;${storm_username}@${fqdn_hostname}&quot;]],
+  }
+
+  mysql_user { &quot;${storm_username}@${short_hostname}&quot;:
+    ensure        =&gt; &#39;present&#39;,
+    password_hash =&gt; mysql::password($storm_password),
+    require       =&gt; [Class[&#39;mysql::server&#39;]],
+  }
+  mysql_grant { &quot;${storm_username}@${short_hostname}/storm_db.*&quot;:
+    user       =&gt; &quot;${storm_username}@${short_hostname}&quot;,
+    table      =&gt; &#39;storm_db.*&#39;,
+    privileges =&gt; &#39;ALL&#39;,
+    require    =&gt; [Mysql_user[&quot;${storm_username}@${short_hostname}&quot;]],
+  }
+  mysql_grant { &quot;${storm_username}@${short_hostname}/storm_be_ISAM.*&quot;:
+    user       =&gt; &quot;${storm_username}@${short_hostname}&quot;,
+    table      =&gt; &#39;storm_be_ISAM.*&#39;,
+    privileges =&gt; &#39;ALL&#39;,
+    require    =&gt; [Mysql_user[&quot;${storm_username}@${short_hostname}&quot;]],
+  }
+
+  mysql_user { &quot;${storm_username}@%&quot;:
+    ensure        =&gt; &#39;present&#39;,
+    password_hash =&gt; mysql::password($storm_password),
+    require       =&gt; [Class[&#39;mysql::server&#39;]],
+  }
+  mysql_grant { &quot;${storm_username}@%/storm_db.*&quot;:
+    user       =&gt; &quot;${storm_username}@%&quot;,
+    table      =&gt; &#39;storm_db.*&#39;,
+    privileges =&gt; &#39;ALL&#39;,
+    require    =&gt; [Mysql_user[&quot;${storm_username}@%&quot;]],
+  }
+  mysql_grant { &quot;${storm_username}@%/storm_be_ISAM.*&quot;:
+    user       =&gt; &quot;${storm_username}@%&quot;,
+    table      =&gt; &#39;storm_be_ISAM.*&#39;,
+    privileges =&gt; &#39;ALL&#39;,
+    require    =&gt; [Mysql_user[&quot;${storm_username}@%&quot;]],
+  }
+
+  mysql_user { &quot;${storm_username}@localhost&quot;:
+    ensure        =&gt; &#39;present&#39;,
+    password_hash =&gt; mysql::password($storm_password),
+    require       =&gt; [Class[&#39;mysql::server&#39;]],
+  }
+  mysql_grant { &quot;${storm_username}@localhost/storm_db.*&quot;:
+    user       =&gt; &quot;${storm_username}@localhost&quot;,
+    table      =&gt; &#39;storm_db.*&#39;,
+    privileges =&gt; &#39;ALL&#39;,
+    require    =&gt; [Mysql_user[&quot;${storm_username}@localhost&quot;]],
+  }
+  mysql_grant { &quot;${storm_username}@localhost/storm_be_ISAM.*&quot;:
+    user       =&gt; &quot;${storm_username}@localhost&quot;,
+    table      =&gt; &#39;storm_be_ISAM.*&#39;,
+    privileges =&gt; &#39;ALL&#39;,
+    require    =&gt; [Mysql_user[&quot;${storm_username}@localhost&quot;]],
+  }
+
 
 }</pre>
       </td>

@@ -152,7 +152,33 @@
 45
 46
 47
-48</pre>
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/webdav/params.pp', line 3</span>
@@ -160,48 +186,74 @@
 class storm::webdav::params (
 ) inherits storm::params {
 
+  # application.yml file management
+  $manage_application_file = lookup(&#39;storm::webdav::manage_application_file&#39;, Boolean, undef, false)
+  # if manage_application_file is set to true, init application_file with a concrete resource file ...
   $application_file = lookup(&#39;storm::webdav::application_file&#39;, String, undef, &#39;&#39;)
-  $storage_areas_directory = lookup(&#39;storm::webdav::storage_areas_directory&#39;, String, undef, &#39;&#39;)
+  # ... or init it through variables
+  $oauth_issuers = lookup(&#39;storm::webdav::oauth_issuers&#39;, Array[Storm::Webdav::OAuthIssuer], undef, [])
 
+  # storage areas management
+  $manage_storage_areas = lookup(&#39;storm::webdav::manage_storage_areas&#39;, Boolean, undef, true)
+  # if manage_storage_areas is set to true, init storage areas reading property files from a concrete resource directory ...
+  $storage_areas_directory = lookup(&#39;storm::webdav::storage_areas_directory&#39;, String, undef, &#39;&#39;)
+  # ... or init them through variables
   $storage_areas = lookup(&#39;storm::webdav::storage_areas&#39;, Array[Storm::Webdav::StorageArea], undef, [])
 
-  $oauth_issuers = lookup(&#39;storm::webdav::oauth_issuers&#39;, Array[Storm::Webdav::OAuthIssuer], undef, [])
+  # SystemD override file &#39;/etc/systemd/system/storm-webdav.service.d/storm-webdav.conf&#39; variables:
+  # Set STORM_WEBDAV_HOSTNAME_{n}
   $hostnames = lookup(&#39;storm::webdav::hostnames&#39;, Array[String], undef, [])
-
+  # Set STORM_WEBDAV_HTTP_PORT
   $http_port = lookup(&#39;storm::webdav::http_port&#39;, Integer, undef, 8085)
+  # Set STORM_WEBDAV_HTTPS_PORT
   $https_port = lookup(&#39;storm::webdav::https_port&#39;, Integer, undef, 8443)
-
-  $trust_anchors_dir = lookup(&#39;storm::webdav::trust_anchors_dir&#39;, String, undef, &#39;/etc/grid-security/certificates&#39;)
+  # Set STORM_WEBDAV_TRUST_ANCHORS_REFRESH_INTERVAL
   $trust_anchors_refresh_interval = lookup(&#39;storm::webdav::trust_anchors_refresh_interval&#39;, Integer, undef, 86400)
-
+  # Set STORM_WEBDAV_MAX_CONNECTIONS
   $max_concurrent_connections = lookup(&#39;storm::webdav::max_concurrent_connections&#39;, Integer, undef, 300)
+  # Set STORM_WEBDAV_MAX_QUEUE_SIZE
   $max_queue_size = lookup(&#39;storm::webdav::max_queue_size&#39;, Integer, undef, 900)
+  # Set STORM_WEBDAV_CONNECTOR_MAX_IDLE_TIME
   $connector_max_idle_time = lookup(&#39;storm::webdav::connector_max_idle_time&#39;, Integer, undef, 30000)
-
+  # Set STORM_WEBDAV_VO_MAP_FILES_ENABLE
   $vo_map_files_enable = lookup(&#39;storm::webdav::vo_map_files_enable&#39;, Boolean, undef, false)
+  # Set STORM_WEBDAV_VO_MAP_FILES_CONFIG_DIR
   $vo_map_files_config_dir = lookup(&#39;storm::webdav::vo_map_files_config_dir&#39;, String, undef, &#39;/etc/storm/webdav/vo-mapfiles.d&#39;)
+  # Set STORM_WEBDAV_VO_MAP_FILES_REFRESH_INTERVAL
   $vo_map_files_refresh_interval = lookup(&#39;storm::webdav::vo_map_files_refresh_interval&#39;, Integer, undef, 21600)
-
+  # Set STORM_WEBDAV_TPC_MAX_CONNECTIONS
   $tpc_max_connections = lookup(&#39;storm::webdav::tpc_max_connections&#39;, Integer, undef, 50)
+  # Set STORM_WEBDAV_TPC_VERIFY_CHECKSUM
   $tpc_verify_checksum = lookup(&#39;storm::webdav::tpc_verify_checksum&#39;, Boolean, undef, false)
-
+  # Set part of STORM_WEBDAV_JVM_OPTS
   $jvm_opts = lookup(&#39;storm::webdav::jvm_opts&#39;, String, undef, &#39;-Xms256m -Xmx512m&#39;)
-
+  # Set STORM_WEBDAV_AUTHZ_SERVER_ENABLE
   $authz_server_enable = lookup(&#39;storm::webdav::authz_server_enable&#39;, Boolean, undef, false)
+  # Set STORM_WEBDAV_AUTHZ_SERVER_ISSUER
   $authz_server_issuer = lookup(&#39;storm::webdav::authz_server_issuer&#39;, String, undef, &#39;https://storm.example:8443&#39;)
+  # Set STORM_WEBDAV_AUTHZ_SERVER_MAX_TOKEN_LIFETIME_SEC
   $authz_server_max_token_lifetime_sec = lookup(&#39;storm::webdav::authz_server_max_token_lifetime_sec&#39;, Integer, undef, 43200)
+  # Set STORM_WEBDAV_AUTHZ_SERVER_SECRET
   $authz_server_secret = lookup(&#39;storm::webdav::authz_server_secret&#39;, String, undef, &#39;areasonablesecretlongerthan256bits&#39;)
+  # Set STORM_WEBDAV_REQUIRE_CLIENT_CERT
   $require_client_cert = lookup(&#39;storm::webdav::require_client_cert&#39;, Boolean, undef, false)
-
+  # Set STORM_WEBDAV_USE_CONSCRYPT
   $use_conscrypt = lookup(&#39;storm::webdav::use_conscrypt&#39;, Boolean, undef, false)
+  # Set STORM_WEBDAV_TPC_USE_CONSCRYPT
   $tpc_use_conscrypt = lookup(&#39;storm::webdav::tpc_use_conscrypt&#39;, Boolean, undef, false)
+  # Set STORM_WEBDAV_ENABLE_HTTP2
   $enable_http2 = lookup(&#39;storm::webdav::enable_http2&#39;, Boolean, undef, false)
-
+  # Set part of STORM_WEBDAV_JVM_OPTS
   $debug = lookup(&#39;storm::webdav::debug&#39;, Boolean, undef, false)
   $debug_port = lookup(&#39;storm::webdav::debug_port&#39;, Integer, undef, 1044)
   $debug_suspend = lookup(&#39;storm::webdav::debug_suspend&#39;, Boolean, undef, false)
 
+  # /etc/systemd/system/storm-webdav.service.d/filelimit.conf
+  # Set LimitNOFILE
   $storm_limit_nofile = lookup(&#39;storm::webdav::storm_limit_nofile&#39;, Integer, undef, 65535)
+
+  # Logging directory permissions
+  $log_dir_mode = lookup(&#39;storm::webdav::log_dir_mode&#39;, String, undef, &#39;0750&#39;)
 }</pre>
       </td>
     </tr>
