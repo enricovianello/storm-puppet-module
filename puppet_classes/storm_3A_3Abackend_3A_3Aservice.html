@@ -109,21 +109,25 @@
 16
 17
 18
-19</pre>
+19
+20
+21</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/backend/service.pp', line 3</span>
 
 class storm::backend::service {
 
-  exec { &#39;backend-daemon-reload&#39;:
-    command     =&gt; &#39;/usr/bin/systemctl daemon-reload&#39;,
-    refreshonly =&gt; true,
+  if defined(Service[&#39;mysqld&#39;]) {
+    $subscribed_to = [Service[&#39;mysqld&#39;]]
+  } else {
+    $subscribed_to = []
   }
   service { &#39;storm-backend-server&#39;:
-    ensure  =&gt; running,
-    enable  =&gt; true,
-    require =&gt; Exec[&#39;backend-daemon-reload&#39;],
+    ensure    =&gt; running,
+    enable    =&gt; true,
+    start     =&gt; &#39;/usr/bin/systemctl daemon-reload; /usr/bin/systemctl start storm-backend-server&#39;,
+    subscribe =&gt; $subscribed_to,
   }
   exec { &#39;configure-info-provider&#39;:
     command     =&gt; &#39;/usr/libexec/storm-info-provider configure&#39;,

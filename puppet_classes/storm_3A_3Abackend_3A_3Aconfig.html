@@ -1152,6 +1152,32 @@
       
     </li>
   
+    <li>
+      
+        <span class='name'>manage_path_authz_db</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::manage_path_authz_db</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>path_authz_db_file</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::path_authz_db_file</tt>)</em>
+      
+      
+    </li>
+  
 </ul>
 
 
@@ -1385,7 +1411,21 @@
 222
 223
 224
-225</pre>
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/backend/config.pp', line 3</span>
@@ -1502,6 +1542,9 @@ class storm::backend::config (
 
   $storm_limit_nofile = $storm::backend::storm_limit_nofile,
 
+  $manage_path_authz_db = $storm::backend::manage_path_authz_db,
+  $path_authz_db_file = $storm::backend::path_authz_db_file,
+
 ) {
 
   # Service&#39;s host credentials directory
@@ -1585,7 +1628,7 @@ class storm::backend::config (
     mode    =&gt; &#39;0644&#39;,
     owner   =&gt; &#39;root&#39;,
     group   =&gt; &#39;root&#39;,
-    notify  =&gt; [Exec[&#39;backend-daemon-reload&#39;], Service[&#39;storm-backend-server&#39;]],
+    notify  =&gt; [Service[&#39;storm-backend-server&#39;]],
     require =&gt; [File[$service_dir]],
   }
 
@@ -1598,7 +1641,7 @@ class storm::backend::config (
     mode    =&gt; &#39;0644&#39;,
     owner   =&gt; &#39;root&#39;,
     group   =&gt; &#39;root&#39;,
-    notify  =&gt; [Exec[&#39;backend-daemon-reload&#39;], Service[&#39;storm-backend-server&#39;]],
+    notify  =&gt; [Service[&#39;storm-backend-server&#39;]],
     require =&gt; [File[$service_dir]],
   }
 
@@ -1612,6 +1655,17 @@ class storm::backend::config (
     notify  =&gt; [Exec[&#39;configure-info-provider&#39;]],
   }
 
+  if $manage_path_authz_db {
+    # StoRM Backend&#39;s path-authz.db file
+    file { &#39;/etc/storm/backend-server/path-authz.db&#39;:
+      ensure =&gt; present,
+      mode   =&gt; &#39;0644&#39;,
+      owner  =&gt; &#39;root&#39;,
+      group  =&gt; &#39;storm&#39;,
+      source =&gt; $path_authz_db_file,
+      notify =&gt; [Service[&#39;storm-backend-server&#39;]],
+    }
+  }
 }</pre>
       </td>
     </tr>

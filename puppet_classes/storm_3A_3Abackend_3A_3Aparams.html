@@ -252,7 +252,10 @@
 145
 146
 147
-148</pre>
+148
+149
+150
+151</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/backend/params.pp', line 3</span>
@@ -402,6 +405,9 @@ class storm::backend::params (
   # Set LimitNOFILE
   $storm_limit_nofile = lookup(&#39;storm::backend::storm_limit_nofile&#39;, Integer, undef, 65535)
 
+  # manage path-authz.db
+  $manage_path_authz_db = lookup(&#39;storm::backend::manage_path_authz_db&#39;, Boolean, undef, false)
+  $path_authz_db_file = lookup(&#39;storm::backend::path_authz_db_file&#39;, String, undef, &#39;puppet:///modules/storm/etc/storm/backend/path-authz.db&#39;)
 }</pre>
       </td>
     </tr>

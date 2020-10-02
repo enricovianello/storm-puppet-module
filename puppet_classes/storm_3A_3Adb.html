@@ -194,6 +194,24 @@ add storm user and all the necessary grants.
       
     </li>
   
+    <li>
+      
+        <span class='name'>limit_no_file</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>65535</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>MariaDB setting for limitNoFile</p>
+</div>
+      
+    </li>
+  
 </ul>
 
 
@@ -205,9 +223,6 @@ add storm user and all the necessary grants.
         <pre class="lines">
 
 
-22
-23
-24
 25
 26
 27
@@ -341,10 +356,22 @@ add storm user and all the necessary grants.
 155
 156
 157
-158</pre>
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/db.pp', line 22</span>
+        <pre class="code"><span class="info file"># File 'manifests/db.pp', line 25</span>
 
 class storm::db (
 
@@ -358,13 +385,14 @@ class storm::db (
       &#39;max_connections&#39; =&gt; 2048,
     },
   },
+  Integer $limit_no_file = 65535,
 
 ) {
 
   ## MySQL Client
   include &#39;mysql::client&#39;
 
-  $service_dir=&#39;/etc/systemd/system/mysqld.service.d&#39;
+  $service_dir=&#39;/etc/systemd/system/mariadb.service.d&#39;
 
   file { $service_dir:
     ensure =&gt; directory,
@@ -373,8 +401,8 @@ class storm::db (
     mode   =&gt; &#39;0644&#39;,
   }
 
-  $service_file=&#39;/etc/systemd/system/mysqld.service.d/override.conf&#39;
-  $service_template_file=&#39;storm/etc/systemd/system/mysqld.service.d/override.conf.erb&#39;
+  $service_file=&#39;/etc/systemd/system/mariadb.service.d/limits.conf&#39;
+  $service_template_file=&#39;storm/etc/systemd/system/mariadb.service.d/limits.conf.erb&#39;
 
   file { $service_file:
     ensure  =&gt; present,
@@ -383,6 +411,14 @@ class storm::db (
     owner   =&gt; &#39;root&#39;,
     group   =&gt; &#39;root&#39;,
     require =&gt; [File[$service_dir]],
+  }
+
+  exec { &#39;mariadb-daemon-reload&#39;:
+    command     =&gt; &#39;/usr/bin/systemctl daemon-reload&#39;,
+    refreshonly =&gt; true,
+    subscribe   =&gt; File[&#39;/etc/systemd/system/mariadb.service.d/limits.conf&#39;],
+    require     =&gt; File[$service_file],
+    notify      =&gt; Service[&#39;mysqld&#39;],
   }
 
   ## MySQL Server
@@ -403,7 +439,7 @@ class storm::db (
         collate =&gt; &#39;utf8_general_ci&#39;,
       },
     },
-    require            =&gt; [File[$service_file]],
+    require            =&gt; [File[$service_file], Exec[&#39;mariadb-daemon-reload&#39;]],
   }
 
   $short_hostname = regsubst($fqdn_hostname, &#39;^([^.]*).*$&#39;, &#39;\1&#39;)

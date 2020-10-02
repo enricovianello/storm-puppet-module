@@ -1576,6 +1576,42 @@
   
     <li>
       
+        <span class='name'>manage_path_authz_db</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::manage_path_authz_db</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>If true, allows to set content of path-authz.db file.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>path_authz_db_file</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$storm::backend::params::path_authz_db_file</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>If manage_path_authz_db is true, set the content from this source path</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>info_config_file</span>
       
       
@@ -1598,12 +1634,6 @@
         <pre class="lines">
 
 
-298
-299
-300
-301
-302
-303
 304
 305
 306
@@ -1756,10 +1786,20 @@
 453
 454
 455
-456</pre>
+456
+457
+458
+459
+460
+461
+462
+463
+464
+465
+466</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/backend.pp', line 298</span>
+        <pre class="code"><span class="info file"># File 'manifests/backend.pp', line 304</span>
 
 class storm::backend (
 
@@ -1907,6 +1947,10 @@ class storm::backend (
 
   # LimitNOFILE
   Integer $storm_limit_nofile = $storm::backend::params::storm_limit_nofile,
+
+  # manage path-authz.db
+  $manage_path_authz_db = $storm::backend::params::manage_path_authz_db,
+  $path_authz_db_file = $storm::backend::params::path_authz_db_file,
 
 ) inherits storm::backend::params {
 
