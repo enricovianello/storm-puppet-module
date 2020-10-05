@@ -1414,18 +1414,7 @@
 225
 226
 227
-228
-229
-230
-231
-232
-233
-234
-235
-236
-237
-238
-239</pre>
+228</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/backend/config.pp', line 3</span>
@@ -1573,17 +1562,6 @@ class storm::backend::config (
       group   =&gt; &#39;storm&#39;,
       source  =&gt; &#39;/etc/grid-security/hostkey.pem&#39;,
       require =&gt; File[&#39;/etc/grid-security/storm&#39;],
-    }
-  }
-
-  # Service&#39;s log directory
-  if !defined(File[&#39;/var/log/storm&#39;]) {
-    file { &#39;/var/log/storm&#39;:
-      ensure  =&gt; directory,
-      owner   =&gt; &#39;storm&#39;,
-      group   =&gt; &#39;storm&#39;,
-      mode    =&gt; &#39;0750&#39;,
-      recurse =&gt; false,
     }
   }
 

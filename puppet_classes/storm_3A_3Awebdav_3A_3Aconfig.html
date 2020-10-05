@@ -696,26 +696,7 @@
 196
 197
 198
-199
-200
-201
-202
-203
-204
-205
-206
-207
-208
-209
-210
-211
-212
-213
-214
-215
-216
-217
-218</pre>
+199</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/webdav/config.pp', line 3</span>
@@ -774,25 +755,6 @@ class storm::webdav::config (
     group   =&gt; &#39;storm&#39;,
     mode    =&gt; &#39;0755&#39;,
     recurse =&gt; true,
-  }
-
-  # Service&#39;s log directories
-  if !defined(File[&#39;/var/log/storm&#39;]) {
-    file { &#39;/var/log/storm&#39;:
-      ensure  =&gt; directory,
-      owner   =&gt; &#39;storm&#39;,
-      group   =&gt; &#39;storm&#39;,
-      mode    =&gt; &#39;0750&#39;,
-      recurse =&gt; false,
-    }
-  }
-  file { &#39;/var/log/storm/webdav&#39;:
-    ensure  =&gt; directory,
-    owner   =&gt; &#39;storm&#39;,
-    group   =&gt; &#39;storm&#39;,
-    mode    =&gt; &#39;0750&#39;,
-    recurse =&gt; false,
-    require =&gt; File[&#39;/var/log/storm&#39;],
   }
 
   # Service&#39;s host credentials directory
