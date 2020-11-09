@@ -62,11 +62,6 @@
       <div id="content"><h1>Puppet Class: storm::frontend</h1>
 <div class="box_info">
   
-  <dl>
-    <dt>Inherits:</dt>
-    <dd><span class='object_link'><a href="storm_3A_3Afrontend_3A_3Aparams.html" title="puppet_classes::storm::frontend::params (puppet_class)">storm::frontend::params</a></span></dd>
-  </dl>
-  
   
   <dl>
     <dt>Defined in:</dt>
@@ -133,8 +128,6 @@
         <span class='type'>(<tt>Integer</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$storm::frontend::params::be_xmlrpc_port</tt>)</em>
-      
       
         &mdash;
         <div class='inline'>
@@ -150,8 +143,6 @@
       
         <span class='type'>(<tt>String</tt>)</span>
       
-      
-        <em class="default">(defaults to: <tt>$storm::frontend::params::be_xmlrpc_token</tt>)</em>
       
       
         &mdash;
@@ -169,8 +160,6 @@
         <span class='type'>(<tt>String</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$storm::frontend::params::be_xmlrpc_path</tt>)</em>
-      
       
         &mdash;
         <div class='inline'>
@@ -186,8 +175,6 @@
       
         <span class='type'>(<tt>Integer</tt>)</span>
       
-      
-        <em class="default">(defaults to: <tt>$storm::frontend::params::be_recalltable_port</tt>)</em>
       
       
         &mdash;
@@ -205,7 +192,7 @@
         <span class='type'>(<tt>String</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>lookup(&#39;storm::frontend::db::host&#39;, String, undef, $be_xmlrpc_host)</tt>)</em>
+        <em class="default">(defaults to: <tt>$be_xmlrpc_host</tt>)</em>
       
       
         &mdash;
@@ -223,8 +210,6 @@
         <span class='type'>(<tt>String</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$storm::frontend::params::db_user</tt>)</em>
-      
       
         &mdash;
         <div class='inline'>
@@ -240,8 +225,6 @@
       
         <span class='type'>(<tt>String</tt>)</span>
       
-      
-        <em class="default">(defaults to: <tt>$storm::frontend::params::db_passwd</tt>)</em>
       
       
         &mdash;
@@ -259,8 +242,6 @@
         <span class='type'>(<tt>Integer</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$storm::frontend::params::port</tt>)</em>
-      
       
         &mdash;
         <div class='inline'>
@@ -276,8 +257,6 @@
       
         <span class='type'>(<tt>Integer</tt>)</span>
       
-      
-        <em class="default">(defaults to: <tt>$storm::frontend::params::threadpool_maxpending</tt>)</em>
       
       
         &mdash;
@@ -295,8 +274,6 @@
         <span class='type'>(<tt>Integer</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$storm::frontend::params::threadpool_threads_number</tt>)</em>
-      
       
         &mdash;
         <div class='inline'>
@@ -312,8 +289,6 @@
       
         <span class='type'>(<tt>Integer</tt>)</span>
       
-      
-        <em class="default">(defaults to: <tt>$storm::frontend::params::gsoap_maxpending</tt>)</em>
       
       
         &mdash;
@@ -331,8 +306,6 @@
         <span class='type'>(<tt>Boolean</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$storm::frontend::params::check_user_blacklisting</tt>)</em>
-      
       
         &mdash;
         <div class='inline'>
@@ -348,8 +321,6 @@
       
         <span class='type'>(<tt>String</tt>)</span>
       
-      
-        <em class="default">(defaults to: <tt>$storm::frontend::params::argus_pepd_endpoint</tt>)</em>
       
       
         &mdash;
@@ -367,8 +338,6 @@
         <span class='type'>(<tt>Boolean</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$storm::frontend::params::monitoring_enabled</tt>)</em>
-      
       
         &mdash;
         <div class='inline'>
@@ -384,8 +353,6 @@
       
         <span class='type'>(<tt>Integer</tt>)</span>
       
-      
-        <em class="default">(defaults to: <tt>$storm::frontend::params::monitoring_time_interval</tt>)</em>
       
       
         &mdash;
@@ -403,8 +370,6 @@
         <span class='type'>(<tt>Boolean</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$storm::frontend::params::monitoring_detailed</tt>)</em>
-      
       
         &mdash;
         <div class='inline'>
@@ -420,8 +385,6 @@
       
         <span class='type'>(<tt>Boolean</tt>)</span>
       
-      
-        <em class="default">(defaults to: <tt>$storm::frontend::params::security_enable_mapping</tt>)</em>
       
       
         &mdash;
@@ -439,8 +402,6 @@
         <span class='type'>(<tt>Boolean</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$storm::frontend::params::security_enable_vomscheck</tt>)</em>
-      
       
         &mdash;
         <div class='inline'>
@@ -456,8 +417,6 @@
       
         <span class='type'>(<tt>String</tt>)</span>
       
-      
-        <em class="default">(defaults to: <tt>$storm::frontend::params::log_debuglevel</tt>)</em>
       
       
         &mdash;
@@ -475,8 +434,6 @@
         <span class='type'>(<tt>String</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$storm::frontend::params::gridmap_dir</tt>)</em>
-      
       
         &mdash;
         <div class='inline'>
@@ -492,8 +449,6 @@
       
         <span class='type'>(<tt>String</tt>)</span>
       
-      
-        <em class="default">(defaults to: <tt>$storm::frontend::params::gridmap_file</tt>)</em>
       
       
         &mdash;
@@ -555,7 +510,9 @@
 117
 118
 119
-120</pre>
+120
+121
+122</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/frontend.pp', line 79</span>
@@ -563,36 +520,38 @@
 class storm::frontend (
 
   String $be_xmlrpc_host,
-  String $be_xmlrpc_token = $storm::frontend::params::be_xmlrpc_token,
-  Integer $be_xmlrpc_port = $storm::frontend::params::be_xmlrpc_port,
-  String $be_xmlrpc_path = $storm::frontend::params::be_xmlrpc_path,
-  Integer $be_recalltable_port = $storm::frontend::params::be_recalltable_port,
+  String $be_xmlrpc_token,
+  Integer $be_xmlrpc_port,
+  String $be_xmlrpc_path,
+  Integer $be_recalltable_port,
 
-  String $db_host = lookup(&#39;storm::frontend::db::host&#39;, String, undef, $be_xmlrpc_host),
-  String $db_user = $storm::frontend::params::db_user,
-  String $db_passwd = $storm::frontend::params::db_passwd,
+  String $db_user,
+  String $db_passwd,
 
-  Integer $port = $storm::frontend::params::port,
-  Integer $threadpool_threads_number = $storm::frontend::params::threadpool_threads_number,
-  Integer $threadpool_maxpending = $storm::frontend::params::threadpool_maxpending,
-  Integer $gsoap_maxpending = $storm::frontend::params::gsoap_maxpending,
+  Integer $port,
+  Integer $threadpool_threads_number,
+  Integer $threadpool_maxpending,
+  Integer $gsoap_maxpending,
 
-  Boolean $check_user_blacklisting = $storm::frontend::params::check_user_blacklisting,
-  String $argus_pepd_endpoint = $storm::frontend::params::argus_pepd_endpoint,
+  Boolean $check_user_blacklisting,
+  String $argus_pepd_endpoint,
 
-  Boolean $monitoring_enabled = $storm::frontend::params::monitoring_enabled,
-  Integer $monitoring_time_interval = $storm::frontend::params::monitoring_time_interval,
-  Boolean $monitoring_detailed = $storm::frontend::params::monitoring_detailed,
+  Boolean $monitoring_enabled,
+  Integer $monitoring_time_interval,
+  Boolean $monitoring_detailed,
 
-  Boolean $security_enable_mapping = $storm::frontend::params::security_enable_mapping,
-  Boolean $security_enable_vomscheck = $storm::frontend::params::security_enable_vomscheck,
+  Boolean $security_enable_mapping,
+  Boolean $security_enable_vomscheck,
 
-  String $log_debuglevel = $storm::frontend::params::log_debuglevel,
+  String $log_debuglevel,
 
-  String $gridmap_dir = $storm::frontend::params::gridmap_dir,
-  String $gridmap_file = $storm::frontend::params::gridmap_file,
+  String $gridmap_dir,
+  String $gridmap_file,
 
-) inherits storm::frontend::params {
+  String $db_host = $be_xmlrpc_host,
+
+
+) {
 
   contain storm::frontend::install
   contain storm::frontend::config

@@ -61,15 +61,31 @@
 <h1 id="label-StoRM+puppet+module">StoRM puppet module</h1>
 
 <h4 id="label-Table+of+Contents">Table of Contents</h4>
-<ol><li>
+<ul><li>
 <p><a href="#label-Description">Description</a></p>
 </li><li>
 <p><a href="#label-Setup">Setup</a></p>
 </li><li>
 <p><a href="#label-Usage">Usage</a></p>
 </li><li>
+<p><a href="#label-Storm+backend+class">StoRM Backend class</a></p>
+</li><li>
+<p><a href="#label-Storm+frontend+class">StoRM Frontend class</a></p>
+</li><li>
+<p><a href="#label-Storm+webdav+class">StoRM WebDAV class</a></p>
+</li><li>
+<p><a href="#label-Storm+gridftp+class">StoRM GridFTP class</a></p>
+</li><li>
+<p><a href="#label-Storm+database+class">StoRM database class</a></p>
+</li><li>
+<p><a href="#label-Storm+repo+class">StoRM repo class</a></p>
+</li><li>
+<p><a href="#label-Storm+users+class">StoRM users class</a></p>
+</li><li>
+<p><a href="#label-Storm+storage+class">StoRM storage class</a></p>
+</li><li>
 <p><a href="#label-Limitations">Limitations - OS compatibility</a></p>
-</li></ol>
+</li></ul>
 
 <h2 id="label-Description">Description</h2>
 
@@ -123,8 +139,6 @@ puppet module install ./pkg/cnafsd-storm-*.tar.gz
 <p><a href="#label-Storm+repo+class">StoRM repo class</a></p>
 </li><li>
 <p><a href="#label-Storm+users+class">StoRM users class</a></p>
-</li><li>
-<p><a href="#label-Storm+mapping+class">StoRM mapping class</a></p>
 </li><li>
 <p><a href="#label-Storm+storage+class">StoRM storage class</a></p>
 </li></ul>
@@ -205,6 +219,14 @@ puppet module install ./pkg/cnafsd-storm-*.tar.gz
 }
 </code></pre>
 
+<p>Starting from Puppet module v2.0.0, the management of Storage Site Report has been improved. Site administrators can add script and cron described in the <a href="http://italiangrid.github.io/storm/documentation/how-to/how-to-publish-json-report/">how-to</a> using a defined type <code>storm::backend::storage_site_report</code>. For example:</p>
+
+<pre class="code ruby"><code class="ruby">storm::backend::storage_site_report { &#39;storage-site-report&#39;:
+  report_path =&gt; &#39;/storage/info/report.json&#39;, # the internal storage area path
+  minute      =&gt; &#39;*/20&#39;, # set cron&#39;s minute
+}
+</code></pre>
+
 <h3 id="label-StoRM+Frontend+class">StoRM Frontend class</h3>
 
 <p>The StoRM Frontend class installs <code>storm-frontend-mp</code> and all the releated packages and configures <code>storm-frontend-server</code> service by managing the following files:</p>
@@ -234,8 +256,6 @@ puppet module install ./pkg/cnafsd-storm-*.tar.gz
 <p>the systemd override files <code>filelimit.conf</code> and <code>storm-webdav.conf</code> stored into <code>/etc/systemd/system/storm-webdav.service.d</code>;</p>
 </li><li>
 <p>the storage areas property files stored into <code>/etc/storm/webdav/sa.d</code> (optional);</p>
-</li><li>
-<p>the <code>application.yml</code> file in <code>/etc/storm/webdav/comfig</code> (optional).</p>
 </li></ul>
 
 <p>The whole list of StoRM Webdav class parameters can be found <a href="https://italiangrid.github.io/storm-puppet-module/puppet_classes/storm_3A_3Awebdav.html">here</a>.</p>
@@ -258,13 +278,39 @@ puppet module install ./pkg/cnafsd-storm-*.tar.gz
       authenticated_read_enabled =&gt; true,
     },
   ],
-  oauth_issuers =&gt; [
-    {
-      name   =&gt; &#39;indigo-dc&#39;,
-      issuer =&gt; &#39;https://iam-test.indigo-datacloud.eu/&#39;,
-    },
-  ],
   hostnames =&gt; [&#39;storm-webdav.test.example&#39;, &#39;alias-for-storm-webdav.test.example&#39;],
+}
+</code></pre>
+
+<p>Storage Areas can also be configured singularly by using the defined type <code>storm::webdav::storage_area_file</code>. This strategy allows site administrators to keep their manifests unaware of the improvements on StoRM WebDAV code. For example, if a new property is added into Storage Area configuration files, you haven&#39;t to update your Puppet module and all the service configuration will continue working.</p>
+
+<p>Example of Storage Areas configuration done with <code>storm::webdav::storage_area_file</code>:</p>
+
+<pre class="code ruby"><code class="ruby">class { &#39;storm::webdav&#39;:
+  hostnames =&gt; [&#39;storm-webdav.test.example&#39;, &#39;alias-for-storm-webdav.test.example&#39;],
+}
+
+storm::webdav::storage_area_file { &#39;test.vo.properties&#39;:
+  source =&gt; &#39;/path/to/my/test.vo.properties&#39;,
+}
+
+storm::webdav::storage_area_file { &#39;test.vo.2.properties&#39;:
+  source =&gt; &#39;/path/to/my/test.vo.2.properties&#39;,
+}
+</code></pre>
+
+<p>Starting from Puppet module v2.0.0, the management of application.yml file has been removed from storm::webdav class. Site administrators can edit their own configuration files or use a defined type <code>storm::webdav::application_file</code> to inject also one or more YAML files into the proper directory. For example:</p>
+
+<pre class="code ruby"><code class="ruby">class { &#39;storm::webdav&#39;:
+  hostnames =&gt; [&#39;storm-webdav.test.example&#39;, &#39;alias-for-storm-webdav.test.example&#39;],
+}
+
+storm::webdav::application_file { &#39;application.yml&#39;:
+  source =&gt; &#39;/path/to/my/application.yml&#39;,
+}
+
+storm::webdav::application_file { &#39;application-wlcg.yml&#39;:
+  source =&gt; &#39;/path/to/my/application-wlcg.yml&#39;,
 }
 </code></pre>
 
@@ -272,7 +318,7 @@ puppet module install ./pkg/cnafsd-storm-*.tar.gz
 
 <p>The StoRM GridFTP class installs <code>storm-globus-gridftp-mp</code> and configures <code>storm-globus-gridftp</code> service by managing the following files:</p>
 <ul><li>
-<p><code>/etc/gridftp.conf</code>, the main configuration file;</p>
+<p><code>/etc/grid-security/gridftp.conf</code>, the main configuration file;</p>
 </li><li>
 <p><code>/etc/sysconfig/storm-globus-gridftp</code>, with the environment variables.</p>
 </li></ul>
@@ -392,77 +438,6 @@ puppet module install ./pkg/cnafsd-storm-*.tar.gz
 }
 </code></pre>
 
-<h3 id="label-StoRM+mapping+class">StoRM mapping class</h3>
-
-<p>The StoRM mapping utility class installs the following rpms:</p>
-<ul><li>
-<p><code>lcmaps</code></p>
-</li><li>
-<p><code>lcmaps-without-gsi</code></p>
-</li><li>
-<p><code>lcmaps-plugins-basic</code></p>
-</li><li>
-<p><code>lcmaps-plugins-voms</code></p>
-</li><li>
-<p><code>lcas</code></p>
-</li><li>
-<p><code>lcas-lcmaps-gt4-interface</code></p>
-</li><li>
-<p><code>lcas-plugins-basic</code></p>
-</li><li>
-<p><code>lcas-plugins-voms</code></p>
-</li></ul>
-
-<p>Then, it creates the following directories/files:</p>
-<ul><li>
-<p><code>/etc/grid-security/gridmapdir</code></p>
-</li><li>
-<p><code>/etc/grid-security/grid-mapfile</code></p>
-</li><li>
-<p><code>/etc/grid-security/groupmapfile</code></p>
-</li><li>
-<p><code>/etc/grid-security/gsi-authz.conf</code> (optional)</p>
-</li><li>
-<p><code>/etc/lcmaps/lcmaps.db</code> (optional)</p>
-</li><li>
-<p><code>/etc/lcas/lcas.db</code> (optional)</p>
-</li><li>
-<p><code>/etc/lcas/ban_users.db</code> (optional)</p>
-</li></ul>
-
-<p>The content of grid-mapfile and groupmapfile and the content of gridmapdir directory depends on the pool accounts defined.</p>
-
-<p>By default, the pool accounts needed by our testbed are created though the parameter <code>pools</code>:</p>
-
-<pre class="code ruby"><code class="ruby">
-  $pools = [{
-    &#39;name&#39; =&gt; &#39;tstvo&#39;,
-    &#39;size&#39; =&gt; 20,
-    &#39;base_uid&#39; =&gt; 7100,
-    &#39;group&#39; =&gt; &#39;testvo&#39;,
-    &#39;groups&#39; =&gt; [&#39;testvo&#39;],
-    &#39;gid&#39; =&gt; 7100,
-    &#39;vo&#39; =&gt; &#39;test.vo&#39;,
-    &#39;role&#39; =&gt; &#39;NULL&#39;,
-  },{
-    &#39;name&#39; =&gt; &#39;testdue&#39;,
-    &#39;size&#39; =&gt; 20,
-    &#39;base_uid&#39; =&gt; 8100,
-    &#39;group&#39; =&gt; &#39;testvodue&#39;,
-    &#39;groups&#39; =&gt; [&#39;testvodue&#39;],
-    &#39;gid&#39; =&gt; 8100,
-    &#39;vo&#39; =&gt; &#39;test.vo.2&#39;,
-    &#39;role&#39; =&gt; &#39;NULL&#39;,
-  }],
-</code></pre>
-
-<p>The whole list of StoRM Mapping class parameters can be found <a href="https://italiangrid.github.io/storm-puppet-module/puppet_classes/storm_3A_3Amapping.html">here</a>.</p>
-
-<p>Examples of StoRM Mapping usage:</p>
-
-<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_include'>include</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>storm::mapping</span><span class='tstring_end'>&#39;</span></span>
-</code></pre>
-
 <h2 id="label-Documentation">Documentation</h2>
 
 <p>You can find all the info about module classes and parameters at:</p>
@@ -471,18 +446,6 @@ puppet module install ./pkg/cnafsd-storm-*.tar.gz
 </li><li>
 <p><a href="https://github.com/italiangrid/storm-puppet-module/blob/master/REFERENCE.md">REFERENCE.md</a></p>
 </li></ul>
-
-<h3 id="label-How+to+update+doc+-28for+developers-29">How to update doc (for developers)</h3>
-
-<p>Update <code>REFERENCE.md</code> file as follow:</p>
-
-<pre class="code ruby"><code class="ruby">puppet strings generate --format markdown
-</code></pre>
-
-<p>Update <code>gh-pages</code> branch as follow:</p>
-
-<pre class="code ruby"><code class="ruby">bundle exec rake strings:gh_pages:update
-</code></pre>
 
 <h2 id="label-Limitations">Limitations</h2>
 

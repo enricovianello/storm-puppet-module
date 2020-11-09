@@ -1408,13 +1408,7 @@
 219
 220
 221
-222
-223
-224
-225
-226
-227
-228</pre>
+222</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/backend/config.pp', line 3</span>
@@ -1588,16 +1582,11 @@ class storm::backend::config (
     notify  =&gt; [Service[&#39;storm-backend-server&#39;]],
   }
 
+  # Directory &#39;/etc/systemd/system/storm-backend-server.service.d&#39; is created by rpm
   $service_dir=&#39;/etc/systemd/system/storm-backend-server.service.d&#39;
 
-  file { $service_dir:
-    ensure =&gt; directory,
-    owner  =&gt; &#39;root&#39;,
-    group  =&gt; &#39;root&#39;,
-    mode   =&gt; &#39;0644&#39;,
-  }
-
-  $service_file=&#39;/etc/systemd/system/storm-backend-server.service.d/storm-backend-server.conf&#39;
+  # service conf file
+  $service_file=&quot;${service_dir}/storm-backend-server.conf&quot;
   $service_template_file=&#39;storm/etc/systemd/system/storm-backend-server.service.d/storm-backend-server.conf.erb&#39;
 
   file { $service_file:
@@ -1607,10 +1596,10 @@ class storm::backend::config (
     owner   =&gt; &#39;root&#39;,
     group   =&gt; &#39;root&#39;,
     notify  =&gt; [Service[&#39;storm-backend-server&#39;]],
-    require =&gt; [File[$service_dir]],
   }
 
-  $limit_file=&#39;/etc/systemd/system/storm-backend-server.service.d/filelimit.conf&#39;
+  # limit conf file
+  $limit_file=&quot;${service_dir}/filelimit.conf&quot;
   $limit_template_file=&#39;storm/etc/systemd/system/storm-backend-server.service.d/filelimit.conf.erb&#39;
 
   file { $limit_file:
@@ -1620,7 +1609,6 @@ class storm::backend::config (
     owner   =&gt; &#39;root&#39;,
     group   =&gt; &#39;root&#39;,
     notify  =&gt; [Service[&#39;storm-backend-server&#39;]],
-    require =&gt; [File[$service_dir]],
   }
 
   $info_yaim_template_file=&#39;storm/etc/storm/info-provider/storm-yaim-variables.conf.erb&#39;

@@ -62,11 +62,6 @@
       <div id="content"><h1>Puppet Class: storm::gridftp</h1>
 <div class="box_info">
   
-  <dl>
-    <dt>Inherits:</dt>
-    <dd><span class='object_link'><a href="storm_3A_3Agridftp_3A_3Aparams.html" title="puppet_classes::storm::gridftp::params (puppet_class)">storm::gridftp::params</a></span></dd>
-  </dl>
-  
   
   <dl>
     <dt>Defined in:</dt>
@@ -126,8 +121,6 @@
         <span class='type'>(<tt>Integer</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$storm::gridftp::params::port</tt>)</em>
-      
       
         &mdash;
         <div class='inline'>
@@ -143,8 +136,6 @@
       
         <span class='type'>(<tt>String</tt>)</span>
       
-      
-        <em class="default">(defaults to: <tt>$storm::gridftp::params::port_range</tt>)</em>
       
       
         &mdash;
@@ -162,8 +153,6 @@
         <span class='type'>(<tt>Integer</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$storm::gridftp::params::connections_max</tt>)</em>
-      
       
         &mdash;
         <div class='inline'>
@@ -179,8 +168,6 @@
       
         <span class='type'>(<tt>String</tt>)</span>
       
-      
-        <em class="default">(defaults to: <tt>$storm::gridftp::params::log_single</tt>)</em>
       
       
         &mdash;
@@ -198,8 +185,6 @@
         <span class='type'>(<tt>String</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$storm::gridftp::params::log_transfer</tt>)</em>
-      
       
         &mdash;
         <div class='inline'>
@@ -215,8 +200,6 @@
       
         <span class='type'>(<tt>Boolean</tt>)</span>
       
-      
-        <em class="default">(defaults to: <tt>$storm::gridftp::params::redirect_lcmaps_log</tt>)</em>
       
       
         &mdash;
@@ -234,8 +217,6 @@
         <span class='type'>(<tt>String</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$storm::gridftp::params::llgt_log_file</tt>)</em>
-      
       
         &mdash;
         <div class='inline'>
@@ -251,8 +232,6 @@
       
         <span class='type'>(<tt>Integer</tt>)</span>
       
-      
-        <em class="default">(defaults to: <tt>$storm::gridftp::params::lcmaps_debug_level</tt>)</em>
       
       
         &mdash;
@@ -270,8 +249,6 @@
         <span class='type'>(<tt>Integer</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$storm::gridftp::params::lcas_debug_level</tt>)</em>
-      
       
         &mdash;
         <div class='inline'>
@@ -287,8 +264,6 @@
       
         <span class='type'>(<tt>Boolean</tt>)</span>
       
-      
-        <em class="default">(defaults to: <tt>$storm::gridftp::params::load_storm_dsi_module</tt>)</em>
       
       
         &mdash;
@@ -342,22 +317,22 @@
 
 class storm::gridftp (
 
-  Integer $port = $storm::gridftp::params::port,
-  String $port_range = $storm::gridftp::params::port_range,
-  Integer $connections_max = $storm::gridftp::params::connections_max,
+  Integer $port,
+  String $port_range,
+  Integer $connections_max,
 
-  String $log_single = $storm::gridftp::params::log_single,
-  String $log_transfer = $storm::gridftp::params::log_transfer,
+  String $log_single,
+  String $log_transfer,
 
-  Boolean $redirect_lcmaps_log = $storm::gridftp::params::redirect_lcmaps_log,
-  String $llgt_log_file = $storm::gridftp::params::llgt_log_file,
+  Boolean $redirect_lcmaps_log,
+  String $llgt_log_file,
 
-  Integer $lcmaps_debug_level = $storm::gridftp::params::lcmaps_debug_level,
-  Integer $lcas_debug_level = $storm::gridftp::params::lcas_debug_level,
+  Integer $lcmaps_debug_level,
+  Integer $lcas_debug_level,
 
-  Boolean $load_storm_dsi_module = $storm::gridftp::params::load_storm_dsi_module,
+  Boolean $load_storm_dsi_module,
 
-) inherits storm::gridftp::params {
+) {
 
   contain storm::gridftp::install
   contain storm::gridftp::config

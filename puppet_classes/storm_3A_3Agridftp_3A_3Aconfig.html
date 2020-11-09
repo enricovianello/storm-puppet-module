@@ -266,7 +266,10 @@
 39
 40
 41
-42</pre>
+42
+43
+44
+45</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/gridftp/config.pp', line 3</span>
@@ -290,14 +293,18 @@ class storm::gridftp::config (
 
 ) {
 
-  $conf_file=&#39;/etc/gridftp.conf&#39;
-  $conf_template_file=&#39;storm/etc/gridftp.conf.erb&#39;
+  $conf_file=&#39;/etc/grid-security/gridftp.conf&#39;
+  $conf_template_file=&#39;storm/etc/grid-security/gridftp.conf.erb&#39;
 
   file { $conf_file:
     ensure  =&gt; present,
     content =&gt; template($conf_template_file),
     notify  =&gt; Service[&#39;storm-globus-gridftp&#39;],
-    require =&gt; Package[&#39;storm-globus-gridftp-mp&#39;],
+  }
+
+  ## ensure backwards compatibility after moving conf file to /etc/grid-security/gridftp.conf
+  file { &#39;/etc/gridftp.conf&#39;:
+    ensure =&gt; absent,
   }
 
   $sysconfig_file=&#39;/etc/sysconfig/storm-globus-gridftp&#39;
@@ -308,7 +315,6 @@ class storm::gridftp::config (
     path    =&gt; $sysconfig_file,
     content =&gt; template($sysconfig_template_file),
     notify  =&gt; Service[&#39;storm-globus-gridftp&#39;],
-    require =&gt; Package[&#39;storm-globus-gridftp-mp&#39;],
   }
 }</pre>
       </td>

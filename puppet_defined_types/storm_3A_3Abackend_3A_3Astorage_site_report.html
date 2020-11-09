@@ -4,7 +4,7 @@
     <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>
-  Puppet Class: storm::users
+  Defined Type: storm::backend::storage_site_report
   
     &mdash; Documentation by YARD 0.9.25
   
@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="../css/common.css" type="text/css" />
 
 <script type="text/javascript">
-  pathId = "puppet_classes::storm::users";
+  pathId = "puppet_defined_types::storm::backend::storage_site_report";
   relpath = '../';
 </script>
 
@@ -28,7 +28,7 @@
   </head>
   <body>
     <div class="nav_wrap">
-      <iframe id="nav" src="../puppet_class_list.html?1"></iframe>
+      <iframe id="nav" src="../puppet_defined_type_list.html?1"></iframe>
       <div id="resizer"></div>
     </div>
 
@@ -37,9 +37,9 @@
         <div id="menu">
   
     <a href="../_index.html">Index (s)</a> &raquo;
-    <span class='title'><span class='object_link'>Puppet Classes</span></span>
+    <span class='title'><span class='object_link'>Defined Types</span></span>
      &raquo; 
-    <span class="title">storm::users</span>
+    <span class="title">storm::backend::storage_site_report</span>
   
 </div>
 
@@ -59,75 +59,37 @@
         <div class="clear"></div>
       </div>
 
-      <div id="content"><h1>Puppet Class: storm::users</h1>
+      <div id="content"><h1>Defined Type: storm::backend::storage_site_report</h1>
 <div class="box_info">
-  
-  
   <dl>
     <dt>Defined in:</dt>
     <dd>
-      manifests/users.pp
+      manifests/backend/storage_site_report.pp
     </dd>
   </dl>
 </div>
 
   <h2>Summary</h2>
-  StoRM accounts configuration
+  
 
 <h2>Overview</h2>
 <div class="docstring">
   <div class="discussion">
     
-<h2 id="label-Parameters">Parameters</h2>
-
-<p>StoRM needs a &#39;storm&#39; Unix user, member of an &#39;edguser&#39; group. This class creates all the necessary users.</p>
-
   </div>
 </div>
 
 
 <div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-        <p class="example_title"><div class='inline'>
-<p>Example of usage</p>
-</div></p>
-      
-      <pre class="example code"><code>class { &#39;storm::users&#39;:
-  groups =&gt; {
-    &#39;infosys&#39; =&gt; {
-      gid =&gt; &#39;996&#39;,
-    },
-  },
-  users =&gt; {
-    &#39;edguser&#39; =&gt; {
-      &#39;comment&#39; =&gt; &#39;Edguser user&#39;,
-      &#39;groups&#39;  =&gt; [ edguser, infosys, storm, ],
-      &#39;uid&#39;     =&gt; &#39;995&#39;,
-      &#39;gid&#39;     =&gt; &#39;995&#39;,
-    },
-    &#39;storm&#39; =&gt; {
-      &#39;comment&#39; =&gt; &#39;StoRM user&#39;,
-      &#39;groups&#39;  =&gt; [ storm, edguser, ],
-      &#39;uid&#39;     =&gt; &#39;991&#39;,
-      &#39;gid&#39;     =&gt; &#39;991&#39;,
-    },
-  }
-}</code></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
+  <p class="tag_title">Parameters:</p>
 <ul class="param">
   
     <li>
       
-        <span class='name'>groups</span>
+        <span class='name'>report_path</span>
       
       
-        <span class='type'>(<tt>Accounts::Group::Hash</tt>)</span>
+        <span class='type'>(<tt>String</tt>)</span>
       
       
       
@@ -135,11 +97,13 @@
   
     <li>
       
-        <span class='name'>users</span>
+        <span class='name'>minute</span>
       
       
-        <span class='type'>(<tt>Accounts::User::Hash</tt>)</span>
+        <span class='type'>(<tt>String</tt>)</span>
       
+      
+        <em class="default">(defaults to: <tt>&#39;*/30&#39;</tt>)</em>
       
       
     </li>
@@ -155,29 +119,71 @@
         <pre class="lines">
 
 
-37
-38
-39
-40
-41
-42
-43
-44
-45
-46</pre>
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/users.pp', line 37</span>
+        <pre class="code"><span class="info file"># File 'manifests/backend/storage_site_report.pp', line 2</span>
 
-class storm::users (
-
-  Accounts::Group::Hash $groups,
-  Accounts::User::Hash $users,
-
+define storm::backend::storage_site_report (
+  String $report_path,
+  String $minute = &#39;*/30&#39;,
 ) {
 
-  create_resources(&#39;group&#39;, $groups)
-  create_resources(&#39;accounts::user&#39;, $users)
+  # Storage Site Report
+  $report_script=&#39;/etc/storm/backend-server/update-site-report.sh&#39;
+  $report_command=&quot;/bin/bash ${report_script} ${report_path}&quot;
+
+  # script
+  file { $report_script:
+    ensure =&gt; &#39;present&#39;,
+    source =&gt; &#39;puppet:///modules/storm/update-site-report.sh&#39;,
+  }
+
+  # cron
+  cron { &#39;update-site-report&#39;:
+    ensure  =&gt; &#39;present&#39;,
+    command =&gt; $report_command,
+    user    =&gt; &#39;root&#39;,
+    minute  =&gt; $minute,
+    require =&gt; File[$report_script],
+  }
+
+  # first execution
+  exec { &#39;create-site-report&#39;:
+    command =&gt; $report_command,
+    creates =&gt; $report_path,
+    require =&gt; [File[$report_script], Class[&#39;storm::backend&#39;]],
+  }
 }</pre>
       </td>
     </tr>

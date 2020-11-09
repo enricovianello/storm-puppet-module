@@ -125,8 +125,6 @@ add storm user and all the necessary grants.
         <span class='type'>(<tt>String</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>&#39;storm&#39;</tt>)</em>
-      
       
         &mdash;
         <div class='inline'>
@@ -142,8 +140,6 @@ add storm user and all the necessary grants.
       
         <span class='type'>(<tt>String</tt>)</span>
       
-      
-        <em class="default">(defaults to: <tt>&#39;storm&#39;</tt>)</em>
       
       
         &mdash;
@@ -161,8 +157,6 @@ add storm user and all the necessary grants.
         <span class='type'>(<tt>String</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>&#39;storm&#39;</tt>)</em>
-      
       
         &mdash;
         <div class='inline'>
@@ -179,13 +173,6 @@ add storm user and all the necessary grants.
         <span class='type'>(<tt>Data</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>{
-    &#39;mysqld&#39; =&gt; {
-      &#39;bind-address&#39;    =&gt; &#39;0.0.0.0&#39;,
-      &#39;max_connections&#39; =&gt; 2048,
-    },
-  }</tt>)</em>
-      
       
         &mdash;
         <div class='inline'>
@@ -201,8 +188,6 @@ add storm user and all the necessary grants.
       
         <span class='type'>(<tt>Integer</tt>)</span>
       
-      
-        <em class="default">(defaults to: <tt>65535</tt>)</em>
       
       
         &mdash;
@@ -364,28 +349,20 @@ add storm user and all the necessary grants.
 163
 164
 165
-166
-167
-168
-169
-170</pre>
+166</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/db.pp', line 25</span>
 
 class storm::db (
 
+  String $root_password,
+  String $storm_username,
+  String $storm_password,
+  Data $override_options,
+  Integer $limit_no_file,
+
   String $fqdn_hostname = $::fqdn,
-  String $root_password = &#39;storm&#39;,
-  String $storm_username = &#39;storm&#39;,
-  String $storm_password = &#39;storm&#39;,
-  Data $override_options = {
-    &#39;mysqld&#39; =&gt; {
-      &#39;bind-address&#39;    =&gt; &#39;0.0.0.0&#39;,
-      &#39;max_connections&#39; =&gt; 2048,
-    },
-  },
-  Integer $limit_no_file = 65535,
 
 ) {
 
