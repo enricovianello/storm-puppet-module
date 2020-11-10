@@ -70,7 +70,11 @@
 </div>
 
   <h2>Summary</h2>
-  
+  Storage Areas can be configured singularly by using this defined type.
+This strategy allows site administrators to keep their manifests unaware of
+the improvements on StoRM WebDAV code. For example, if a new property is added
+into Storage Area configuration files, you haven't to update your Puppet module
+and all the service configuration will continue working.
 
 <h2>Overview</h2>
 <div class="docstring">
@@ -81,7 +85,23 @@
 
 
 <div class="tags">
-  <p class="tag_title">Parameters:</p>
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code>class { &#39;storm::webdav&#39;:
+  hostnames =&gt; [&#39;storm-webdav.test.example&#39;, &#39;alias-for-storm-webdav.test.example&#39;],
+}
+storm::webdav::storage_area_file { &#39;test.vo.properties&#39;:
+  source =&gt; &#39;/path/to/my/test.vo.properties&#39;,
+}
+storm::webdav::storage_area_file { &#39;test.vo.2.properties&#39;:
+  source =&gt; &#39;/path/to/my/test.vo.2.properties&#39;,
+}</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
 <ul class="param">
   
     <li>
@@ -92,6 +112,11 @@
         <span class='type'>(<tt>Any</tt>)</span>
       
       
+      
+        &mdash;
+        <div class='inline'>
+<p>The source of file resource. It can be an absolute path or a Puppet module relative path.</p>
+</div>
       
     </li>
   
@@ -106,22 +131,22 @@
         <pre class="lines">
 
 
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14</pre>
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/webdav/storage_area_file.pp', line 2</span>
+        <pre class="code"><span class="info file"># File 'manifests/webdav/storage_area_file.pp', line 21</span>
 
 define storm::webdav::storage_area_file (
   $source,

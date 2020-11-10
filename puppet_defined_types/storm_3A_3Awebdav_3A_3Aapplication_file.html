@@ -70,7 +70,10 @@
 </div>
 
   <h2>Summary</h2>
-  
+  Starting from Puppet module v2.0.0, the management of application.yml
+file has been removed from storm::webdav class. Site administrators can edit
+their own configuration files or use this defined type to inject one or more YAML
+files into the proper directory.
 
 <h2>Overview</h2>
 <div class="docstring">
@@ -81,7 +84,23 @@
 
 
 <div class="tags">
-  <p class="tag_title">Parameters:</p>
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code>class { &#39;storm::webdav&#39;:
+  hostnames =&gt; [&#39;storm-webdav.test.example&#39;, &#39;alias-for-storm-webdav.test.example&#39;],
+}
+storm::webdav::application_file { &#39;application.yml&#39;:
+  source =&gt; &#39;/path/to/my/application.yml&#39;,
+}
+storm::webdav::application_file { &#39;application-wlcg.yml&#39;:
+  source =&gt; &#39;/path/to/my/application-wlcg.yml&#39;,
+}</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
 <ul class="param">
   
     <li>
@@ -92,6 +111,11 @@
         <span class='type'>(<tt>Any</tt>)</span>
       
       
+      
+        &mdash;
+        <div class='inline'>
+<p>The source of file resource. It can be an absolute path or a Puppet module relative path.</p>
+</div>
       
     </li>
   
@@ -106,22 +130,22 @@
         <pre class="lines">
 
 
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14</pre>
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/webdav/application_file.pp', line 2</span>
+        <pre class="code"><span class="info file"># File 'manifests/webdav/application_file.pp', line 20</span>
 
 define storm::webdav::application_file (
   $source,

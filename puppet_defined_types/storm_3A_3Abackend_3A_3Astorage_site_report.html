@@ -70,18 +70,36 @@
 </div>
 
   <h2>Summary</h2>
-  
+  Starting from Puppet module v2.0.0, the management of Storage Site Report has been improved.
+Site administrators can add script and cron described in the [how-to](http://italiangrid.github.io/storm/documentation/how-to/how-to-publish-json-report/)
 
 <h2>Overview</h2>
 <div class="docstring">
   <div class="discussion">
     
+<p> by using this defined type.</p>
+
   </div>
 </div>
 
 
 <div class="tags">
-  <p class="tag_title">Parameters:</p>
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code>class { &#39;storm::backend&#39;:
+  hostname =&gt; &#39;storm-backend.test.example&#39;,
+  # ...
+}
+storm::backend::storage_site_report { &#39;storage-site-report&#39;:
+  report_path =&gt; &#39;/storage/info/report.json&#39;, # the internal storage area path
+  minute      =&gt; &#39;*/20&#39;, # set cron&#39;s minute
+}</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
 <ul class="param">
   
     <li>
@@ -92,6 +110,11 @@
         <span class='type'>(<tt>String</tt>)</span>
       
       
+      
+        &mdash;
+        <div class='inline'>
+<p>The full path of the generated report. Usually it points to a “info” storage area.</p>
+</div>
       
     </li>
   
@@ -106,6 +129,11 @@
         <em class="default">(defaults to: <tt>&#39;*/30&#39;</tt>)</em>
       
       
+        &mdash;
+        <div class='inline'>
+<p>The cron job&#39;s minute parameter. Refer to <a href="https://puppet.com/docs/puppet/5.5/types/cron.html#cron-attribute-minute">Resource Type cron</a>.</p>
+</div>
+      
     </li>
   
 </ul>
@@ -119,25 +147,6 @@
         <pre class="lines">
 
 
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
 21
 22
 23
@@ -149,10 +158,29 @@
 29
 30
 31
-32</pre>
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/backend/storage_site_report.pp', line 2</span>
+        <pre class="code"><span class="info file"># File 'manifests/backend/storage_site_report.pp', line 21</span>
 
 define storm::backend::storage_site_report (
   String $report_path,

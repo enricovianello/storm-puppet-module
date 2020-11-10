@@ -70,7 +70,9 @@
 </div>
 
   <h2>Summary</h2>
-  
+  Starting from Puppet module v2.0.0, site administrators can inject
+one or more .conf files into `/etc/systemd/system/storm-backend-server.service.d`
+directory.
 
 <h2>Overview</h2>
 <div class="docstring">
@@ -81,7 +83,21 @@
 
 
 <div class="tags">
-  <p class="tag_title">Parameters:</p>
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code>class { &#39;storm::backend&#39;:
+  hostname =&gt; &#39;storm-backend.test.example&#39;,
+  # ...
+}
+storm::backend::service_conf_file { &#39;override.conf&#39;:
+  source =&gt; &#39;/path/to/my/override.conf&#39;,
+}</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
 <ul class="param">
   
     <li>
@@ -92,6 +108,11 @@
         <span class='type'>(<tt>Any</tt>)</span>
       
       
+      
+        &mdash;
+        <div class='inline'>
+<p>The source of file resource. It can be an absolute path or a Puppet module relative path.</p>
+</div>
       
     </li>
   
@@ -106,22 +127,22 @@
         <pre class="lines">
 
 
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14</pre>
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/backend/service_conf_file.pp', line 2</span>
+        <pre class="code"><span class="info file"># File 'manifests/backend/service_conf_file.pp', line 17</span>
 
 define storm::backend::service_conf_file (
   $source,
