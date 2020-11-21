@@ -4,7 +4,7 @@
     <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>
-  Defined Type: storm::rootdir
+  Defined Type: storm::sarootdir
   
     &mdash; Documentation by YARD 0.9.24
   
@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="../css/common.css" type="text/css" />
 
 <script type="text/javascript">
-  pathId = "puppet_defined_types::storm::rootdir";
+  pathId = "puppet_defined_types::storm::sarootdir";
   relpath = '../';
 </script>
 
@@ -39,7 +39,7 @@
     <a href="../_index.html">Index (s)</a> &raquo;
     <span class='title'><span class='object_link'>Defined Types</span></span>
      &raquo; 
-    <span class="title">storm::rootdir</span>
+    <span class="title">storm::sarootdir</span>
   
 </div>
 
@@ -59,18 +59,18 @@
         <div class="clear"></div>
       </div>
 
-      <div id="content"><h1>Defined Type: storm::rootdir</h1>
+      <div id="content"><h1>Defined Type: storm::sarootdir</h1>
 <div class="box_info">
   <dl>
     <dt>Defined in:</dt>
     <dd>
-      manifests/rootdir.pp
+      manifests/sarootdir.pp
     </dd>
   </dl>
 </div>
 
   <h2>Summary</h2>
-  StoRM main storage area root directory defined resource
+  StoRM Storage Area root directory defined resource
 
 <h2>Overview</h2>
 <div class="docstring">
@@ -92,7 +92,7 @@
         <span class='type'>(<tt>String</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>&#39;0755&#39;</tt>)</em>
+        <em class="default">(defaults to: <tt>&#39;0750&#39;</tt>)</em>
       
       
     </li>
@@ -117,19 +117,21 @@
 8
 9
 10
-11</pre>
+11
+12</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/rootdir.pp', line 2</span>
+        <pre class="code"><span class="info file"># File 'manifests/sarootdir.pp', line 2</span>
 
-define storm::rootdir (
-  String $mode = &#39;0755&#39;,
+define storm::sarootdir (
+  String $mode = &#39;0750&#39;,
 ) {
   file { $title:
-    ensure =&gt; directory,
-    owner  =&gt; &#39;root&#39;,
-    group  =&gt; &#39;root&#39;,
-    mode   =&gt; $mode,
+    ensure  =&gt; directory,
+    owner   =&gt; &#39;storm&#39;,
+    group   =&gt; &#39;storm&#39;,
+    mode    =&gt; $mode,
+    require =&gt; User[&#39;storm&#39;],
   }
 }</pre>
       </td>

@@ -113,7 +113,7 @@
 
 <pre class="code ruby"><code class="ruby">git clone https://github.com/italiangrid/storm-puppet-module.git
 cd storm-puppet-module
-puppet module build
+pdk build
 puppet module install ./pkg/cnafsd-storm-*.tar.gz
 </code></pre>
 
@@ -139,8 +139,6 @@ puppet module install ./pkg/cnafsd-storm-*.tar.gz
 <p><a href="#label-Storm+repo+class">StoRM repo class</a></p>
 </li><li>
 <p><a href="#label-Storm+users+class">StoRM users class</a></p>
-</li><li>
-<p><a href="#label-Storm+storage+class">StoRM storage class</a></p>
 </li></ul>
 
 <h3 id="label-StoRM+Backend+class">StoRM Backend class</h3>
@@ -414,30 +412,6 @@ storm::webdav::application_file { &#39;application-wlcg.yml&#39;:
 
 <p>The whole list of StoRM repo class parameters can be found <a href="https://italiangrid.github.io/storm-puppet-module/puppet_classes/storm_3A_3Ausers.html">here</a>.</p>
 
-<h3 id="label-StoRM+storage+class">StoRM storage class</h3>
-
-<p>To create the root directories of your storage areas, you can use the <code>storm::storage</code> utility class. This class is mainly used for test purposes. We expected not to use this class on production.</p>
-
-<p>The whole list of StoRM storage class parameters can be found <a href="https://italiangrid.github.io/storm-puppet-module/puppet_classes/storm_3A_3Astorage.html">here</a>.</p>
-
-<p>Example of StoRM storage usage on our testbed:</p>
-
-<pre class="code ruby"><code class="ruby">file { &#39;/storage&#39;:
-  ensure  =&gt; directory,
-  mode    =&gt; &#39;0755&#39;,
-  owner   =&gt; &#39;root&#39;,
-  group   =&gt; &#39;root&#39;,
-  recurse =&gt; false,
-} -&gt; class { &#39;storm::storage&#39;:
-  root_directories =&gt; [
-    &#39;/storage/test.vo&#39;,
-    &#39;/storage/test.vo.2&#39;,
-    &#39;/storage/tape&#39;,
-    &#39;/storage/info&#39;,
-  ],
-}
-</code></pre>
-
 <h2 id="label-Documentation">Documentation</h2>
 
 <p>You can find all the info about module classes and parameters at:</p>
@@ -446,6 +420,18 @@ storm::webdav::application_file { &#39;application-wlcg.yml&#39;:
 </li><li>
 <p><a href="https://github.com/italiangrid/storm-puppet-module/blob/master/REFERENCE.md">REFERENCE.md</a></p>
 </li></ul>
+
+<h2 id="label-Developers">Developers</h2>
+
+<p>Run tests with:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_pdk'>pdk</span> <span class='id identifier rubyid_test'>test</span> <span class='id identifier rubyid_unit'>unit</span>
+</code></pre>
+
+<p>Validate code with:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_pdk'>pdk</span> <span class='id identifier rubyid_validate'>validate</span>
+</code></pre>
 
 <h2 id="label-Limitations">Limitations</h2>
 
